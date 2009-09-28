@@ -77,7 +77,7 @@ WriteDone (void *arg)
 //----------------------------------------------------------------------
 
 void
-ConsoleTest (char *in, char *out)
+ConsoleTest (const char *in, const char *out)
 {
     char ch;
 
