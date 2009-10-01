@@ -44,7 +44,7 @@ class Console:dontcopythis {
     ~Console();			// clean up console emulation
 
 // external interface -- Nachos kernel code can call these
-    void PutChar(char ch);	// Write "ch" to the console display, 
+    void PutChar(int ch);	// Write "ch" to the console display, 
 				// and return immediately.  "writeHandler" 
 				// is called when the I/O completes. 
 

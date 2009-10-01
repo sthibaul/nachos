@@ -169,10 +169,21 @@ Console::GetChar()
 //----------------------------------------------------------------------
 
 void
-Console::PutChar(char ch)
+Console::PutChar(int ch)
 {
+    unsigned char c;
     ASSERT(putBusy == FALSE);
-    WriteFile(writeFileNo, &ch, sizeof(char));
+    if (ch < 0x80 || strcmp(nl_langinfo(CODESET),"UTF-8")) {
+	/* Not UTF-8 or ASCII, assume 8bit locale */
+	c = ch;
+        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+    } else if (ch < 0x100) {
+	/* Non-ASCII UTF-8, thus two bytes */
+	c = (ch & 0x1f) | 0xc0;
+        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+	c = ((ch & 0xe0) >> 5) | 0x80;
+        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+    } /* Else not latin1, drop */
     putBusy = TRUE;
     interrupt->Schedule(ConsoleWriteDone, this, ConsoleTime,
 					ConsoleWriteInt);
