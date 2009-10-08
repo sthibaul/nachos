@@ -60,12 +60,12 @@ class Disk:dontcopythis {
 					// every time a request completes.
     ~Disk();				// Deallocate the disk.
     
-    void ReadRequest(int sectorNumber, char* data);
+    void ReadRequest(int sectorNumber, void* data);
     					// Read/write an single disk sector.
 					// These routines send a request to 
     					// the disk and return immediately.
     					// Only one request allowed at a time!
-    void WriteRequest(int sectorNumber, const char* data);
+    void WriteRequest(int sectorNumber, const void* data);
 
     void HandleInterrupt();		// Interrupt handler, invoked when
 					// disk request finishes.

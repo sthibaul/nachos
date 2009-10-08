@@ -66,12 +66,12 @@ ShortToHost(unsigned short shortword) {
 #endif /* HOST_IS_BIG_ENDIAN */
 }
 
-#define ReadStruct(f,s) 	Read(f,(char *)&s,sizeof(s))
+#define ReadStruct(f,s) 	Read(f,&s,sizeof(s))
 
 char *noffFileName = NULL;
 
 /* read and check for error */
-void Read(int fd, char *buf, int nBytes)
+void Read(int fd, void *buf, int nBytes)
 {
     if (read(fd, buf, nBytes) != nBytes) {
         fprintf(stderr, "File is too short\n");
@@ -81,7 +81,7 @@ void Read(int fd, char *buf, int nBytes)
 }
 
 /* write and check for error */
-void Write(int fd, char *buf, int nBytes)
+void Write(int fd, void *buf, int nBytes)
 {
     if (write(fd, buf, nBytes) != nBytes) {
 	fprintf(stderr, "Unable to write file\n");
@@ -142,7 +142,7 @@ main (int argc, char **argv)
     numsections = fileh.f_nscns;
     printf("numsections %d \n",numsections);
     sections = (struct scnhdr *)malloc(numsections * sizeof(struct scnhdr));
-    Read(fdIn, (char *) sections, numsections * sizeof(struct scnhdr));
+    Read(fdIn, sections, numsections * sizeof(struct scnhdr));
 
    for (i = 0; i < numsections; i++) {
      sections[i].s_paddr =  WordToHost(sections[i].s_paddr);
@@ -221,7 +221,7 @@ main (int argc, char **argv)
 	}
     }
     lseek(fdOut, 0, SEEK_SET);
-    Write(fdOut, (char *)&noffH, sizeof(NoffHeader));
+    Write(fdOut, &noffH, sizeof(NoffHeader));
     close(fdIn);
     close(fdOut);
     exit(0);

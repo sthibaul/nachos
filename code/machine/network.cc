@@ -100,7 +100,7 @@ Network::SendDone()
 // Note we always pad out a packet to MaxWireSize before putting it into
 // the socket, because it's simpler at the receive end.
 void
-Network::Send(PacketHeader hdr, const char* data)
+Network::Send(PacketHeader hdr, const void* data)
 {
     char toName[32];
 
@@ -127,7 +127,7 @@ Network::Send(PacketHeader hdr, const char* data)
 
 // read a packet, if one is buffered
 PacketHeader
-Network::Receive(char* data)
+Network::Receive(void* data)
 {
     PacketHeader hdr = inHdr;
 

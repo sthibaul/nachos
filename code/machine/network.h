@@ -59,7 +59,7 @@ class Network {
 				// Allocate and initialize network driver
     ~Network();			// De-allocate the network driver data
     
-    void Send(PacketHeader hdr, const char* data);
+    void Send(PacketHeader hdr, const void* data);
     				// Send the packet data to a remote machine,
 				// specified by "hdr".  Returns immediately.
     				// "writeHandler" is invoked once the next 
@@ -69,7 +69,7 @@ class Network {
 				// the PacketHeader is filled in automatically 
 				// by Send().
 
-    PacketHeader Receive(char* data);
+    PacketHeader Receive(void* data);
     				// Poll the network for incoming messages.  
 				// If there is a packet waiting, copy the 
 				// packet into "data" and return the header.

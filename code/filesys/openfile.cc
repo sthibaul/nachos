@@ -71,7 +71,7 @@ OpenFile::Seek(int position)
 //----------------------------------------------------------------------
 
 int
-OpenFile::Read(char *into, int numBytes)
+OpenFile::Read(void *into, int numBytes)
 {
    int result = ReadAt(into, numBytes, seekPosition);
    seekPosition += result;
@@ -79,7 +79,7 @@ OpenFile::Read(char *into, int numBytes)
 }
 
 int
-OpenFile::Write(const char *into, int numBytes)
+OpenFile::Write(const void *into, int numBytes)
 {
    int result = WriteAt(into, numBytes, seekPosition);
    seekPosition += result;
@@ -113,7 +113,7 @@ OpenFile::Write(const char *into, int numBytes)
 //----------------------------------------------------------------------
 
 int
-OpenFile::ReadAt(char *into, int numBytes, int position)
+OpenFile::ReadAt(void *into, int numBytes, int position)
 {
     int fileLength = hdr->FileLength();
     int i, firstSector, lastSector, numSectors;
@@ -143,7 +143,7 @@ OpenFile::ReadAt(char *into, int numBytes, int position)
 }
 
 int
-OpenFile::WriteAt(const char *from, int numBytes, int position)
+OpenFile::WriteAt(const void *from, int numBytes, int position)
 {
     int fileLength = hdr->FileLength();
     int i, firstSector, lastSector, numSectors;

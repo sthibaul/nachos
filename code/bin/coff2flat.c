@@ -29,12 +29,12 @@
 
 /* NOTE -- once you have implemented large files, it's ok to make this bigger! */
 #define StackSize      		1024      /* in bytes */
-#define ReadStruct(f,s) 	Read(f,(char *)&s,sizeof(s))
+#define ReadStruct(f,s) 	Read(f,&s,sizeof(s))
 
 extern char *malloc();
 
 /* read and check for error */
-void Read(int fd, char *buf, int nBytes)
+void Read(int fd, void *buf, int nBytes)
 {
     if (read(fd, buf, nBytes) != nBytes) {
 	fprintf(stderr, "File is too short\n");
@@ -43,7 +43,7 @@ void Read(int fd, char *buf, int nBytes)
 }
 
 /* write and check for error */
-void Write(int fd, char *buf, int nBytes)
+void Write(int fd, void *buf, int nBytes)
 {
     if (write(fd, buf, nBytes) != nBytes) {
 	fprintf(stderr, "Unable to write file\n");
@@ -96,7 +96,7 @@ main (int argc, char **argv)
 /* Read in the section headers. */
     numsections = fileh.f_nscns;
     sections = (struct scnhdr *)malloc(fileh.f_nscns * sizeof(struct scnhdr));
-    Read(fdIn, (char *) sections, fileh.f_nscns * sizeof(struct scnhdr));
+    Read(fdIn, sections, fileh.f_nscns * sizeof(struct scnhdr));
 
  /* Copy the segments in */
     printf("Loading %d sections:\n", fileh.f_nscns);
@@ -119,7 +119,7 @@ main (int argc, char **argv)
     printf("Adding stack of size: %d\n", StackSize);
     lseek(fdOut, top + StackSize - 4, 0);
     tmp = 0;
-    Write(fdOut, (char *)&tmp, 4);
+    Write(fdOut, &tmp, 4);
 
     close(fdIn);
     close(fdOut);

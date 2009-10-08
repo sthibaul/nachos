@@ -183,7 +183,7 @@ OpenForReadWrite(const char *name, bool crashOnError)
 //----------------------------------------------------------------------
 
 void
-Read(int fd, char *buffer, int nBytes)
+Read(int fd, void *buffer, int nBytes)
 {
     int retVal = read(fd, buffer, nBytes);
     ASSERT(retVal == nBytes);
@@ -196,7 +196,7 @@ Read(int fd, char *buffer, int nBytes)
 //----------------------------------------------------------------------
 
 int
-ReadPartial(int fd, char *buffer, int nBytes)
+ReadPartial(int fd, void *buffer, int nBytes)
 {
     return read(fd, buffer, nBytes);
 }
@@ -208,7 +208,7 @@ ReadPartial(int fd, char *buffer, int nBytes)
 //----------------------------------------------------------------------
 
 void
-WriteFile(int fd, const char *buffer, int nBytes)
+WriteFile(int fd, const void *buffer, int nBytes)
 {
     int retVal = write(fd, buffer, nBytes);
     ASSERT(retVal == nBytes);
@@ -352,7 +352,7 @@ PollSocket(int sockID)
 // 	Read a fixed size packet off the IPC port.  Abort on error.
 //----------------------------------------------------------------------
 void
-ReadFromSocket(int sockID, char *buffer, int packetSize)
+ReadFromSocket(int sockID, void *buffer, int packetSize)
 {
     int retVal;
     struct sockaddr_un uName;
@@ -384,7 +384,7 @@ ReadFromSocket(int sockID, char *buffer, int packetSize)
 //	Abort on error.
 //----------------------------------------------------------------------
 void
-SendToSocket(int sockID, const char *buffer, int packetSize, const char *toName)
+SendToSocket(int sockID, const void *buffer, int packetSize, const char *toName)
 {
     struct sockaddr_un uName;
     int retVal;

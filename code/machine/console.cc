@@ -99,7 +99,7 @@ Console::CheckCharAvail()
         return;          
 
     // otherwise, read character and tell user about it
-    n = ReadPartial(readFileNo, (char*) &c, sizeof(unsigned char));
+    n = ReadPartial(readFileNo, &c, sizeof(c));
     if (n == 0) {
         incoming = EOF;
     } else if (strcmp(nl_langinfo(CODESET),"UTF-8")) {
@@ -118,7 +118,7 @@ Console::CheckCharAvail()
             /* Not latin1, drop */
             return;
         /* latin1 UTF-8 char, read second char */
-        n = ReadPartial(readFileNo, (char*) &d, sizeof(unsigned char));
+        n = ReadPartial(readFileNo,  &d, sizeof(d));
         if (n == 0) {
             incoming = EOF;
         } else if ((d & 0xc0) != 0x80) {
@@ -176,13 +176,13 @@ Console::PutChar(int ch)
     if (ch < 0x80 || strcmp(nl_langinfo(CODESET),"UTF-8")) {
 	/* Not UTF-8 or ASCII, assume 8bit locale */
 	c = ch;
-        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+        WriteFile(writeFileNo, &c, sizeof(c));
     } else if (ch < 0x100) {
 	/* Non-ASCII UTF-8, thus two bytes */
 	c = ((ch & 0xc0) >> 6) | 0xc0;
-        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+        WriteFile(writeFileNo, &c, sizeof(c));
 	c = (ch & 0x3f) | 0x80;
-        WriteFile(writeFileNo, (char*) &c, sizeof(c));
+        WriteFile(writeFileNo, &c, sizeof(c));
     } /* Else not latin1, drop */
     putBusy = TRUE;
     interrupt->Schedule(ConsoleWriteDone, this, ConsoleTime,

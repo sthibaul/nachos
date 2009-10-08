@@ -70,7 +70,7 @@ SynchDisk::~SynchDisk()
 //----------------------------------------------------------------------
 
 void
-SynchDisk::ReadSector(int sectorNumber, char* data)
+SynchDisk::ReadSector(int sectorNumber, void* data)
 {
     lock->Acquire();			// only one disk I/O at a time
     disk->ReadRequest(sectorNumber, data);
@@ -88,7 +88,7 @@ SynchDisk::ReadSector(int sectorNumber, char* data)
 //----------------------------------------------------------------------
 
 void
-SynchDisk::WriteSector(int sectorNumber, const char* data)
+SynchDisk::WriteSector(int sectorNumber, const void* data)
 {
     lock->Acquire();			// only one disk I/O at a time
     disk->WriteRequest(sectorNumber, data);

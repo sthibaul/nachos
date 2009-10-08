@@ -31,7 +31,7 @@
 //	"data" -- payload data
 //----------------------------------------------------------------------
 
-Mail::Mail(PacketHeader pktH, MailHeader mailH, const char *msgData)
+Mail::Mail(PacketHeader pktH, MailHeader mailH, const void *msgData)
 {
     ASSERT(mailH.length <= MaxMailSize);
 
@@ -97,7 +97,7 @@ PrintHeader(PacketHeader pktHdr, MailHeader mailHdr)
 //----------------------------------------------------------------------
 
 void 
-MailBox::Put(PacketHeader pktHdr, MailHeader mailHdr, const char *data)
+MailBox::Put(PacketHeader pktHdr, MailHeader mailHdr, const void *data)
 { 
     Mail *mail = new Mail(pktHdr, mailHdr, data); 
 
@@ -119,7 +119,7 @@ MailBox::Put(PacketHeader pktHdr, MailHeader mailHdr, const char *data)
 //----------------------------------------------------------------------
 
 void 
-MailBox::Get(PacketHeader *pktHdr, MailHeader *mailHdr, char *data) 
+MailBox::Get(PacketHeader *pktHdr, MailHeader *mailHdr, void *data) 
 { 
     DEBUG('n', "Waiting for mail in mailbox\n");
     Mail *mail = (Mail *) messages->Remove();	// remove message from list;
@@ -259,7 +259,7 @@ PostOffice::PostalDelivery()
 //----------------------------------------------------------------------
 
 void
-PostOffice::Send(PacketHeader pktHdr, MailHeader mailHdr, const char* data)
+PostOffice::Send(PacketHeader pktHdr, MailHeader mailHdr, const void* data)
 {
     char* buffer = new char[MaxPacketSize];	// space to hold concatenated
 						// mailHdr + data
@@ -307,7 +307,7 @@ PostOffice::Send(PacketHeader pktHdr, MailHeader mailHdr, const char* data)
 
 void
 PostOffice::Receive(int box, PacketHeader *pktHdr, 
-				MailHeader *mailHdr, char* data)
+				MailHeader *mailHdr, void* data)
 {
     ASSERT((box >= 0) && (box < numBoxes));
 

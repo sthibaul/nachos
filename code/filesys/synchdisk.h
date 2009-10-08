@@ -30,13 +30,13 @@ class SynchDisk:dontcopythis {
 					// by initializing the raw Disk.
     ~SynchDisk();			// De-allocate the synch disk data
     
-    void ReadSector(int sectorNumber, char* data);
+    void ReadSector(int sectorNumber, void* data);
     					// Read/write a disk sector, returning
     					// only once the data is actually read 
 					// or written.  These call
     					// Disk::ReadRequest/WriteRequest and
 					// then wait until the request is done.
-    void WriteSector(int sectorNumber, const char* data);
+    void WriteSector(int sectorNumber, const void* data);
     
     void RequestDone();			// Called by the disk device interrupt
 					// handler, to signal that the

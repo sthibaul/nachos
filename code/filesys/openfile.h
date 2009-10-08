@@ -31,21 +31,21 @@ class OpenFile:dontcopythis {
     OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
     ~OpenFile() { Close(file); }			// close the file
 
-    int ReadAt(char *into, int numBytes, int position) { 
+    int ReadAt(void *into, int numBytes, int position) { 
     		Lseek(file, position, SEEK_SET); 
 		return ReadPartial(file, into, numBytes); 
 		}	
-    int WriteAt(const char *from, int numBytes, int position) { 
+    int WriteAt(const void *from, int numBytes, int position) { 
     		Lseek(file, position, SEEK_SET); 
 		WriteFile(file, from, numBytes); 
 		return numBytes;
 		}	
-    int Read(char *into, int numBytes) {
+    int Read(void *into, int numBytes) {
 		int numRead = ReadAt(into, numBytes, currentOffset); 
 		currentOffset += numRead;
 		return numRead;
     		}
-    int Write(const char *from, int numBytes) {
+    int Write(const void *from, int numBytes) {
 		int numWritten = WriteAt(from, numBytes, currentOffset); 
 		currentOffset += numWritten;
 		return numWritten;
@@ -70,16 +70,16 @@ class OpenFile:dontcopythis {
     void Seek(int position); 		// Set the position from which to 
 					// start reading/writing -- UNIX lseek
 
-    int Read(char *into, int numBytes); // Read/write bytes from the file,
+    int Read(void *into, int numBytes); // Read/write bytes from the file,
 					// starting at the implicit position.
 					// Return the # actually read/written,
 					// and increment position in file.
-    int Write(const char *from, int numBytes);
+    int Write(const void *from, int numBytes);
 
-    int ReadAt(char *into, int numBytes, int position);
+    int ReadAt(void *into, int numBytes, int position);
     					// Read/write bytes from the file,
 					// bypassing the implicit position.
-    int WriteAt(const char *from, int numBytes, int position);
+    int WriteAt(const void *from, int numBytes, int position);
 
     int Length(); 			// Return the number of bytes in the
 					// file (this interface is simpler 

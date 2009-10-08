@@ -53,16 +53,16 @@ Disk::Disk(const char* name, VoidFunctionPtr callWhenDone, void *callArg)
     
     fileno = OpenForReadWrite(name, FALSE);
     if (fileno >= 0) {		 	// file exists, check magic number 
-	Read(fileno, (char *) &magicNum, MagicSize);
+	Read(fileno, &magicNum, MagicSize);
 	ASSERT(magicNum == MagicNumber);
     } else {				// file doesn't exist, create it
         fileno = OpenForWrite(name);
 	magicNum = MagicNumber;  
-	WriteFile(fileno, (char *) &magicNum, MagicSize); // write magic number
+	WriteFile(fileno, &magicNum, MagicSize); // write magic number
 
 	// need to write at end of file, so that reads will not return EOF
         Lseek(fileno, DiskSize - sizeof(int), SEEK_SET);	
-	WriteFile(fileno, (char *)&tmp, sizeof(int));  
+	WriteFile(fileno, &tmp, sizeof(int));  
     }
     active = FALSE;
 }
@@ -84,7 +84,7 @@ Disk::~Disk()
 //----------------------------------------------------------------------
 
 static void
-PrintSector (bool writing, int sector, const char *data)
+PrintSector (bool writing, int sector, const void *data)
 {
     const int *p = (const int *) data;
 
@@ -113,7 +113,7 @@ PrintSector (bool writing, int sector, const char *data)
 //----------------------------------------------------------------------
 
 void
-Disk::ReadRequest(int sectorNumber, char* data)
+Disk::ReadRequest(int sectorNumber, void* data)
 {
     int ticks = ComputeLatency(sectorNumber, FALSE);
 
@@ -133,7 +133,7 @@ Disk::ReadRequest(int sectorNumber, char* data)
 }
 
 void
-Disk::WriteRequest(int sectorNumber, const char* data)
+Disk::WriteRequest(int sectorNumber, const void* data)
 {
     int ticks = ComputeLatency(sectorNumber, TRUE);
 

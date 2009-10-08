@@ -77,7 +77,7 @@ FileHeader::Deallocate(BitMap *freeMap)
 void
 FileHeader::FetchFrom(int sector)
 {
-    synchDisk->ReadSector(sector, (char *)this);
+    synchDisk->ReadSector(sector, this);
 }
 
 //----------------------------------------------------------------------
@@ -90,7 +90,7 @@ FileHeader::FetchFrom(int sector)
 void
 FileHeader::WriteBack(int sector)
 {
-    synchDisk->WriteSector(sector, (char *)this); 
+    synchDisk->WriteSector(sector, this); 
 }
 
 //----------------------------------------------------------------------

@@ -21,9 +21,9 @@ extern bool PollFile(int fd);
 // For simulating the disk and the console devices.
 extern int OpenForWrite(const char *name);
 extern int OpenForReadWrite(const char *name, bool crashOnError);
-extern void Read(int fd, char *buffer, int nBytes);
-extern int ReadPartial(int fd, char *buffer, int nBytes);
-extern void WriteFile(int fd, const char *buffer, int nBytes);
+extern void Read(int fd, void *buffer, int nBytes);
+extern int ReadPartial(int fd, void *buffer, int nBytes);
+extern void WriteFile(int fd, const void *buffer, int nBytes);
 extern void Lseek(int fd, int offset, int whence);
 extern int Tell(int fd);
 extern void Close(int fd);
@@ -35,8 +35,8 @@ extern void CloseSocket(int sockID);
 extern void AssignNameToSocket(const char *socketName, int sockID);
 extern void DeAssignNameToSocket(const char *socketName);
 extern bool PollSocket(int sockID);
-extern void ReadFromSocket(int sockID, char *buffer, int packetSize);
-extern void SendToSocket(int sockID, const char *buffer, int packetSize,const char *toName);
+extern void ReadFromSocket(int sockID, void *buffer, int packetSize);
+extern void SendToSocket(int sockID, const void *buffer, int packetSize,const char *toName);
 
 // Process control: abort, exit, and sleep
 extern void Abort();

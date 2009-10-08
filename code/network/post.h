@@ -61,7 +61,7 @@ class MailHeader {
 
 class Mail {
   public:
-     Mail(PacketHeader pktH, MailHeader mailH, const char *msgData);
+     Mail(PacketHeader pktH, MailHeader mailH, const void *msgData);
 				// Initialize a mail message by
 				// concatenating the headers to the data
 
@@ -80,9 +80,9 @@ class MailBox:dontcopythis {
     MailBox();			// Allocate and initialize mail box
     ~MailBox();			// De-allocate mail box
 
-    void Put(PacketHeader pktHdr, MailHeader mailHdr, const char *data);
+    void Put(PacketHeader pktHdr, MailHeader mailHdr, const void *data);
    				// Atomically put a message into the mailbox
-    void Get(PacketHeader *pktHdr, MailHeader *mailHdr, char *data); 
+    void Get(PacketHeader *pktHdr, MailHeader *mailHdr, void *data); 
    				// Atomically get a message out of the 
 				// mailbox (and wait if there is no message 
 				// to get!)
@@ -107,13 +107,13 @@ class PostOffice:dontcopythis {
 				//   get dropped by the underlying network
     ~PostOffice();		// De-allocate Post Office data
     
-    void Send(PacketHeader pktHdr, MailHeader mailHdr, const char *data);
+    void Send(PacketHeader pktHdr, MailHeader mailHdr, const void *data);
     				// Send a message to a mailbox on a remote 
 				// machine.  The fromBox in the MailHeader is 
 				// the return box for ack's.
     
     void Receive(int box, PacketHeader *pktHdr, 
-		MailHeader *mailHdr, char *data);
+		MailHeader *mailHdr, void *data);
     				// Retrieve a message from "box".  Wait if
 				// there is no message in the box.
 
