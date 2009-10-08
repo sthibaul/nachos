@@ -179,9 +179,9 @@ Console::PutChar(int ch)
         WriteFile(writeFileNo, (char*) &c, sizeof(c));
     } else if (ch < 0x100) {
 	/* Non-ASCII UTF-8, thus two bytes */
-	c = (ch & 0x1f) | 0xc0;
+	c = ((ch & 0xc0) >> 6) | 0xc0;
         WriteFile(writeFileNo, (char*) &c, sizeof(c));
-	c = ((ch & 0xe0) >> 5) | 0x80;
+	c = (ch & 0x3f) | 0x80;
         WriteFile(writeFileNo, (char*) &c, sizeof(c));
     } /* Else not latin1, drop */
     putBusy = TRUE;
