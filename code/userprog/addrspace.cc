@@ -69,6 +69,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     if ((noffH.noffMagic != NOFFMAGIC) &&
 	(WordToHost (noffH.noffMagic) == NOFFMAGIC))
 	SwapHeader (&noffH);
+    /* Check that this is really a MIPS program */
     ASSERT (noffH.noffMagic == NOFFMAGIC);
 
 // how big is address space?
