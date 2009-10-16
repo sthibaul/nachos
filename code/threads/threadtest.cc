@@ -14,7 +14,7 @@
 
 //----------------------------------------------------------------------
 // SimpleThread
-//      Loop 5 times, yielding the CPU to another ready thread 
+//      Loop 10 times, yielding the CPU to another ready thread 
 //      each iteration.
 //
 //      "which" is simply a number identifying the thread, for debugging
