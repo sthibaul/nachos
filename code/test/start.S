@@ -8,8 +8,14 @@
 
 #include "syscall.h"
 
-        .text   
-        .align  2
+/* -------------------------------------------------------------
+ * 0-jump catcher
+ *	Catch jumps to 0 by emiting an illegal instruction at 0
+ * -------------------------------------------------------------
+ */
+	.text   
+	.org 0
+	.byte 0xff
 
 /* -------------------------------------------------------------
  * __start
@@ -19,6 +25,8 @@
  *	The Nachos kernel always starts a program by jumping to location 0.
  * -------------------------------------------------------------
  */
+
+	.org USER_START_ADDRESS
 
 	.globl __start
 	.ent	__start

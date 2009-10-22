@@ -15,6 +15,8 @@
 
 #include "copyright.h"
 
+#define USER_START_ADDRESS 0x80
+
 /* system call codes -- used by the stubs to tell the kernel which system call
  * is being asked for
  */

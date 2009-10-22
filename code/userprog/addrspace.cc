@@ -19,6 +19,7 @@
 #include "system.h"
 #include "addrspace.h"
 #include "noff.h"
+#include "syscall.h"
 
 #include <strings.h>		/* for bzero */
 
@@ -155,7 +156,7 @@ AddrSpace::InitRegisters ()
 	machine->WriteRegister (i, 0);
 
     // Initial program counter -- must be location of "Start"
-    machine->WriteRegister (PCReg, 0);
+    machine->WriteRegister (PCReg, USER_START_ADDRESS);
 
     // Need to also tell MIPS where next instruction is, because
     // of branch delay possibility
