@@ -9,6 +9,10 @@
 #include "copyright.h"
 #include "bitmap.h"
 
+// Definitions helpful for representing a bitmap as an array of integers
+#define BitsInByte 	8
+#define BitsInWord 	32
+
 //----------------------------------------------------------------------
 // BitMap::BitMap
 //      Initialize a bitmap with "nitems" bits, so that every bit is clear.

@@ -19,10 +19,6 @@
 #include "utility.h"
 #include "openfile.h"
 
-// Definitions helpful for representing a bitmap as an array of integers
-#define BitsInByte 	8
-#define BitsInWord 	32
-
 // The following class defines a "bitmap" -- an array of bits,
 // each of which can be independently set, cleared, and tested.
 //
