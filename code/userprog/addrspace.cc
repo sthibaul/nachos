@@ -84,7 +84,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     // at least until we have
     // virtual memory
 
-    DEBUG ('a', "Initializing address space, num pages %d, size %d\n",
+    DEBUG ('a', "Initializing address space, num pages %d, total size 0x%x\n",
 	   numPages, size);
 // first, set up the translation 
     pageTable = new TranslationEntry[numPages];
@@ -107,14 +107,14 @@ AddrSpace::AddrSpace (OpenFile * executable)
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
       {
-	  DEBUG ('a', "Initializing code segment, at 0x%x, size %d\n",
+	  DEBUG ('a', "Initializing code segment, at 0x%x, size 0x%x\n",
 		 noffH.code.virtualAddr, noffH.code.size);
 	  executable->ReadAt (&(machine->mainMemory[noffH.code.virtualAddr]),
 			      noffH.code.size, noffH.code.inFileAddr);
       }
     if (noffH.initData.size > 0)
       {
-	  DEBUG ('a', "Initializing data segment, at 0x%x, size %d\n",
+	  DEBUG ('a', "Initializing data segment, at 0x%x, size 0x%x\n",
 		 noffH.initData.virtualAddr, noffH.initData.size);
 	  executable->ReadAt (&
 			      (machine->mainMemory
@@ -122,6 +122,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 			      noffH.initData.size, noffH.initData.inFileAddr);
       }
 
+    DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
+	   size - UserStackSize, UserStackSize);
 }
 
 //----------------------------------------------------------------------
@@ -166,7 +168,7 @@ AddrSpace::InitRegisters ()
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
     machine->WriteRegister (StackReg, numPages * PageSize - 16);
-    DEBUG ('a', "Initializing stack register to %d\n",
+    DEBUG ('a', "Initializing stack register to 0x%x\n",
 	   numPages * PageSize - 16);
 }
 
