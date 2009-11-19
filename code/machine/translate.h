@@ -29,7 +29,8 @@
 
 class TranslationEntry {
   public:
-    unsigned int virtualPage;  	// The page number in virtual memory.
+    unsigned int virtualPage;  	// The page number in virtual memory, only when
+			// using a TLB
     unsigned int physicalPage; 	// The page number in real memory (relative to the
 			//  start of "mainMemory"
     bool valid;         // If this bit is set, the translation is ignored.
