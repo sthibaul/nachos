@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "coff.h"
 #include "noff.h"
@@ -90,7 +91,7 @@ void Write(int fd, void *buf, int nBytes)
     }
 }
 
-main (int argc, char **argv)
+int main (int argc, char **argv)
 {
     int fdIn, fdOut, numsections, i, inNoffFile;
     struct filehdr fileh;
@@ -100,6 +101,7 @@ main (int argc, char **argv)
     NoffHeader noffH;
 
     if (argc < 2) {
+	fprintf(stderr, "%s\n", copyright);
 	fprintf(stderr, "Usage: %s <coffFileName> <noffFileName>\n", argv[0]);
 	exit(1);
     }
