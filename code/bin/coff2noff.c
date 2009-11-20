@@ -211,6 +211,7 @@ main (int argc, char **argv)
 	        noffH.uninitData.size += sections[i].s_size;
 	    } else {
 	        noffH.uninitData.virtualAddr = sections[i].s_paddr;
+		noffH.uninitData.inFileAddr = -1; /* bss is just zeros */
 	        noffH.uninitData.size = sections[i].s_size;
 	    }
 	    /* we don't need to copy the uninitialized data! */
