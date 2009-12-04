@@ -60,6 +60,7 @@
 // Initial file sizes for the bitmap and directory; until the file system
 // supports extensible files, the directory size sets the maximum number 
 // of files that can be loaded onto the disk.
+#define BitsInByte		8
 #define FreeMapFileSize 	(NumSectors / BitsInByte)
 #define NumDirEntries 		10
 #define DirectoryFileSize 	(sizeof(DirectoryEntry) * NumDirEntries)
