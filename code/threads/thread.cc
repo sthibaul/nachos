@@ -339,7 +339,7 @@ void
 Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 {
     stack = (unsigned long *) AllocBoundedArray (StackSize * sizeof (unsigned long));
-    valgrind_id = VALGRIND_STACK_REGISTER(stack, stack + StackSize * sizeof (unsigned long));
+    valgrind_id = VALGRIND_STACK_REGISTER(stack, stack + StackSize);
 
 #ifdef HOST_SNAKE
     // HP stack works from low addresses to high addresses
