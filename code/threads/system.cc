@@ -203,6 +203,7 @@ Cleanup ()
     delete timer;
     delete scheduler;
     delete interrupt;
+    delete stats;
 
     Exit (0);
 }
