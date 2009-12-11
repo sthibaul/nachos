@@ -21,8 +21,6 @@
 #include "noff.h"
 #include "syscall.h"
 
-#include <strings.h>		/* for bzero */
-
 //----------------------------------------------------------------------
 // SwapHeader
 //      Do little endian to big endian conversion on the bytes in the 
@@ -98,10 +96,6 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	  // a separate page, we could set its 
 	  // pages to be read-only
       }
-
-// zero out the entire address space, to zero the unitialized data segment 
-// and the stack segment
-    bzero (machine->mainMemory, size);
 
 // then, copy in the code and data segments into memory
     if (noffH.code.size > 0)
