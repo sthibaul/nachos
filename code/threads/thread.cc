@@ -363,6 +363,8 @@ Thread::StackAllocate (VoidFunctionPtr func, void *arg)
     *stack = STACK_FENCEPOST;
 #endif // HOST_SNAKE
 
+    memset(&machineState, 0, sizeof(machineState));
+
     machineState[PCState] = (unsigned long) ThreadRoot;
 
     // LB: It is not sufficient to enable interrupts!
