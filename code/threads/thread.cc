@@ -107,6 +107,7 @@ Thread::Start (VoidFunctionPtr func, void *arg)
     DEBUG ('t', "Starting thread \"%s\" with func = %p, arg = %d\n",
 	   name, func, arg);
 
+    ASSERT(status == JUST_CREATED);
     StackAllocate (func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
