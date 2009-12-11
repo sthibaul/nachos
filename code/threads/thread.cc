@@ -43,7 +43,12 @@ Thread::Thread (const char *threadName)
     stack = NULL;
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
-    space = NULL;
+    if (currentThread)
+	// Inherit space from father
+	space = currentThread->space;
+    else
+	space = NULL;
+
     // must be explicitly set to 0 since when Enabling interrupts,
     // DelayedLoad is called !!!
     userRegisters[LoadReg] = 0;
@@ -100,18 +105,6 @@ Thread::Start (VoidFunctionPtr func, void *arg)
 	   name, func, arg);
 
     StackAllocate (func, arg);
-
-#ifdef USER_PROGRAM
-
-    // LB: The addrspace should be tramsitted here, instead of later in
-    // StartProcess, so that the pageTable can be restored at
-    // launching time. This is crucial if the thread is launched with
-    // an already running program, as in the "fork" Unix system call. 
-    
-    // LB: Observe that currentThread->space may be NULL at that time.
-    this->space = currentThread->space;
-
-#endif // USER_PROGRAM
 
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
     scheduler->ReadyToRun (this);	// ReadyToRun assumes that interrupts 
