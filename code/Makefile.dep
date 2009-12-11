@@ -10,6 +10,7 @@
 NACHOS_ROOT = ../../
 NACHOS_SYS := $(shell $(NACHOS_ROOT)/bin/nachos_sys)
 NACHOS_ARCH := $(shell $(NACHOS_ROOT)/bin/nachos_arch)
+NACHOS_VALGRIND := $(shell test -r /usr/include/valgrind/valgrind.h && echo -DHAVE_VALGRIND)
 
 # DEC MIPS, Ultrix
 # HOST = -DHOST_MIPS
@@ -26,6 +27,8 @@ endif
 ifeq ($(NACHOS_ARCH),PPC_ARCH)
 HOST = -DHOST_PPC -DHOST_IS_BIG_ENDIAN
 endif
+
+HOST += $(NACHOS_VALGRIND)
 
 ifeq ($(NACHOS_SYS),SOLARIS_SYS)
 LDFLAGS += -lnsl -lsocket

@@ -19,6 +19,7 @@
 #include "switch.h"
 #include "synch.h"
 #include "system.h"
+#include "valgrind.h"
 #ifdef USER_PROGRAM
 #include "machine.h"
 #endif
@@ -74,8 +75,10 @@ Thread::~Thread ()
     DEBUG ('t', "Deleting thread \"%s\"\n", name);
 
     ASSERT (this != currentThread);
-    if (stack != NULL)
+    if (stack != NULL) {
 	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
+	VALGRIND_STACK_DEREGISTER (valgrind_id);
+    }
 }
 
 //----------------------------------------------------------------------
@@ -335,6 +338,7 @@ void
 Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 {
     stack = (unsigned long *) AllocBoundedArray (StackSize * sizeof (unsigned long));
+    valgrind_id = VALGRIND_STACK_REGISTER(stack, stack + StackSize * sizeof (unsigned long));
 
 #ifdef HOST_SNAKE
     // HP stack works from low addresses to high addresses

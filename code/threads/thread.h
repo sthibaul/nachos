@@ -119,6 +119,7 @@ class Thread:dontcopythis
     unsigned long *stack;	// Bottom of the stack 
     // NULL if this is the main thread
     // (If NULL, don't deallocate stack)
+    unsigned int valgrind_id;	// valgrind ID for the stack
     ThreadStatus status;	// ready, running or blocked
     const char *name;
 
