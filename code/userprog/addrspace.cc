@@ -72,7 +72,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
     ASSERT (noffH.noffMagic == NOFFMAGIC);
 
 // how big is address space?
-    size = noffH.code.size + noffH.initData.size + noffH.uninitData.size + UserStackSize;	// we need to increase the size
+    size = noffH.code.size + noffH.initData.size + noffH.uninitData.size + UserStacksAreaSize;	// we need to increase the size
     // to leave room for the stack
     numPages = divRoundUp (size, PageSize);
     size = numPages * PageSize;
@@ -116,7 +116,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
       }
 
     DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
-	   size - UserStackSize, UserStackSize);
+	   size - UserStacksAreaSize, UserStacksAreaSize);
 }
 
 //----------------------------------------------------------------------
