@@ -133,9 +133,11 @@ ifneq ($(MAKECMDGOALS),clean)
 -include $(DFILES)
 endif
 
-# Cleaning rule
+# Cleaning rules
 .PHONY: clean
 clean:
 	rm -f core nachos DISK *.o *.s .*.d coff2noff out disassemble
 
-
+.PHONY: distclean
+distclean: clean
+	rm -f *\~ \#*\#
