@@ -292,15 +292,12 @@ Machine::OneInstruction(Instruction *instr)
 	nextLoadValue = value;
 	break;
     	
-      case OP_LWL:	  
+      case OP_LWR:	  
 	tmp = registers[instr->rs] + instr->extra;
 
 	// ReadMem assumes all 4 byte requests are aligned on an even 
-	// word boundary.  Also, the little endian/big endian swap code would
-        // fail (I think) if the other cases are ever exercised.
-	ASSERT((tmp & 0x3) == 0);  
-
-	if (!machine->ReadMem(tmp, 4, &value))
+	// word boundary.
+	if (!machine->ReadMem(tmp & ~0x3, 4, &value))
 	    return;
 	if (registers[LoadReg] == instr->rt)
 	    nextLoadValue = registers[LoadValueReg];
@@ -323,15 +320,13 @@ Machine::OneInstruction(Instruction *instr)
 	nextLoadReg = instr->rt;
 	break;
       	
-      case OP_LWR:
+      case OP_LWL:
 	tmp = registers[instr->rs] + instr->extra;
 
 	// ReadMem assumes all 4 byte requests are aligned on an even 
-	// word boundary.  Also, the little endian/big endian swap code would
-        // fail (I think) if the other cases are ever exercised.
-	ASSERT((tmp & 0x3) == 0);  
+	// word boundary.
 
-	if (!machine->ReadMem(tmp, 4, &value))
+	if (!machine->ReadMem(tmp & ~0x3, 4, &value))
 	    return;
 	if (registers[LoadReg] == instr->rt)
 	    nextLoadValue = registers[LoadValueReg];
@@ -530,12 +525,8 @@ Machine::OneInstruction(Instruction *instr)
 	    return;
 	break;
 	
-      case OP_SWL:	  
+      case OP_SWR:	  
 	tmp = registers[instr->rs] + instr->extra;
-
-	// The little endian/big endian swap code would
-        // fail (I think) if the other cases are ever exercised.
-	ASSERT((tmp & 0x3) == 0);  
 
 	if (!machine->ReadMem((tmp & ~0x3), 4, &value))
 	    return;
@@ -560,12 +551,8 @@ Machine::OneInstruction(Instruction *instr)
 	    return;
 	break;
     	
-      case OP_SWR:	  
+      case OP_SWL:	  
 	tmp = registers[instr->rs] + instr->extra;
-
-	// The little endian/big endian swap code would
-        // fail (I think) if the other cases are ever exercised.
-	ASSERT((tmp & 0x3) == 0);  
 
 	if (!machine->ReadMem((tmp & ~0x3), 4, &value))
 	    return;
