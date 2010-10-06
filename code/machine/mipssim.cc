@@ -292,34 +292,6 @@ Machine::OneInstruction(Instruction *instr)
 	nextLoadValue = value;
 	break;
     	
-      case OP_LWL:	  
-	tmp = registers[instr->rs] + instr->extra;
-
-	// ReadMem assumes all 4 byte requests are aligned on an even 
-	// word boundary.
-	if (!machine->ReadMem(tmp & ~0x3, 4, &value))
-	    return;
-	if (registers[LoadReg] == instr->rt)
-	    nextLoadValue = registers[LoadValueReg];
-	else
-	    nextLoadValue = registers[instr->rt];
-	switch (tmp & 0x3) {
-	  case 0:
-	    nextLoadValue = (nextLoadValue & 0xff) | (value << 8);
-	    break;
-	  case 1:
-	    nextLoadValue = (nextLoadValue & 0xffff) | (value << 16);
-	    break;
-	  case 2:
-	    nextLoadValue = (nextLoadValue & 0xffffff) | (value << 24);
-	    break;
-	  case 3:
-	    nextLoadValue = value;
-	    break;
-	}
-	nextLoadReg = instr->rt;
-	break;
-      	
       case OP_LWR:
 	tmp = registers[instr->rs] + instr->extra;
 
@@ -352,6 +324,34 @@ Machine::OneInstruction(Instruction *instr)
 	nextLoadReg = instr->rt;
 	break;
     	
+      case OP_LWL:	  
+	tmp = registers[instr->rs] + instr->extra;
+
+	// ReadMem assumes all 4 byte requests are aligned on an even 
+	// word boundary.
+	if (!machine->ReadMem(tmp & ~0x3, 4, &value))
+	    return;
+	if (registers[LoadReg] == instr->rt)
+	    nextLoadValue = registers[LoadValueReg];
+	else
+	    nextLoadValue = registers[instr->rt];
+	switch (tmp & 0x3) {
+	  case 0:
+	    nextLoadValue = (nextLoadValue & 0xff) | (value << 8);
+	    break;
+	  case 1:
+	    nextLoadValue = (nextLoadValue & 0xffff) | (value << 16);
+	    break;
+	  case 2:
+	    nextLoadValue = (nextLoadValue & 0xffffff) | (value << 24);
+	    break;
+	  case 3:
+	    nextLoadValue = value;
+	    break;
+	}
+	nextLoadReg = instr->rt;
+	break;
+      	
       case OP_MFHI:
 	registers[instr->rd] = registers[HiReg];
 	break;
@@ -525,6 +525,29 @@ Machine::OneInstruction(Instruction *instr)
 	    return;
 	break;
 	
+      case OP_SWR:	  
+	tmp = registers[instr->rs] + instr->extra;
+
+	if (!machine->ReadMem((tmp & ~0x3), 4, &value))
+	    return;
+	switch (tmp & 0x3) {
+	  case 0:
+	    value = registers[instr->rt];
+	    break;
+	  case 1:
+	    value = (value & 0xff) | (registers[instr->rt] << 8);
+	    break;
+	  case 2:
+	    value = (value & 0xffff) | (registers[instr->rt] << 16);
+	    break;
+	  case 3:
+	    value = (value & 0xffffff) | (registers[instr->rt] << 24);
+	    break;
+	}
+	if (!machine->WriteMem((tmp & ~0x3), 4, value))
+	    return;
+	break;
+    	
       case OP_SWL:	  
 	tmp = registers[instr->rs] + instr->extra;
 
@@ -545,29 +568,6 @@ Machine::OneInstruction(Instruction *instr)
 	    break;
 	  case 3:
 	    value = registers[instr->rt];
-	    break;
-	}
-	if (!machine->WriteMem((tmp & ~0x3), 4, value))
-	    return;
-	break;
-    	
-      case OP_SWR:	  
-	tmp = registers[instr->rs] + instr->extra;
-
-	if (!machine->ReadMem((tmp & ~0x3), 4, &value))
-	    return;
-	switch (tmp & 0x3) {
-	  case 0:
-	    value = registers[instr->rt];
-	    break;
-	  case 1:
-	    value = (value & 0xff) | (registers[instr->rt] << 8);
-	    break;
-	  case 2:
-	    value = (value & 0xffff) | (registers[instr->rt] << 16);
-	    break;
-	  case 3:
-	    value = (value & 0xffffff) | (registers[instr->rt] << 24);
 	    break;
 	}
 	if (!machine->WriteMem((tmp & ~0x3), 4, value))
