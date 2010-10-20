@@ -346,23 +346,23 @@ Thread::StackAllocate (VoidFunctionPtr func, void *arg)
     stackTop = stack + 16;	// HP requires 64-byte frame marker
     stack[StackSize - 1] = STACK_FENCEPOST;
 #else
-    // x86 & MIPS & SPARC stack works from high addresses to low addresses
+    // other archs stack works from high addresses to low addresses
 #ifdef HOST_SPARC
     // SPARC stack must contains at least 1 activation record to start with.
     stackTop = stack + StackSize - 96;
 #elif defined(HOST_PPC)
     stackTop = stack + StackSize - 192;
-#else // HOST_MIPS  || HOST_i386
-#ifdef HOST_i386
+#elif defined(HOST_i386)
     stackTop = stack + StackSize - 4;	// -4 for the return address
 #elif defined(HOST_x86_64)
     stackTop = stack + StackSize - 8;	// -8 for the return address
+#elif defined(HOST_MIPS)
+    stackTop = stack + StackSize;	// no special need
 #else
-    stackTop = stack + StackSize;
-#endif // HOST_MIPS
-#endif // HOST_SPARC
+#error uh??
+#endif
     *stack = STACK_FENCEPOST;
-#endif // HOST_SNAKE
+#endif // stack direction
 
     memset(&machineState, 0, sizeof(machineState));
 
