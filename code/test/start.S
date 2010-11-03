@@ -15,7 +15,8 @@
  */
 	.text   
 	.org 0
-	.byte 0xff
+	.long 0xffffffff
+	.long 0xffffffff
 
 /* -------------------------------------------------------------
  * __start
