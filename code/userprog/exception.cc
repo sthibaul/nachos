@@ -83,7 +83,7 @@ ExceptionHandler (ExceptionType which)
 		  }
 		default:
 		  {
-		    printf("Unknown system call %d\n", type);
+		    printf("Unimplemented system call %d\n", type);
 		    ASSERT(FALSE);
 		  }
 	      }
@@ -93,8 +93,17 @@ ExceptionHandler (ExceptionType which)
 	    break;
 	  }
 
+	case PageFaultException:
+	  if (!type) {
+	    printf("NULL dereference at PC %x!\n", machine->registers[PCReg]);
+	    ASSERT (FALSE);
+	  } else {
+	    printf ("Page Fault at address %x at PC %x\n", type, machine->registers[PCReg]);
+	    ASSERT (FALSE);	// For now
+	  }
+
 	default:
-	  printf ("Unexpected user mode exception %d %d\n", which, type);
+	  printf ("Unexpected user mode exception %d %d at PC %x\n", which, type, machine->registers[PCReg]);
 	  ASSERT (FALSE);
       }
 }
