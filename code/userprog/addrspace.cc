@@ -86,7 +86,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	   numPages, size);
 // first, set up the translation 
     pageTable = new TranslationEntry[numPages];
-    for (i = 0; i < numPages; i++)
+    pageTable[0].valid = FALSE;			// Catch NULL dereference
+    for (i = 1; i < numPages; i++)
       {
 	  pageTable[i].physicalPage = i;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
