@@ -32,25 +32,30 @@
 // and writing to UNIX files ("readFile" and "writeFile").
 //
 // Since the device is asynchronous, the interrupt handler "readAvail" 
-// is called when a character has arrived, ready to be read in.
-// The interrupt handler "writeDone" is called when an output character 
-// has been "put", so that the next character can be written.
+// is called when a character has arrived, ready to be read by calling
+// GetChar().
+// The interrupt handler "writeDone" is called when an output character written
+// by calling PutChar() has been "put", so that the next character can be
+// written.
 
 class Console:dontcopythis {
   public:
     Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvail, 
 	VoidFunctionPtr writeDone, void *callArg);
-				// initialize the hardware console device
+				// initialize the hardware console device,
+				// registers the readAvail and writeDone
+				// callbacks
+
     ~Console();			// clean up console emulation
 
 // external interface -- Nachos kernel code can call these
     void PutChar(int ch);	// Write "ch" to the console display, 
-				// and return immediately.  "writeHandler" 
+				// and return immediately.  "writeDone" 
 				// is called when the I/O completes. 
 
     int GetChar();	   	// Poll the console input.  If a char is 
 				// available, return it.  Otherwise, return EOF.
-    				// "readHandler" is called whenever there is 
+    				// "readDone" is called whenever there is 
 				// a char to be gotten
 
 // internal emulation routines -- DO NOT call these. 
