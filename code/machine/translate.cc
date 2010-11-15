@@ -219,6 +219,7 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
             return PageFaultException;
 	}
 	entry = &pageTable[vpn];
+	i = vpn;
     } else {
         for (entry = NULL, i = 0; i < TLBSize; i++)
     	    if (tlb[i].valid && (tlb[i].virtualPage == vpn)) {
