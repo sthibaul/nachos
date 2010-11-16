@@ -219,7 +219,6 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
             return PageFaultException;
 	}
 	entry = &pageTable[vpn];
-	i = vpn;
     } else {
         for (entry = NULL, i = 0; i < TLBSize; i++)
     	    if (tlb[i].valid && (tlb[i].virtualPage == vpn)) {
@@ -235,7 +234,10 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     }
 
     if (entry->readOnly && writing) {	// trying to write to a read-only page
-	DEBUG('a', "%d mapped read-only at %d in TLB!\n", virtAddr, i);
+	if (tlb == NULL)
+	    DEBUG('a', "%d mapped read-only in page table!\n", virtAddr);
+	else
+	    DEBUG('a', "%d mapped read-only at %d in TLB!\n", virtAddr, i);
 	return ReadOnlyException;
     }
     pageFrame = entry->physicalPage;
