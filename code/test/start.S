@@ -38,6 +38,14 @@ __start:
 	.end __start
 
 /* -------------------------------------------------------------
+ * Exit-returning catcher
+ *	Catch Exit system call returning
+ * -------------------------------------------------------------
+ */
+	.long 0xffffffff
+	.long 0xffffffff
+
+/* -------------------------------------------------------------
  * System call stubs:
  *	Assembly language assist to make system calls to the Nachos kernel.
  *	There is one stub per system call, that places the code for the
