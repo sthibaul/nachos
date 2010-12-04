@@ -100,14 +100,14 @@ Machine::~Machine()
 void
 Machine::RaiseException(ExceptionType which, int badVAddr)
 {
+    enum MachineStatus oldStatus = interrupt->getStatus();
     DEBUG('m', "Exception: %s\n", exceptionNames[which]);
-    
-//  ASSERT(interrupt->getStatus() == UserMode);
+
     registers[BadVAddrReg] = badVAddr;
     DelayedLoad(0, 0);			// finish anything in progress
     interrupt->setStatus(SystemMode);
     ExceptionHandler(which);		// interrupts are enabled at this point
-    interrupt->setStatus(UserMode);
+    interrupt->setStatus(oldStatus);
 }
 
 //----------------------------------------------------------------------
