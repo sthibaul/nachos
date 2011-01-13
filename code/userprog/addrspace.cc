@@ -20,6 +20,7 @@
 #include "addrspace.h"
 #include "noff.h"
 #include "syscall.h"
+#include "new"
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -77,10 +78,12 @@ AddrSpace::AddrSpace (OpenFile * executable)
     numPages = divRoundUp (size, PageSize);
     size = numPages * PageSize;
 
-    ASSERT (numPages <= NumPhysPages);	// check we're not trying
+    // check we're not trying
     // to run anything too big --
     // at least until we have
     // virtual memory
+    if (numPages > NumPhysPages)
+	    throw std::bad_alloc();
 
     DEBUG ('a', "Initializing address space, num pages %d, total size 0x%x\n",
 	   numPages, size);
