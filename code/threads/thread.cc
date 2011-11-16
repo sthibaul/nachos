@@ -317,7 +317,7 @@ SetupThreadState ()
 // End of addition
 
 void
-ThreadPrint (int arg)
+ThreadPrint (void *arg)
 {
     Thread *t = (Thread *) arg;
     t->Print ();

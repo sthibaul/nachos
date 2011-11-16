@@ -61,7 +61,7 @@ enum ThreadStatus
 { JUST_CREATED, RUNNING, READY, BLOCKED };
 
 // external function, dummy routine whose sole job is to call Thread::Print
-extern void ThreadPrint (int arg);
+extern void ThreadPrint (void *arg);
 
 // The following class defines a "thread control block" -- which
 // represents a single thread of execution.
