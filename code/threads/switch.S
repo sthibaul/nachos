@@ -513,6 +513,10 @@ SWITCH:
         movq    %rdx,_RDX(%rax)
         movq    %rsi,_RSI(%rax)
         movq    %rdi,_RDI(%rax)
+        movq    %r12,_R12(%rax)
+        movq    %r13,_R13(%rax)
+        movq    %r14,_R14(%rax)
+        movq    %r15,_R15(%rax)
         movq    %rbp,_RBP(%rax)
         movq    %rsp,_RSP(%rax)         /* save stack pointer */
         movq    _rax_save,%rbx          /* get the saved value of rax */
@@ -529,6 +533,10 @@ SWITCH:
         movq    _RDX(%rax),%rdx
         movq    _RSI(%rax),%rsi
         movq    _RDI(%rax),%rdi
+        movq    _R12(%rax),%r12
+        movq    _R13(%rax),%r13
+        movq    _R14(%rax),%r14
+        movq    _R15(%rax),%r15
         movq    _RBP(%rax),%rbp
         movq    _RSP(%rax),%rsp         /* restore stack pointer */
         movq    _PC(%rax),%rax          /* restore return address into rax */

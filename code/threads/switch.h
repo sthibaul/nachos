@@ -200,7 +200,11 @@
 #define _RBP     40
 #define _RSI     48
 #define _RDI     56
-#define _PC      64
+#define _R12     64
+#define _R13     72
+#define _R14     80
+#define _R15     88
+#define _PC      96
 
 /* These definitions are used in Thread::AllocateStack(). */
 #define PCState         (_PC/8-1)
