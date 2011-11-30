@@ -89,8 +89,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	   numPages, size);
 // first, set up the translation 
     pageTable = new TranslationEntry[numPages];
-    pageTable[0].valid = FALSE;			// Catch NULL dereference
-    for (i = 1; i < numPages; i++)
+    for (i = 0; i < numPages; i++)
       {
 	  pageTable[i].physicalPage = i;	// for now, phys page # = virtual page #
 	  pageTable[i].valid = TRUE;
@@ -121,6 +120,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 
     DEBUG ('a', "Area for stacks at 0x%x, size 0x%x\n",
 	   size - UserStacksAreaSize, UserStacksAreaSize);
+
+    pageTable[0].valid = FALSE;			// Catch NULL dereference
 }
 
 //----------------------------------------------------------------------
