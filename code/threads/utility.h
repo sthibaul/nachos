@@ -73,13 +73,14 @@ extern void DEBUG (char flag, const char *format, ...);	// Print debug message
 //      NOTE: needs to be a #define, to be able to print the location 
 //      where the error occurred.
 //----------------------------------------------------------------------
-#define ASSERT(condition)                                                     \
+#define ASSERT(condition) do {                                                \
     if (!(condition)) {                                                       \
         fprintf(stderr, "Assertion failed: line %d, file \"%s\"\n",           \
                 __LINE__, __FILE__);                                          \
 	fflush(stderr);							      \
         Abort();                                                              \
-    }
+    }                                                                         \
+  } while(0)
 
 /* A lot of classes should not be allowed to be copied, e.g. it doesn't make
  * sense to copy a Semaphore. To enforce this, inherit from this class. */
