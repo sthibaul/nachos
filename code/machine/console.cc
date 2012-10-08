@@ -69,8 +69,14 @@ Console::~Console()
 {
     if (readFileNo != 0)
 	Close(readFileNo);
+    readFileNo = -1;
     if (writeFileNo != 1)
 	Close(writeFileNo);
+    writeFileNo = -1;
+
+    /* Wait for last interrupt to happen */
+    while (readFileNo != -2)
+	currentThread->Yield();
 }
 
 //----------------------------------------------------------------------
@@ -89,47 +95,61 @@ Console::CheckCharAvail()
 {
     unsigned char c, d;
     int n;
-
-    // schedule the next time to poll for a packet
-    interrupt->Schedule(ConsoleReadPoll, this, ConsoleTime, 
-			ConsoleReadInt);
+    int cont = 1;
 
     // do nothing if character is already buffered, or none to be read
-    if ((incoming != EOF) || !PollFile(readFileNo))
-        return;          
-
-    // otherwise, read character and tell user about it
-    n = ReadPartial(readFileNo, &c, sizeof(c));
-    if (n == 0) {
-        incoming = EOF;
-    } else if (strcmp(nl_langinfo(CODESET),"UTF-8")) {
-        /* Not UTF-8, assume 8bit locale */
-        incoming = c;
-    } else
-        /* UTF-8, decode */
-    if (!(c & 0x80)) {
-        /* ASCII */
-        incoming = c;
+    if (readFileNo == -1) {
+	readFileNo = -2;
+	n = 0;
+	cont = 0;
+    } else if ((incoming != EOF) || !PollFile(readFileNo)) {
+	n = 0;
     } else {
-        if ((c & 0xe0) != 0xc0)
-            /* continuation char or more than three bytes, drop */
-            return;
-        if (c & 0x1c)
-            /* Not latin1, drop */
-            return;
-        /* latin1 UTF-8 char, read second char */
-        n = ReadPartial(readFileNo,  &d, sizeof(d));
-        if (n == 0) {
-            incoming = EOF;
-        } else if ((d & 0xc0) != 0x80) {
-            /* Odd, drop */
-            return;
-        } else {
-            incoming = (c & 0x03) << 6 | d;
-        }
+	// otherwise, read character and tell user about it
+	n = ReadPartial(readFileNo, &c, sizeof(c));
+	if (n == 0) {
+	    incoming = EOF;
+	    cont = 0;
+	} else if (strcmp(nl_langinfo(CODESET),"UTF-8")) {
+	    /* Not UTF-8, assume 8bit locale */
+	    incoming = c;
+	} else
+	    /* UTF-8, decode */
+	if (!(c & 0x80)) {
+	    /* ASCII */
+	    incoming = c;
+	} else {
+	    if ((c & 0xe0) != 0xc0)
+		/* continuation char or more than three bytes, drop */
+		return;
+	    if (c & 0x1c)
+		/* Not latin1, drop */
+		return;
+	    /* latin1 UTF-8 char, read second char */
+	    n = ReadPartial(readFileNo,  &d, sizeof(d));
+	    if (n == 0) {
+		incoming = EOF;
+		cont = 0;
+	    } else if ((d & 0xc0) != 0x80) {
+		/* Odd, drop */
+		return;
+	    } else {
+		incoming = (c & 0x03) << 6 | d;
+	    }
+	}
     }
-    stats->numConsoleCharsRead++;
-    (*readHandler)(handlerArg);        
+
+    if (cont)
+	// schedule the next time to poll for a packet
+	interrupt->Schedule(ConsoleReadPoll, this, ConsoleTime, 
+			    ConsoleReadInt);
+
+    if (n) {
+	stats->numConsoleCharsRead++;
+	(*readHandler)(handlerArg);
+    }
+
+
 }
 
 //----------------------------------------------------------------------
