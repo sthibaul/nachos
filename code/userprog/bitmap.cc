@@ -44,7 +44,7 @@ BitMap::~BitMap ()
 }
 
 //----------------------------------------------------------------------
-// BitMap::Set
+// BitMap::Mark
 //      Set the "nth" bit in a bitmap.
 //
 //      "which" is the number of the bit to be set.
