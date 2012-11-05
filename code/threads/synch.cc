@@ -104,6 +104,8 @@ Semaphore::V ()
 Lock::Lock (const char *debugName)
 {
     (void) debugName;
+    /* TODO */
+    ASSERT(FALSE);
 }
 
 Lock::~Lock ()
@@ -112,15 +114,21 @@ Lock::~Lock ()
 void
 Lock::Acquire ()
 {
+    /* TODO */
+    ASSERT(FALSE);
 }
 void
 Lock::Release ()
 {
+    /* TODO */
+    ASSERT(FALSE);
 }
 
 Condition::Condition (const char *debugName)
 {
     (void) debugName;
+    /* TODO */
+    ASSERT(FALSE);
 }
 
 Condition::~Condition ()
@@ -130,6 +138,7 @@ void
 Condition::Wait (Lock * conditionLock)
 {
     (void) conditionLock;
+    /* TODO */
     ASSERT (FALSE);
 }
 
@@ -137,9 +146,13 @@ void
 Condition::Signal (Lock * conditionLock)
 {
     (void) conditionLock;
+    /* TODO */
+    ASSERT(FALSE);
 }
 void
 Condition::Broadcast (Lock * conditionLock)
 {
     (void) conditionLock;
+    /* TODO */
+    ASSERT(FALSE);
 }
