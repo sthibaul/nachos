@@ -79,6 +79,7 @@ class OpenFile:dontcopythis {
     int ReadAt(void *into, int numBytes, int position);
     					// Read/write bytes from the file,
 					// bypassing the implicit position.
+					// Return the # actually read/written.
     int WriteAt(const void *from, int numBytes, int position);
 
     int Length(); 			// Return the number of bytes in the
