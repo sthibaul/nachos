@@ -31,7 +31,7 @@
 // Input and output to the device is simulated by reading 
 // and writing to UNIX files ("readFile" and "writeFile").
 //
-// Since the device is asynchronous, the interrupt handler "readAvail" 
+// Since the device is asynchronous, the interrupt handler "readAvailHandler" 
 // is called when a character has arrived, ready to be read by calling
 // GetChar().
 // The interrupt handler "writeDone" is called when an output character written
@@ -40,10 +40,10 @@
 
 class Console:dontcopythis {
   public:
-    Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvail, 
-	VoidFunctionPtr writeDone, void *callArg);
+    Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvailHandler, 
+	VoidFunctionPtr writeDoneHandler, void *callArg);
 				// initialize the hardware console device,
-				// registers the readAvail and writeDone
+				// registers the readAvailHandler and writeDoneHandler
 				// callbacks
 
     ~Console();			// clean up console emulation

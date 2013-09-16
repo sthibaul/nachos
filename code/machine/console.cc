@@ -30,15 +30,15 @@ static void ConsoleWriteDone(void *c)
 //
 //	"readFile" -- UNIX file simulating the keyboard (NULL -> use stdin)
 //	"writeFile" -- UNIX file simulating the display (NULL -> use stdout)
-// 	"readAvail" is the interrupt handler called when a character arrives
+// 	"readAvailHandler" is the interrupt handler called when a character arrives
 //		from the keyboard
-// 	"writeDone" is the interrupt handler called when a character has
+// 	"writeDoneHandler" is the interrupt handler called when a character has
 //		been output, so that it is ok to request the next char be
 //		output
 //----------------------------------------------------------------------
 
-Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvail, 
-		VoidFunctionPtr writeDone, void *callArg)
+Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvailHandler, 
+		VoidFunctionPtr writeDoneHandler, void *callArg)
 {
     if (readFile == NULL)
 	readFileNo = 0;					// keyboard = stdin
@@ -50,8 +50,8 @@ Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr re
     	writeFileNo = OpenForWrite(writeFile);
 
     // set up the stuff to emulate asynchronous interrupts
-    writeHandler = writeDone;
-    readHandler = readAvail;
+    writeHandler = writeDoneHandler;
+    readHandler = readAvailHandler;
     handlerArg = callArg;
     putBusy = FALSE;
     incoming = EOF;

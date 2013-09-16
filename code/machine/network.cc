@@ -22,9 +22,9 @@ static void NetworkSendDone(void *arg)
 // Initialize the network emulation
 //   addr is used to generate the socket name
 //   reliability says whether we drop packets to emulate unreliable links
-//   readAvail, writeDone, callArg -- analogous to console
+//   readAvailHandler, writeDoneHandler, callArg -- analogous to console
 Network::Network(NetworkAddress addr, double reliability,
-	VoidFunctionPtr readAvail, VoidFunctionPtr writeDone, void *callArg)
+	VoidFunctionPtr readAvailHandler, VoidFunctionPtr writeDoneHandler, void *callArg)
 {
     ident = addr;
     if (reliability < 0) chanceToWork = 0;
@@ -32,8 +32,8 @@ Network::Network(NetworkAddress addr, double reliability,
     else chanceToWork = reliability;
 
     // set up the stuff to emulate asynchronous interrupts
-    writeHandler = writeDone;
-    readHandler = readAvail;
+    writeHandler = writeDoneHandler;
+    readHandler = readAvailHandler;
     handlerArg = callArg;
     sendBusy = FALSE;
     inHdr.length = 0;

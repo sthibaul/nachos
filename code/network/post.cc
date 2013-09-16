@@ -139,7 +139,7 @@ MailBox::Get(PacketHeader *pktHdr, MailHeader *mailHdr, void *data)
 }
 
 //----------------------------------------------------------------------
-// PostalHelper, ReadAvail, WriteDone
+// PostalHelper, ReadAvailHandler, WriteDoneHandler
 // 	Dummy functions because C++ can't indirectly invoke member functions
 //	The first is forked as part of the "postal worker thread; the
 //	later two are called by the network interrupt handler.
@@ -149,9 +149,9 @@ MailBox::Get(PacketHeader *pktHdr, MailHeader *mailHdr, void *data)
 
 static void PostalHelper(void *arg)
 { PostOffice* po = (PostOffice *) arg; po->PostalDelivery(); }
-static void ReadAvail(void *arg)
+static void ReadAvailHandler(void *arg)
 { PostOffice* po = (PostOffice *) arg; po->IncomingPacket(); }
-static void WriteDone(void *arg)
+static void WriteDoneHandler(void *arg)
 { PostOffice* po = (PostOffice *) arg; po->PacketSent(); }
 
 //----------------------------------------------------------------------
@@ -186,7 +186,7 @@ PostOffice::PostOffice(NetworkAddress addr, double reliability, int nBoxes)
     boxes = new MailBox[nBoxes];
 
 // Third, initialize the network; tell it which interrupt handlers to call
-    network = new Network(addr, reliability, ReadAvail, WriteDone, this);
+    network = new Network(addr, reliability, ReadAvailHandler, WriteDoneHandler, this);
 
 
 // Finally, create a thread whose sole job is to wait for incoming messages,

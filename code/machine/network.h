@@ -55,7 +55,7 @@ class PacketHeader {
 class Network {
   public:
     Network(NetworkAddress addr, double reliability,
-  	  VoidFunctionPtr readAvail, VoidFunctionPtr writeDone, void *callArg);
+  	  VoidFunctionPtr readAvailHandler, VoidFunctionPtr writeDoneHandler, void *callArg);
 				// Allocate and initialize network driver
     ~Network();			// De-allocate the network driver data
     

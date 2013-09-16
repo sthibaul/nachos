@@ -58,13 +58,13 @@ static Semaphore *writeDone;
 //----------------------------------------------------------------------
 
 static void
-ReadAvail (void *arg)
+ReadAvailHandler (void *arg)
 {
     (void) arg;
     readAvail->V ();
 }
 static void
-WriteDone (void *arg)
+WriteDoneHandler (void *arg)
 {
     (void) arg;
     writeDone->V ();
@@ -83,7 +83,7 @@ ConsoleTest (const char *in, const char *out)
 
     readAvail = new Semaphore ("read avail", 0);
     writeDone = new Semaphore ("write done", 0);
-    console = new Console (in, out, ReadAvail, WriteDone, 0);
+    console = new Console (in, out, ReadAvailHandler, WriteDoneHandler, 0);
 
     for (;;)
       {
