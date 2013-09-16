@@ -110,6 +110,7 @@ Console::CheckCharAvail()
 	if (n == 0) {
 	    incoming = EOF;
 	    cont = 0;
+	    (*readHandler)(handlerArg);
 	} else if (strcmp(nl_langinfo(CODESET),"UTF-8")) {
 	    /* Not UTF-8, assume 8bit locale */
 	    incoming = c;
