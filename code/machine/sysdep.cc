@@ -131,6 +131,7 @@ PollFile(int fd)
 
 // poll file or socket
 #if defined(SOLARIS) || defined(LINUX) || defined(MAC_OS)
+    FD_ZERO(&rfd);
     FD_SET(fd, &rfd);
     retVal = select(fd + 1, &rfd, NULL, NULL, &pollTime);
 #else
