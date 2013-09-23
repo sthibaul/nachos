@@ -109,7 +109,6 @@ Console::CheckCharAvail()
 	n = ReadPartial(readFileNo, &c, sizeof(c));
 	if (n == 0) {
 	    incoming = EOF;
-	    cont = 0;
 	    (*readHandler)(handlerArg);
 	} else if (strcmp(nl_langinfo(CODESET),"UTF-8")) {
 	    /* Not UTF-8, assume 8bit locale */
@@ -130,7 +129,7 @@ Console::CheckCharAvail()
 	    n = ReadPartial(readFileNo,  &d, sizeof(d));
 	    if (n == 0) {
 		incoming = EOF;
-		cont = 0;
+		(*readHandler)(handlerArg);
 	    } else if ((d & 0xc0) != 0x80) {
 		/* Odd, drop */
 		return;
