@@ -91,8 +91,10 @@ ConsoleTest (const char *in, const char *out)
 	  ch = console->GetChar ();
 	  console->PutChar (ch);	// echo it!
 	  writeDone->P ();	// wait for write to finish
-	  if (ch == 'q')
+	  if (ch == 'q') {
+	      printf ("Nothing more, bye!\n");
 	      break;		// if q, quit
+	  }
       }
     delete console;
     delete readAvail;
