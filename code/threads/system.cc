@@ -186,24 +186,32 @@ Cleanup ()
     printf ("\nCleaning up...\n");
 #ifdef NETWORK
     delete postOffice;
+    postOffice = NULL;
 #endif
 
 #ifdef USER_PROGRAM
     delete machine;
+    machine = NULL;
 #endif
 
 #ifdef FILESYS_NEEDED
     delete fileSystem;
+    fileSystem = NULL;
 #endif
 
 #ifdef FILESYS
     delete synchDisk;
+    synchDisk = NULL;
 #endif
 
     delete timer;
+    timer = NULL;
     delete scheduler;
+    scheduler = NULL;
     delete interrupt;
+    interrupt = NULL;
     delete stats;
+    stats = NULL;
 
     Exit (0);
 }
