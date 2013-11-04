@@ -410,6 +410,30 @@ CallOnUserAbort(VoidNoArgFunctionPtr func)
 }
 
 //----------------------------------------------------------------------
+// BlockUserAbort
+// 	Prevent from abortion (e.g. ctl-C)
+//----------------------------------------------------------------------
+
+void 
+BlockUserAbort(void)
+{
+    sighold(SIGINT);
+}
+
+
+//----------------------------------------------------------------------
+// UnBlockUserAbort
+// 	Re-allow abortion (e.g. ctl-C)
+//----------------------------------------------------------------------
+
+void 
+UnBlockUserAbort(void)
+{
+    sigrelse(SIGINT);
+}
+
+
+//----------------------------------------------------------------------
 // Sleep
 // 	Put the UNIX process running Nachos to sleep for x seconds,
 //	to give the user time to start up another invocation of Nachos

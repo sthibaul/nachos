@@ -23,6 +23,7 @@
 #include "copyright.h"
 #include "interrupt.h"
 #include "system.h"
+#include "sysdep.h"
 
 // String definitions for debugging messages
 
@@ -99,8 +100,12 @@ Interrupt::~Interrupt()
 void
 Interrupt::ChangeLevel(IntStatus old, IntStatus now)
 {
+    if (now == IntOff)
+	BlockUserAbort();
     level = now;
     DEBUG('i',"\tinterrupts: %s -> %s\n",intLevelNames[old],intLevelNames[now]);
+    if (now == IntOn)
+	UnBlockUserAbort();
 }
 
 //----------------------------------------------------------------------

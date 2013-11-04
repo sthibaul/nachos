@@ -45,6 +45,8 @@ extern void Delay(int seconds);
 
 // Initialize system so that cleanUp routine is called when user hits ctl-C
 extern void CallOnUserAbort(VoidNoArgFunctionPtr cleanUp);
+extern void BlockUserAbort(void);
+extern void UnBlockUserAbort(void);
 
 // Initialize the pseudo random number generator
 extern void RandomInit(unsigned seed);
