@@ -76,6 +76,8 @@ class Console:dontcopythis {
     int incoming;    			// Contains the character to be read,
 					// if there is one available. 
 					// Otherwise contains EOF.
+    static int stdin_busy;		// Whether stdin is already read from
+					// by a console.
 };
 
 #endif // CONSOLE_H

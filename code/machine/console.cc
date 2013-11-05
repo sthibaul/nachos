@@ -37,11 +37,17 @@ static void ConsoleWriteDone(void *c)
 //		output
 //----------------------------------------------------------------------
 
+int Console::stdin_busy;
+
 Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvailHandler, 
 		VoidFunctionPtr writeDoneHandler, void *callArg)
 {
     if (readFile == NULL)
+    {
+	ASSERT(!stdin_busy);
+	stdin_busy = 1;
 	readFileNo = 0;					// keyboard = stdin
+    }
     else
     	readFileNo = OpenForReadWrite(readFile, TRUE);	// should be read-only
     if (writeFile == NULL)
@@ -69,6 +75,8 @@ Console::~Console()
 {
     if (readFileNo != 0)
 	Close(readFileNo);
+    else
+	stdin_busy = 0;
     readFileNo = -1;
     if (writeFileNo != 1)
 	Close(writeFileNo);
