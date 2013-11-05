@@ -303,6 +303,10 @@ Interrupt::CheckIfDue(bool advanceClock)
 
     ASSERT(level == IntOff);		// interrupts need to be disabled,
 					// to invoke an interrupt handler
+
+    UnBlockUserAbort();			// Here it is safe to let the User abort
+    BlockUserAbort();
+
     if (DebugIsEnabled('i'))
 	DumpState();
     PendingInterrupt *toOccur = 
