@@ -506,7 +506,7 @@ ThreadRoot:
         .globl  SWITCH
 SWITCH:
 
-        movq    %rax,_rax_save          /* save the value of rax */
+        movq    %rax,_rax_save(%rip)    /* save the value of rax */
         movq    %rdi,%rax               /* move pointer to t1 into rax */
         movq    %rbx,_RBX(%rax)         /* save registers */
         movq    %rcx,_RCX(%rax)
@@ -519,7 +519,7 @@ SWITCH:
         movq    %r15,_R15(%rax)
         movq    %rbp,_RBP(%rax)
         movq    %rsp,_RSP(%rax)         /* save stack pointer */
-        movq    _rax_save,%rbx          /* get the saved value of rax */
+        movq    _rax_save(%rip),%rbx          /* get the saved value of rax */
         movq    %rbx,_RAX(%rax)         /* store it */
         movq    0(%rsp),%rbx            /* get return address from stack into rbx */
         movq    %rbx,_PC(%rax)          /* save it into the pc storage */
@@ -527,7 +527,7 @@ SWITCH:
         movq    %rsi,%rax               /* move pointer to t2 into rax */
 
         movq    _RAX(%rax),%rbx         /* get new value for rax into rbx */
-        movq    %rbx,_rax_save          /* save it */
+        movq    %rbx,_rax_save(%rip)    /* save it */
         movq    _RBX(%rax),%rbx         /* retore old registers */
         movq    _RCX(%rax),%rcx
         movq    _RDX(%rax),%rdx
@@ -541,7 +541,7 @@ SWITCH:
         movq    _RSP(%rax),%rsp         /* restore stack pointer */
         movq    _PC(%rax),%rax          /* restore return address into rax */
         movq    %rax,0(%rsp)            /* copy over the ret address on the stack */
-        movq    _rax_save,%rax
+        movq    _rax_save(%rip),%rax
 
         ret
 
