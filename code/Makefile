@@ -6,7 +6,8 @@ MAKE	:=	make
 
 
 
-DIRS	:=	threads userprog filesys network vm
+DIRS	:=	threads userprog 
+# filesys network vm
 
 .PHONY: all clean depend print
 
