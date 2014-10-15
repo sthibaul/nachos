@@ -19,12 +19,15 @@
 #include "utility.h"
 #include "system.h"
 
+#ifdef USER_PROGRAM
+#include "progtest.h"
+#endif
+
 
 // External functions used by this file
 
 extern void ThreadTest (void), Copy (char *unixFile, char *nachosFile);
 extern void Print (char *file), PerformanceTest (void);
-extern void StartProcess (char *file), ConsoleTest (const char *in, const char *out);
 extern void MailTest (int networkID);
 
 //----------------------------------------------------------------------
