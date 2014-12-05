@@ -82,8 +82,10 @@ Console::~Console()
 	Close(writeFileNo);
     writeFileNo = -1;
 
-    /* Wait for last interrupt to happen */
+    /* Wait for last interrupts to happen */
     while (readFileNo != -2)
+	currentThread->Yield();
+    while (putBusy)
 	currentThread->Yield();
 }
 
@@ -105,12 +107,13 @@ Console::CheckCharAvail()
     int n;
     int cont = 1;
 
-    // do nothing if character is already buffered, or none to be read
     if (readFileNo == -1) {
+	// Termination, don't schedule any other interrupt
 	readFileNo = -2;
 	n = 0;
 	cont = 0;
     } else if ((incoming != EOF) || !PollFile(readFileNo)) {
+	// do nothing if character is already buffered, or none to be read
 	n = 0;
     } else {
 	// otherwise, read character and tell user about it
