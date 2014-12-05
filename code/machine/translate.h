@@ -33,7 +33,7 @@ class TranslationEntry {
 			// using a TLB
     unsigned int physicalPage; 	// The page number in real memory (relative to the
 			//  start of "mainMemory"
-    bool valid;         // If this bit is set, the translation is ignored.
+    bool valid;         // If this bit is cleared, the translation is ignored.
 			// (In other words, the entry hasn't been initialized.)
     bool readOnly;	// If this bit is set, the user program is not allowed
 			// to modify the contents of the page.
