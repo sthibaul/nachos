@@ -30,6 +30,18 @@
 Scheduler::Scheduler ()
 {
     readyList = new List;
+    halted = FALSE;
+}
+
+//----------------------------------------------------------------------
+// Scheduler::Halt
+//      Prevent further context switches, used when halting the system
+//----------------------------------------------------------------------
+
+void
+Scheduler::Halt ()
+{
+    halted = TRUE;
 }
 
 //----------------------------------------------------------------------
@@ -70,6 +82,8 @@ Scheduler::ReadyToRun (Thread * thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
+    if (halted)
+	return NULL;
     return (Thread *) readyList->Remove ();
 }
 

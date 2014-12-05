@@ -21,6 +21,7 @@ class Scheduler:dontcopythis
 {
   public:
     Scheduler ();		// Initialize list of ready threads 
+    void Halt ();		// Prevent further context switches
     ~Scheduler ();		// De-allocate ready list
 
     void ReadyToRun (Thread * thread);	// Thread can be dispatched.
@@ -30,8 +31,9 @@ class Scheduler:dontcopythis
     void Print ();		// Print contents of ready list
 
   private:
-      List * readyList;		// queue of threads that are ready to run,
-    // but not running
+    List * readyList;		// queue of threads that are ready to run,
+    				// but not running
+    bool halted;		// Whether we should prevent context switches
 };
 
 #endif // SCHEDULER_H
