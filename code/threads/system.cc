@@ -8,6 +8,9 @@
 #include "copyright.h"
 #include "system.h"
 #include <locale.h>
+#ifdef __GLIBC__
+#include <malloc.h>
+#endif
 
 // This defines *all* of the global data structures used by Nachos.
 // These are all initialized and de-allocated by this file.
@@ -95,6 +98,13 @@ Initialize (int argc, char **argv)
 #endif
 
     setlocale(LC_CTYPE,"");
+
+#ifdef __GLIBC__
+#if (__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 4)
+    /* Make free() fill freed memory, to trap bad code */
+    mallopt(M_PERTURB, 0xfe);
+#endif
+#endif
 
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount)
       {
