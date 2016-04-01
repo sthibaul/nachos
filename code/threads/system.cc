@@ -121,8 +121,15 @@ Initialize (int argc, char **argv)
 	    }
 	  else if (!strcmp (*argv, "-rs"))
 	    {
+		int seed;
 		ASSERT (argc > 1);
-		RandomInit (atoi (*(argv + 1)));	// initialize pseudo-random
+		seed = atoi (*(argv + 1));
+		if (seed == 0)
+		  {
+		    fprintf(stderr,"-rs option needs a seed value\n");
+		    exit(EXIT_FAILURE);
+		  }
+		RandomInit (seed);	// initialize pseudo-random
 		// number generator
 		randomYield = TRUE;
 		argCount = 2;
