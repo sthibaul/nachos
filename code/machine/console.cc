@@ -181,7 +181,8 @@ Console::WriteDone()
 //----------------------------------------------------------------------
 // Console::GetChar()
 // 	Read a character from the input buffer, if there is any there.
-//	Either return the character, or EOF if none buffered.
+//	Either return the character, or EOF if none buffered or the end of the
+//	input file was reached.
 //----------------------------------------------------------------------
 
 int
