@@ -55,6 +55,8 @@ class Console:dontcopythis {
 
     int GetChar();	   	// Poll the console input.  If a char is 
 				// available, return it.  Otherwise, return EOF.
+				// EOF is also returned if the end of the input
+				// file was reached.
     				// "readDone" is called whenever there is 
 				// a char to be gotten
 
