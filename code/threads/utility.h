@@ -39,6 +39,17 @@
 #define divRoundDown(n,s)  ((n) / (s))
 #define divRoundUp(n,s)    (((n) / (s)) + ((((n) % (s)) > 0) ? 1 : 0))
 
+enum AnsiColor {
+	ColorBlack,
+	ColorRed,
+	ColorGreen,
+	ColorYellow,
+	ColorBlue,
+	ColorMagenta,
+	ColorCyan,
+	ColorWhite,
+};
+
 // This declares the type "VoidFunctionPtr" to be a "pointer to a
 // function taking an integer argument and returning nothing".  With
 // such a function pointer (say it is "func"), we can call it like this:
@@ -65,6 +76,10 @@ extern bool DebugIsEnabled (char flag);	// Is this debug flag enabled?
 extern void DEBUG (char flag, const char *format, ...);	// Print debug message 
 							// if flag is enabled
 
+extern void SetColor(FILE *output, enum AnsiColor color);
+extern void SetBold(FILE *output);
+extern void ClearColor(FILE *output);
+
 //----------------------------------------------------------------------
 // ASSERT
 //      If condition is false,  print a message and dump core.
@@ -75,9 +90,12 @@ extern void DEBUG (char flag, const char *format, ...);	// Print debug message
 //----------------------------------------------------------------------
 #define ASSERT(condition) do {                                                \
     if (!(condition)) {                                                       \
+        SetColor(stderr, ColorRed);                                           \
+        SetBold(stderr);                                                      \
         fprintf(stderr, "Assertion failed: line %d, file \"%s\"\n",           \
                 __LINE__, __FILE__);                                          \
-	fflush(stderr);							      \
+        ClearColor(stderr);                                                   \
+        fflush(stderr);                                                       \
         Abort();                                                              \
     }                                                                         \
   } while(0)

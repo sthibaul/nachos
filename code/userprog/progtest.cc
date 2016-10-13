@@ -28,7 +28,10 @@ StartProcess (char *filename)
 
     if (executable == NULL)
       {
+	  SetColor (stdout, ColorRed);
+	  SetBold (stdout);
 	  printf ("Unable to open file %s\n", filename);
+	  ClearColor (stdout);
 	  return;
       }
     space = new AddrSpace (executable);

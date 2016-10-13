@@ -20,6 +20,42 @@
 static const char *enableFlags = NULL;	// controls which DEBUG messages are printed 
 
 //----------------------------------------------------------------------
+// SetColor
+//      Set the color for subsequent printouts
+//
+//      This assumes that the TTY recognizes ANSI colors
+//----------------------------------------------------------------------
+void
+SetColor (FILE *output, enum AnsiColor color)
+{
+    fprintf(output, "\e[%dm", 30 + color);
+}
+
+//----------------------------------------------------------------------
+// SetBold
+//      Set bold attribute for subsequent printouts
+//
+//      This assumes that the TTY recognizes ANSI colors
+//----------------------------------------------------------------------
+void
+SetBold (FILE *output)
+{
+    fprintf(output, "\e[1m");
+}
+
+//----------------------------------------------------------------------
+// ClearColor
+//      Clear the color to default for subsequent printouts
+//
+//      This assumes that the TTY recognizes ANSI colors
+//----------------------------------------------------------------------
+void
+ClearColor (FILE *output)
+{
+    fprintf(output, "\e[0m");
+}
+
+//----------------------------------------------------------------------
 // DebugInit
 //      Initialize so that only DEBUG messages with a flag in flagList 
 //      will be printed.
@@ -65,7 +101,9 @@ DEBUG (char flag, const char *format, ...)
 	  va_list ap;
 	  // You will get an unused variable message here -- ignore it.
 	  va_start (ap, format);
+	  SetColor(stdout, ColorMagenta);
 	  vfprintf (stdout, format, ap);
+	  ClearColor(stdout);
 	  va_end (ap);
 	  fflush (stdout);
       }
