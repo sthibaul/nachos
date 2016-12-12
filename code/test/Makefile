@@ -14,26 +14,16 @@ NACHOS_ROOT = ../../
 NACHOS_SYS := $(shell $(NACHOS_ROOT)/bin/nachos_sys)
 NACHOS_ARCH := $(shell $(NACHOS_ROOT)/bin/nachos_arch)
 
-ifeq ($(NACHOS_SYS),SOLARIS_SYS)
-# Solaris/PC
-ifeq ($(NACHOS_ARCH),X86_ARCH)
+ifneq ($(wildcard /net/cremi/aguermou/xgcc/decstation-ultrix/bin),)
+# Cremi
 GCCDIR	= /net/cremi/aguermou/xgcc/decstation-ultrix/bin
-endif
-# Solaris/Sparc
-ifeq ($(NACHOS_ARCH),SPARC_ARCH)
-GCCDIR	= /net/cremi/aguermou/xgcc/decstation-ultrix/bin
-endif
+GCC	:=	gcc
 endif
 
-ifeq ($(NACHOS_SYS),LINUX_SYS)
-# Linux: fill in with the full path to the binutils and gcc.
-# For instance:
-GCCDIR	= /net/cremi/aguermou/xgcc/decstation-ultrix/bin
-endif
-
-ifeq ($(NACHOS_SYS),MAC_OS_SYS)
-# Mac OS X
-GCCDIR = /Volumes/NachOS/decstation-ultrix/bin
+ifneq ($(wildcard /opt/xgcc/decstation-ultrix/bin),)
+# Maison
+GCCDIR = /opt/xgcc/decstation-ultrix/bin
+GCC	:=	xgcc
 endif
 
 LDFLAGS = -T script -N
@@ -48,12 +38,12 @@ CPPFLAGS = $(INCDIR) -DCHANGED
 # CPPFLAGS = -P $(INCDIR)
 
 
-CC	:=	$(GCCDIR)/gcc
+CC	:=	$(GCCDIR)/$(GCC)
 AS	:=	$(GCCDIR)/as
 LD	:=	$(GCCDIR)/ld
 OBJDUMP	:=	$(GCCDIR)/objdump
 
-CPP	:=	$(GCCDIR)/gcc -E -P
+CPP	:=	$(GCCDIR)/$(GCC) -E -P
 INCDIR	:=	-I../userprog -I../threads
 CFLAGS 	:=	-DIN_USER_MODE -c $(INCDIR) -G 0 -Wall -O2 -DCHANGED
 
