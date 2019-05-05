@@ -73,6 +73,7 @@ Machine::Machine(bool debug)
 
     singleStep = debug;
     runUntilTime = 0;
+    DumpExtra = NULL;
     CheckEndian();
 }
 
@@ -199,6 +200,138 @@ Machine::DumpState()
     printf("\tLoad:\t0x%x", registers[LoadReg]);
     printf("\tLoadV:\t0x%x\n", registers[LoadValueReg]);
     printf("\n");
+}
+
+//----------------------------------------------------------------------
+// Machine::DumpMem
+// 	Draw the user program's memory layout.
+//----------------------------------------------------------------------
+
+static void
+get_RGB(unsigned char value, unsigned char *r, unsigned char *g, unsigned char *b)
+{
+    *r = (value & 0x7) << 5;
+    *g = (value & 0x38) << 2;
+    *b = (value & 0xc0) << 0;
+}
+
+static void
+dump_reg(FILE *output, int val, const char *name,
+	 unsigned ptr_x, unsigned virtual_x,
+	 unsigned y, unsigned blocksize)
+{
+    unsigned page = val / PageSize;
+    unsigned offset = val % PageSize;
+
+    fprintf(output, "<text x=\"%u\" y=\"%u\" fill=\"#000000\" font-size=\"%u\">%s</text>\n",
+	    ptr_x + 4*blocksize, y - page * blocksize, blocksize, name);
+    fprintf(output, "<line x1=\"%u\" y1=\"%u\" x2=\"%u\" y2=\"%u\" "
+		    "stroke=\"#808080\" stroke-width=\"1\"/>\n",
+		    ptr_x + 6*blocksize + 2*blocksize,
+		    y - page * blocksize - blocksize/2,
+		    virtual_x + offset * blocksize + blocksize/2,
+		    y - page * blocksize - blocksize/2);
+}
+
+void
+Machine::DumpMem()
+{
+    FILE *output = fopen("memory.svg", "w+");
+
+    const unsigned blocksize = 16;
+
+    const unsigned ptr_x = 0;
+    const unsigned ptr_width = 6*blocksize;
+
+    const unsigned virtual_x = ptr_x + ptr_width;
+    const unsigned virtual_width = PageSize * blocksize;
+
+    const unsigned physical_x = virtual_x + virtual_width + 30 * blocksize;
+    const unsigned physical_width = PageSize * blocksize;
+
+    const unsigned width = physical_x + physical_width;
+    unsigned height;
+    unsigned page, offset;
+
+    if (pageTableSize > NumPhysPages)
+	height = pageTableSize * blocksize;
+    else
+	height = NumPhysPages * blocksize;
+
+    fprintf(output, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    fprintf(output, "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox = \"0 0 %u %u\" version = \"1.1\">\n", width, height);
+
+    if (DumpExtra)
+	DumpExtra(output, 0, virtual_x, height, blocksize);
+
+    fprintf(output, "<rect x=\"%u\" y=\"%u\" "
+		    "width=\"%u\" height=\"%u\" "
+		    "fill=\"#ffffff\" "
+		    "stroke=\"#000000\" "
+		    "stroke-width=\"1\"/>\n",
+		    virtual_x,
+		    height - pageTableSize * blocksize,
+		    virtual_width,
+		    pageTableSize * blocksize);
+
+    for (page = 0; page < pageTableSize; page++) {
+	TranslationEntry *e = &pageTable[page];
+
+	if (e->valid) {
+	    for (offset = 0; offset < PageSize; offset++) {
+		int value;
+		unsigned char r, g, b;
+
+		ReadMem(page * PageSize + offset, 1, &value);
+		get_RGB(value, &r, &g, &b);
+
+		fprintf(output, "<rect x=\"%u\" y=\"%u\" "
+				"width=\"%u\" height=\"%u\" "
+				"fill=\"#%02x%02x%02x\" "
+				"stroke=\"#000000\" "
+				"stroke-width=\"1\"/>\n",
+				virtual_x + offset * blocksize,
+				height - page * blocksize - blocksize,
+				blocksize, blocksize,
+				r, g, b);
+	    }
+
+	    fprintf(output, "<line x1=\"%u\" y1=\"%u\" "
+			    "x2=\"%u\" y2=\"%u\" "
+			    "stroke=\"#000000\" "
+			    "stroke-width=\"1\"/>\n",
+			    virtual_x + virtual_width,
+			    height - page * blocksize - blocksize/2,
+			    physical_x,
+			    height - e->physicalPage * blocksize - blocksize/2);
+	}
+    }
+
+    for (page = 0; page < NumPhysPages; page++) {
+	for (offset = 0; offset < PageSize; offset++) {
+	    int value;
+	    unsigned char r, g, b;
+
+	    value = machine->mainMemory[page * PageSize + offset];
+	    get_RGB(value, &r, &g, &b);
+
+	    fprintf(output, "<rect x=\"%u\" y=\"%u\" "
+			    "width=\"%u\" height=\"%u\" "
+			    "fill=\"#%02x%02x%02x\" "
+			    "stroke=\"#000000\" "
+			    "stroke-width=\"1\"/>\n",
+			    physical_x + offset * blocksize,
+			    height - page * blocksize - blocksize,
+			    blocksize, blocksize,
+			    r, g, b);
+	}
+    }
+
+    dump_reg(output, registers[PCReg], "PC", ptr_x, virtual_x, height, blocksize);
+    dump_reg(output, registers[StackReg], "SP", ptr_x, virtual_x, height, blocksize);
+
+    fprintf(output, "</svg>\n");
+    fclose(output);
 }
 
 //----------------------------------------------------------------------

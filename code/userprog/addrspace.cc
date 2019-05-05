@@ -62,7 +62,6 @@ SwapHeader (NoffHeader * noffH)
 
 AddrSpace::AddrSpace (OpenFile * executable)
 {
-    NoffHeader noffH;
     unsigned int i, size;
 
     executable->ReadAt (&noffH, sizeof (noffH), 0);
@@ -168,6 +167,43 @@ AddrSpace::InitRegisters ()
     machine->WriteRegister (StackReg, numPages * PageSize - 16);
     DEBUG ('a', "Initializing stack register to 0x%x\n",
 	   numPages * PageSize - 16);
+}
+
+//----------------------------------------------------------------------
+// AddrSpace::Dump
+//      Dump program layout as SVG
+//----------------------------------------------------------------------
+
+static void
+DrawArea(FILE *output, unsigned x, unsigned virtual_x,
+	 unsigned y, unsigned blocksize,
+	 struct segment *segment, const char *name)
+{
+    if (segment->size == 0)
+	return;
+
+    ASSERT((segment->virtualAddr % PageSize == 0));
+    ASSERT((segment->size % PageSize == 0));
+    unsigned page = segment->virtualAddr / PageSize;
+    unsigned end = (segment->virtualAddr + segment->size) / PageSize;
+
+    fprintf(output, "<rect x=\"%u\" y=\"%u\" width=\"%u\" height=\"%u\" "
+		    "fill=\"#ffffff\" "
+		    "stroke=\"#000000\" stroke-width=\"1\"/>\n",
+		    x, y - end * blocksize,
+		    virtual_x - x, (end - page) * blocksize);
+
+    fprintf(output, "<text x=\"%u\" y=\"%u\" fill=\"#000000\" font-size=\"%u\">%s</text>\n",
+	    x, y - page * blocksize, blocksize, name);
+}
+
+void
+AddrSpace::Dump(FILE *output, unsigned x, unsigned virtual_x,
+		unsigned y, unsigned blocksize)
+{
+    DrawArea(output, x, virtual_x, y, blocksize, &noffH.code, "code");
+    DrawArea(output, x, virtual_x, y, blocksize, &noffH.initData, "data");
+    DrawArea(output, x, virtual_x, y, blocksize, &noffH.uninitData, "bss");
 }
 
 //----------------------------------------------------------------------

@@ -16,6 +16,7 @@
 #include "copyright.h"
 #include "filesys.h"
 #include "translate.h"
+#include "noff.h"
 
 #define UserStacksAreaSize		1024	// increase this as necessary!
 
@@ -33,7 +34,13 @@ class AddrSpace:dontcopythis
     void SaveState ();		// Save/restore address space-specific
     void RestoreState ();	// info on a context switch 
 
+    void Dump(FILE *output, unsigned x, unsigned virtual_x,
+	      unsigned y, unsigned blocksize);
+				// Dump program layout as SVG
+
   private:
+    NoffHeader noffH;		// Program layout
+
       TranslationEntry * pageTable;	// Assume linear page table translation
     // for now!
     unsigned int numPages;	// Number of pages in the virtual 

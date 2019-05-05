@@ -14,6 +14,12 @@
 #include "addrspace.h"
 #include "synch.h"
 
+static void
+DumpExtra(FILE *output, unsigned x, unsigned virtual_x,  unsigned y, unsigned blocksize)
+{
+    currentThread->space->Dump(output, x, virtual_x, y, blocksize);
+}
+
 //----------------------------------------------------------------------
 // StartProcess
 //      Run a user program.  Open the executable, load it into
@@ -42,6 +48,8 @@ StartProcess (char *filename)
     space->InitRegisters ();	// set the initial register values
     space->RestoreState ();	// load page table register
 
+    machine->DumpExtra = DumpExtra;
+    machine->DumpMem ();
     machine->Run ();		// jump to the user progam
     ASSERT (FALSE);		// machine->Run never returns;
     // the address space exits

@@ -148,6 +148,10 @@ class Machine:dontcopythis {
 
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
+    void DumpMem();		// Draw the memory state
+    void (*DumpExtra)(FILE *output, unsigned x, unsigned virtual_x,
+		      unsigned y, unsigned blocksize);
+				// Dump extra information as SVG
 
 
 // Data structures -- all of these are accessible to Nachos kernel code.

@@ -8,14 +8,16 @@ SECTIONS
      eprol  =  .;
     *(.text)
     *(.fini)
-     etext  =  .;
-     _etext  =  .;
+    . = ALIGN(128);
   }
+   etext  =  .;
+   _etext  =  .;
    _fdata = .;
   .data  . : {
     *(.rdata)
     *(.data)
     CONSTRUCTORS
+    . = ALIGN(128);
   }
    edata  =  .;
    _edata  =  .;
@@ -27,6 +29,7 @@ SECTIONS
   .bss  . : {
     *(.bss)
     *(COMMON)
+    . = ALIGN(128);
   }
    end = .;
    _end = .;
