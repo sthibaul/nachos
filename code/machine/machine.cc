@@ -227,7 +227,7 @@ dump_reg(FILE *output, int val, const char *name,
 	    ptr_x + 4*blocksize, y - page * blocksize, blocksize, name);
     fprintf(output, "<line x1=\"%u\" y1=\"%u\" x2=\"%u\" y2=\"%u\" "
 		    "stroke=\"#808080\" stroke-width=\"1\"/>\n",
-		    ptr_x + 6*blocksize + 2*blocksize,
+		    ptr_x + 4*blocksize + 3*blocksize/2,
 		    y - page * blocksize - blocksize/2,
 		    virtual_x + offset * blocksize + blocksize/2,
 		    y - page * blocksize - blocksize/2);
