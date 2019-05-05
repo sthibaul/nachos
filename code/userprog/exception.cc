@@ -101,6 +101,7 @@ ExceptionHandler (ExceptionType which)
 	    printf ("Page Fault at address %x at PC %x\n", type, machine->registers[PCReg]);
 	    ASSERT (FALSE);	// For now
 	  }
+	  break;
 
 	default:
 	  printf ("Unexpected user mode exception %d %d at PC %x\n", which, type, machine->registers[PCReg]);
