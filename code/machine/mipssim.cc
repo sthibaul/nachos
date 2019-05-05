@@ -180,6 +180,7 @@ Machine::OneInstruction(Instruction *instr)
 	
       case OP_BGEZAL:
 	registers[R31] = registers[NextPCReg] + 4;
+	/* FALLTHRU */
       case OP_BGEZ:
 	if (!(registers[instr->rs] & SIGN_BIT))
 	    pcAfter = registers[NextPCReg] + IndexToAddr(instr->extra);
@@ -197,6 +198,7 @@ Machine::OneInstruction(Instruction *instr)
 	
       case OP_BLTZAL:
 	registers[R31] = registers[NextPCReg] + 4;
+	/* FALLTHRU */
       case OP_BLTZ:
 	if (registers[instr->rs] & SIGN_BIT)
 	    pcAfter = registers[NextPCReg] + IndexToAddr(instr->extra);
@@ -233,12 +235,14 @@ Machine::OneInstruction(Instruction *instr)
 	
       case OP_JAL:
 	registers[R31] = registers[NextPCReg] + 4;
+	/* FALLTHRU */
       case OP_J:
 	pcAfter = (pcAfter & 0xf0000000) | IndexToAddr(instr->extra);
 	break;
 	
       case OP_JALR:
 	registers[instr->rd] = registers[NextPCReg] + 4;
+	/* FALLTHRU */
       case OP_JR:
 	pcAfter = registers[instr->rs];
 	break;
