@@ -308,6 +308,17 @@ Machine::DumpPageTable(FILE *output,
 	}
     }
 
+    if (_pageTable == pageTable) {
+	fprintf(output, "<rect x=\"%u\" y=\"%u\" "
+			"width=\"%u\" height=\"%u\" "
+			"fill-opacity=\"0.0\" "
+			"stroke=\"#FF0000\" "
+			"stroke-width=\"2\"/>\n",
+			virtual_x,
+			virtual_y - _pageTableSize * blocksize,
+			virtual_width, _pageTableSize * blocksize);
+    }
+
     return PageTableRoom(_pageTableSize, blocksize);
 }
 
