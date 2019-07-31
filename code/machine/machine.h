@@ -149,9 +149,21 @@ class Machine:dontcopythis {
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
     void DumpMem();		// Draw the memory state
-    void (*DumpExtra)(FILE *output, unsigned x, unsigned virtual_x,
-		      unsigned y, unsigned blocksize);
-				// Dump extra information as SVG
+    void DumpReg(FILE *output, int val, const char *name,
+		 unsigned ptr_x, unsigned virtual_x,
+		 unsigned y, unsigned blocksize);
+				// Dump a register
+    void DumpRegs(FILE *output, unsigned ptr_x, unsigned virtual_x,
+		  unsigned y, unsigned blocksize);
+				// Dump the machine registers
+    unsigned PageTableRoom(unsigned numPages, unsigned blocksize);
+		       // Return how much room is needed for a page table
+    unsigned DumpPageTable(FILE *output,
+		       TranslationEntry *pageTable, unsigned pageTableSize,
+		       unsigned virtual_x, unsigned virtual_width,
+		       unsigned physical_x, unsigned virtual_y, unsigned y,
+		       unsigned blocksize);
+		       // Dump a pagetable
 
 
 // Data structures -- all of these are accessible to Nachos kernel code.
@@ -217,5 +229,10 @@ unsigned int WordToHost(unsigned int word);
 unsigned short ShortToHost(unsigned short shortword);
 unsigned int WordToMachine(unsigned int word);
 unsigned short ShortToMachine(unsigned short shortword);
+
+extern unsigned AddrSpacesRoom(unsigned blocksize);
+extern void DumpAddrSpaces(FILE *output,
+			   unsigned virtual_x, unsigned virtual_width,
+			   unsigned physical_x, unsigned y, unsigned blocksize);
 
 #endif // MACHINE_H

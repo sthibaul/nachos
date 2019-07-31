@@ -73,7 +73,6 @@ Machine::Machine(bool debug)
 
     singleStep = debug;
     runUntilTime = 0;
-    DumpExtra = NULL;
     CheckEndian();
 }
 
@@ -203,22 +202,14 @@ Machine::DumpState()
 }
 
 //----------------------------------------------------------------------
-// Machine::DumpMem
-// 	Draw the user program's memory layout.
+// DumpReg
+// 	Draw a pointer register in the virtual address space
 //----------------------------------------------------------------------
 
-static void
-get_RGB(unsigned char value, unsigned char *r, unsigned char *g, unsigned char *b)
-{
-    *r = (value & 0x7) << 5;
-    *g = (value & 0x38) << 2;
-    *b = (value & 0xc0) << 0;
-}
-
-static void
-dump_reg(FILE *output, int val, const char *name,
-	 unsigned ptr_x, unsigned virtual_x,
-	 unsigned y, unsigned blocksize)
+void
+Machine::DumpReg(FILE *output, int val, const char *name,
+		 unsigned ptr_x, unsigned virtual_x,
+		 unsigned y, unsigned blocksize)
 {
     unsigned page = val / PageSize;
     unsigned offset = val % PageSize;
@@ -232,6 +223,98 @@ dump_reg(FILE *output, int val, const char *name,
 		    virtual_x + offset * blocksize + blocksize/2,
 		    y - page * blocksize - blocksize/2);
 }
+
+//----------------------------------------------------------------------
+// DumpRegs
+// 	Draw machine pointer registers in the virtual address space
+//----------------------------------------------------------------------
+
+void
+Machine::DumpRegs(FILE *output, unsigned ptr_x, unsigned virtual_x,
+		  unsigned y, unsigned blocksize)
+{
+    DumpReg(output, registers[PCReg], "PC", ptr_x, virtual_x, y, blocksize);
+    DumpReg(output, registers[StackReg], "SP", ptr_x, virtual_x, y, blocksize);
+}
+
+//----------------------------------------------------------------------
+// PageTableRoom
+// 	Return how much room would be needed for showing this page table
+//----------------------------------------------------------------------
+
+unsigned
+Machine::PageTableRoom(unsigned numPages, unsigned blocksize)
+{
+    return (numPages+1) * blocksize;
+}
+
+//----------------------------------------------------------------------
+// get_RGB
+// 	Turn a byte into a representative color of the byte
+//----------------------------------------------------------------------
+
+static void
+get_RGB(unsigned char value, unsigned char *r, unsigned char *g, unsigned char *b)
+{
+    *r = (value & 0x7) << 5;
+    *g = (value & 0x38) << 2;
+    *b = (value & 0xc0) << 0; // Humans don't see blue that well
+}
+
+//----------------------------------------------------------------------
+// DumpPageTable
+// 	Draw a page table and its mapping to physical address space
+//----------------------------------------------------------------------
+
+unsigned
+Machine::DumpPageTable(FILE *output,
+		       TranslationEntry *_pageTable, unsigned _pageTableSize,
+		       unsigned virtual_x, unsigned virtual_width,
+		       unsigned physical_x, unsigned virtual_y, unsigned y,
+		       unsigned blocksize)
+{
+    unsigned page, offset;
+
+    for (page = 0; page < _pageTableSize; page++) {
+	TranslationEntry *e = &_pageTable[page];
+
+	if (e->valid) {
+	    for (offset = 0; offset < PageSize; offset++) {
+		int value;
+		unsigned char r, g, b;
+
+		ReadMem(page * PageSize + offset, 1, &value);
+		get_RGB(value, &r, &g, &b);
+
+		fprintf(output, "<rect x=\"%u\" y=\"%u\" "
+				"width=\"%u\" height=\"%u\" "
+				"fill=\"#%02x%02x%02x\" "
+				"stroke=\"#000000\" "
+				"stroke-width=\"1\"/>\n",
+				virtual_x + offset * blocksize,
+				virtual_y - page * blocksize - blocksize,
+				blocksize, blocksize,
+				r, g, b);
+	    }
+
+	    fprintf(output, "<line x1=\"%u\" y1=\"%u\" "
+			    "x2=\"%u\" y2=\"%u\" "
+			    "stroke=\"#000000\" "
+			    "stroke-width=\"1\"/>\n",
+			    virtual_x + virtual_width,
+			    virtual_y - page * blocksize - blocksize/2,
+			    physical_x,
+			    y - e->physicalPage * blocksize - blocksize/2);
+	}
+    }
+
+    return PageTableRoom(_pageTableSize, blocksize);
+}
+
+//----------------------------------------------------------------------
+// Machine::DumpMem
+// 	Draw the user program's memory layout.
+//----------------------------------------------------------------------
 
 void
 Machine::DumpMem()
@@ -253,16 +336,13 @@ Machine::DumpMem()
     unsigned height;
     unsigned page, offset;
 
-    if (pageTableSize > NumPhysPages)
-	height = pageTableSize * blocksize;
-    else
-	height = NumPhysPages * blocksize;
+    unsigned virtual_height = AddrSpacesRoom(blocksize);
+    unsigned physical_height = NumPhysPages * blocksize;
+
+    height = virtual_height > physical_height ? virtual_height : physical_height;
 
     fprintf(output, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
     fprintf(output, "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox = \"0 0 %u %u\" version = \"1.1\">\n", width, height);
-
-    if (DumpExtra)
-	DumpExtra(output, 0, virtual_x, height, blocksize);
 
     fprintf(output, "<rect x=\"%u\" y=\"%u\" "
 		    "width=\"%u\" height=\"%u\" "
@@ -274,38 +354,7 @@ Machine::DumpMem()
 		    virtual_width,
 		    pageTableSize * blocksize);
 
-    for (page = 0; page < pageTableSize; page++) {
-	TranslationEntry *e = &pageTable[page];
-
-	if (e->valid) {
-	    for (offset = 0; offset < PageSize; offset++) {
-		int value;
-		unsigned char r, g, b;
-
-		ReadMem(page * PageSize + offset, 1, &value);
-		get_RGB(value, &r, &g, &b);
-
-		fprintf(output, "<rect x=\"%u\" y=\"%u\" "
-				"width=\"%u\" height=\"%u\" "
-				"fill=\"#%02x%02x%02x\" "
-				"stroke=\"#000000\" "
-				"stroke-width=\"1\"/>\n",
-				virtual_x + offset * blocksize,
-				height - page * blocksize - blocksize,
-				blocksize, blocksize,
-				r, g, b);
-	    }
-
-	    fprintf(output, "<line x1=\"%u\" y1=\"%u\" "
-			    "x2=\"%u\" y2=\"%u\" "
-			    "stroke=\"#000000\" "
-			    "stroke-width=\"1\"/>\n",
-			    virtual_x + virtual_width,
-			    height - page * blocksize - blocksize/2,
-			    physical_x,
-			    height - e->physicalPage * blocksize - blocksize/2);
-	}
-    }
+    DumpAddrSpaces(output, virtual_x, virtual_width, physical_x, height, blocksize);
 
     for (page = 0; page < NumPhysPages; page++) {
 	for (offset = 0; offset < PageSize; offset++) {
@@ -326,9 +375,6 @@ Machine::DumpMem()
 			    r, g, b);
 	}
     }
-
-    dump_reg(output, registers[PCReg], "PC", ptr_x, virtual_x, height, blocksize);
-    dump_reg(output, registers[StackReg], "SP", ptr_x, virtual_x, height, blocksize);
 
     fprintf(output, "</svg>\n");
     fclose(output);

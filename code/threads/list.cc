@@ -120,6 +120,20 @@ List::Prepend (void *item)
 }
 
 //----------------------------------------------------------------------
+// List::FirstItem
+//      Read item off the front of the list
+//
+// Returns:
+//      Pointer to first item, NULL if nothing on the list.
+//----------------------------------------------------------------------
+
+ListElement *
+List::FirstElement ()
+{
+    return first;
+}
+
+//----------------------------------------------------------------------
 // List::Remove
 //      Remove the first "item" from the front of the list.
 // 
@@ -131,6 +145,45 @@ void *
 List::Remove ()
 {
     return SortedRemove (NULL);	// Same as SortedRemove, but ignore the key
+}
+
+//----------------------------------------------------------------------
+// List::Remove
+//      Remove "item" off the list.
+//----------------------------------------------------------------------
+
+void
+List::Remove (void *item)
+{
+    ListElement **cur;
+
+    for (cur = &first; *cur; cur = &(*cur)->next)
+      {
+	if ((*cur)->item == item)
+	  {
+	    *cur = (*cur)->next;
+	    return;
+	  }
+      }
+
+    ASSERT(FALSE);
+}
+
+//----------------------------------------------------------------------
+// List::Length
+//      Return the length of the list.
+//----------------------------------------------------------------------
+
+int
+List::Length (void)
+{
+    ListElement *cur;
+    int n = 0;
+
+    for (cur = first; cur; cur = cur->next)
+      n++;
+
+    return n;
 }
 
 //----------------------------------------------------------------------
@@ -150,6 +203,22 @@ List::Mapcar (VoidFunctionPtr func)
       {
 	  DEBUG ('l', "In mapcar, about to invoke %x(%x)\n", func, ptr->item);
 	  (*func) (ptr->item);
+      }
+}
+
+//----------------------------------------------------------------------
+// List::Mapcar
+//      Similar to the former, but also passes an addition argument to the
+//      function.
+//----------------------------------------------------------------------
+
+void
+List::Mapcar (VoidFunctionPtr2 func, void *arg)
+{
+    for (ListElement * ptr = first; ptr != NULL; ptr = ptr->next)
+      {
+	  DEBUG ('l', "In mapcar, about to invoke %x(%x)\n", func, ptr->item);
+	  (*func) (ptr->item, arg);
       }
 }
 

@@ -46,6 +46,12 @@ SwapHeader (NoffHeader * noffH)
 }
 
 //----------------------------------------------------------------------
+// AddrSpaceList
+//      List of all address spaces, for debugging
+//----------------------------------------------------------------------
+List AddrSpaceList;
+
+//----------------------------------------------------------------------
 // AddrSpace::AddrSpace
 //      Create an address space to run a user program.
 //      Load the program from a file "executable", and set everything
@@ -121,6 +127,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	   size - UserStacksAreaSize, UserStacksAreaSize);
 
     pageTable[0].valid = FALSE;			// Catch NULL dereference
+
+    AddrSpaceList.Append(this);
 }
 
 //----------------------------------------------------------------------
@@ -134,6 +142,8 @@ AddrSpace::~AddrSpace ()
   // delete pageTable;
   delete [] pageTable;
   // End of modification
+
+  AddrSpaceList.Remove(this);
 }
 
 //----------------------------------------------------------------------
@@ -197,13 +207,66 @@ DrawArea(FILE *output, unsigned x, unsigned virtual_x,
 	    x, y - page * blocksize, blocksize, name);
 }
 
-void
-AddrSpace::Dump(FILE *output, unsigned x, unsigned virtual_x,
-		unsigned y, unsigned blocksize)
+unsigned
+AddrSpace::Dump(FILE *output, unsigned virtual_x, unsigned virtual_width,
+		unsigned physical_x, unsigned virtual_y, unsigned y,
+		unsigned blocksize)
 {
-    DrawArea(output, x, virtual_x, y, blocksize, &noffH.code, "code");
-    DrawArea(output, x, virtual_x, y, blocksize, &noffH.initData, "data");
-    DrawArea(output, x, virtual_x, y, blocksize, &noffH.uninitData, "bss");
+    unsigned ret = machine->DumpPageTable(output, pageTable, numPages,
+	    virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
+
+    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.code, "code");
+    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.initData, "data");
+    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.uninitData, "bss");
+
+    // TODO: also dump other threads, see ThreadList
+    if (this == currentThread->space)
+	machine->DumpRegs(output, 0, virtual_x, virtual_y, blocksize);
+
+    return ret;
+}
+
+//----------------------------------------------------------------------
+// AddrSpace::AddrSpacesRoom
+//      Return how much room is needed for showing address spaces
+//----------------------------------------------------------------------
+
+unsigned
+AddrSpacesRoom(unsigned blocksize)
+{
+    ListElement *element;
+    unsigned room = 0;
+
+    for (element = AddrSpaceList.FirstElement ();
+	 element;
+	 element = element->next) {
+	AddrSpace *space = (AddrSpace*) element->item;
+	room += machine->PageTableRoom(space->NumPages(), blocksize);
+    }
+
+    return room;
+}
+
+//----------------------------------------------------------------------
+// AddrSpace::DumpAddrSpaces
+//      Dump all address spaces
+//----------------------------------------------------------------------
+
+void
+DumpAddrSpaces(FILE *output,
+	       unsigned virtual_x, unsigned virtual_width,
+	       unsigned physical_x, unsigned y, unsigned blocksize)
+{
+    ListElement *element;
+    unsigned virtual_y = y;
+
+    /* TODO: sort by physical page addresses to avoid too much mess */
+    for (element = AddrSpaceList.FirstElement ();
+	 element;
+	 element = element->next) {
+	AddrSpace *space = (AddrSpace*) element->item;
+	virtual_y -= space->Dump(output, virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
+    }
 }
 
 //----------------------------------------------------------------------

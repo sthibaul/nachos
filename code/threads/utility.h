@@ -60,6 +60,7 @@ enum AnsiColor {
 // as a couple of other places.
 
 typedef void (*VoidFunctionPtr) (void *arg);
+typedef void (*VoidFunctionPtr2) (void *arg, void *arg2);
 typedef void (*VoidNoArgFunctionPtr) ();
 
 

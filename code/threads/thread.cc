@@ -30,6 +30,12 @@
 					// stack overflows
 
 //----------------------------------------------------------------------
+// ThreadList
+//      List of all threads, for debugging
+//----------------------------------------------------------------------
+List ThreadList;
+
+//----------------------------------------------------------------------
 // Thread::Thread
 //      Initialize a thread control block, so that we can then call
 //      Thread::Start.
@@ -56,6 +62,7 @@ Thread::Thread (const char *threadName)
     userRegisters[LoadValueReg] = 0;
 
 #endif
+    ThreadList.Append(this);
 }
 
 //----------------------------------------------------------------------
@@ -79,6 +86,7 @@ Thread::~Thread ()
 	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
 	VALGRIND_STACK_DEREGISTER (valgrind_id);
     }
+    ThreadList.Remove(this);
 }
 
 //----------------------------------------------------------------------

@@ -39,6 +39,7 @@
 
 #include "copyright.h"
 #include "utility.h"
+#include "list.h"
 
 #ifdef USER_PROGRAM
 #include "machine.h"
@@ -141,6 +142,8 @@ class Thread:dontcopythis
     AddrSpace *space;		// User code this thread is running.
 #endif
 };
+
+extern List ThreadList;
 
 // Magical machine-dependent routines, defined in switch.s
 
