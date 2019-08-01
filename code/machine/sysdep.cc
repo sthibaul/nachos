@@ -454,6 +454,9 @@ Delay(int seconds)
 void 
 Abort()
 {
+#ifdef USER_PROGRAM
+    machine->DumpMem("abort.svg");
+#endif
     abort();
 }
 
