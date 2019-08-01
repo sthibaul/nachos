@@ -282,8 +282,24 @@ Machine::DumpPageTable(FILE *output,
 	    for (offset = 0; offset < PageSize; offset++) {
 		int value;
 		unsigned char r, g, b;
+		int virt = page * PageSize + offset;
+		int phys;
 
-		ReadMem(page * PageSize + offset, 1, &value);
+		TranslationEntry *save_pageTable = pageTable;
+		unsigned save_pageTableSize = pageTableSize;
+
+		pageTable = _pageTable;
+		pageTableSize = _pageTableSize;
+
+		ExceptionType res = Translate(virt, &phys, 1, 0);
+		if (res == NoException)
+			ReadMem(virt, 1, &value);
+		else
+			value = -1;
+
+		pageTable = save_pageTable;
+		pageTableSize = save_pageTableSize;
+
 		get_RGB(value, &r, &g, &b);
 
 		fprintf(output, "<rect x=\"%u\" y=\"%u\" "
