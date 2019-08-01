@@ -421,6 +421,46 @@ Thread::RestoreUserState ()
     for (int i = 0; i < NumTotalRegs; i++)
 	machine->WriteRegister (i, userRegisters[i]);
 }
+
+//----------------------------------------------------------------------
+// Thread::DumpThreadState
+//      Draw the states for this thread
+//----------------------------------------------------------------------
+void
+Thread::DumpThreadState(FILE *output, int ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
+{
+    if (this == currentThread)
+	machine->DumpRegs(output, ptr_x, virtual_x, virtual_y, blocksize);
+    else
+    {
+	machine->DumpReg(output, userRegisters[PCReg], "PC", "#000000", ptr_x, virtual_x, virtual_y, blocksize);
+	machine->DumpReg(output, userRegisters[StackReg], "SP", "#000000", ptr_x, virtual_x, virtual_y, blocksize);
+    }
+}
+
+//----------------------------------------------------------------------
+// Thread::DumpThreadsState
+//      Draw the states for threads belonging to a given address space
+//----------------------------------------------------------------------
+void
+DumpThreadsState(FILE *output, AddrSpace *space, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
+{
+    ListElement *element;
+    unsigned ptr_x = 4*blocksize;
+
+    for (element = ThreadList.FirstElement();
+	 element;
+	 element = element->next) {
+	Thread *thread = (Thread *) element->item;
+	if (thread->space != space)
+	    continue;
+
+	thread->DumpThreadState(output, ptr_x, virtual_x, virtual_y, blocksize);
+
+	ptr_x -= blocksize;
+    }
+}
+
 #endif
 
 

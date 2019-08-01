@@ -150,10 +150,10 @@ class Machine:dontcopythis {
     void DumpState();		// print the user CPU and memory state 
     void DumpMem();		// Draw the memory state
     void DumpReg(FILE *output, int val, const char *name, const char *color,
-		 unsigned ptr_x, unsigned virtual_x,
+		 int ptr_x, unsigned virtual_x,
 		 unsigned y, unsigned blocksize);
 				// Dump a register
-    void DumpRegs(FILE *output, unsigned ptr_x, unsigned virtual_x,
+    void DumpRegs(FILE *output, int ptr_x, unsigned virtual_x,
 		  unsigned y, unsigned blocksize);
 				// Dump the machine registers
     unsigned PageTableRoom(unsigned numPages, unsigned blocksize);

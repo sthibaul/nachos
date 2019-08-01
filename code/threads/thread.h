@@ -114,6 +114,11 @@ class Thread:dontcopythis
 	printf ("%s, ", name);
     }
 
+#ifdef USER_PROGRAM
+    void DumpThreadState(FILE *output, int ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
+				// Draw the state for thread
+#endif
+
   private:
     // some of the private data for this class is listed above
 
@@ -144,6 +149,11 @@ class Thread:dontcopythis
 };
 
 extern List ThreadList;
+
+#ifdef USER_PROGRAM
+void DumpThreadsState(FILE *output, AddrSpace *space, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
+				// Draw the states for threads
+#endif
 
 // Magical machine-dependent routines, defined in switch.s
 

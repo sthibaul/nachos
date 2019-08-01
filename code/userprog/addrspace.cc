@@ -219,9 +219,7 @@ AddrSpace::Dump(FILE *output, unsigned virtual_x, unsigned virtual_width,
     DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.initData, "data");
     DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.uninitData, "bss");
 
-    // TODO: also dump other threads, see ThreadList
-    if (this == currentThread->space)
-	machine->DumpRegs(output, 0, virtual_x, virtual_y, blocksize);
+    DumpThreadsState(output, this, virtual_x, virtual_y, blocksize);
 
     return ret;
 }
