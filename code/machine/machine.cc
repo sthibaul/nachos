@@ -328,9 +328,9 @@ Machine::DumpPageTable(FILE *output,
 //----------------------------------------------------------------------
 
 void
-Machine::DumpMem()
+Machine::DumpMem(const char *name)
 {
-    FILE *output = fopen("memory.svg", "w+");
+    FILE *output = fopen(name, "w+");
 
     const unsigned blocksize = 16;
 

@@ -148,7 +148,7 @@ class Machine:dontcopythis {
 
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
-    void DumpMem();		// Draw the memory state
+    void DumpMem(const char *name);	// Draw the memory state
     void DumpReg(FILE *output, int val, const char *name, const char *color,
 		 int ptr_x, unsigned virtual_x,
 		 unsigned y, unsigned blocksize);
