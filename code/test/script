@@ -25,6 +25,7 @@ SECTIONS
   .sbss  . : {
     *(.sbss)
     *(.scommon)
+    . = ALIGN(128);
   }
   .bss  . : {
     *(.bss)
