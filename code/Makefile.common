@@ -45,6 +45,8 @@ NETWORK_O	:=	nettest.o post.o network.o
 S_OFILES	:=	switch.o
 
 CFLAGS = -g -Wall -Wextra -Wshadow $(INCPATH) $(DEFINES) $(HOST) -DCHANGED 
+LDFLAGS = -g
+ASFLAGS = -g
 
 # These definitions may change as the software is updated.
 # Some of them are also system dependent
@@ -108,7 +110,7 @@ $(C_OFILES): %.o: %.cc
 
 switch.o: ../threads/switch.S
 	$(CPP) $(INCPATH) $(HOST) ../threads/switch.S > swtch.s
-	$(AS) -o switch.o swtch.s
+	$(AS) $(ASFLAGS) -o switch.o swtch.s
 	rm swtch.s
 
 # RN: Rules to generate dependency files. We can no longer rely on a
