@@ -204,7 +204,10 @@ void
 Console::PutChar(int ch)
 {
     unsigned char c;
+
+    // Make sure that we are not already transferring a character
     ASSERT(putBusy == FALSE);
+
     if (ch < 0x80 || strcmp(nl_langinfo(CODESET),"UTF-8")) {
 	/* Not UTF-8 or ASCII, assume 8bit locale */
 	c = ch;
