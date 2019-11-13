@@ -156,14 +156,14 @@ void
 List::Remove (void *item)
 {
     ListElement **cur;
-    ListElement *prec;
+    ListElement *prec = NULL;
 
     for (cur = &first; *cur; prec=*cur, cur = &(*cur)->next)
       {
 	if ((*cur)->item == item)
 	  {
 	    if(*cur==last)
-		last=prec;
+		last = prec;
 	    *cur = (*cur)->next;
 	    return;
 	  }
