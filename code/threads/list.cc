@@ -155,21 +155,21 @@ List::Remove ()
 void
 List::Remove (void *item)
 {
-  ListElement **cur;
-  ListElement *prec;
-  
-  for (cur = &first; *cur; prec=*cur, cur = &(*cur)->next)
-    {
-      if ((*cur)->item == item)
-	{
-	  if(*cur==last)
-	    last=prec;
-	  *cur = (*cur)->next;
-	  return;
-	}
-    }
-  
-  ASSERT(FALSE);
+    ListElement **cur;
+    ListElement *prec;
+
+    for (cur = &first; *cur; prec=*cur, cur = &(*cur)->next)
+      {
+	if ((*cur)->item == item)
+	  {
+	    if(*cur==last)
+		last=prec;
+	    *cur = (*cur)->next;
+	    return;
+	  }
+      }
+
+    ASSERT(FALSE);
 }
 
 //----------------------------------------------------------------------
