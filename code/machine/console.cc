@@ -18,6 +18,8 @@
 #include "system.h"
 #include <langinfo.h>
 
+#define NOCHAR (-42)
+
 // Dummy functions because C++ is weird about pointers to member functions
 static void ConsoleReadPoll(void *c) 
 { Console *console = (Console *)c; console->CheckCharAvail(); }
@@ -60,7 +62,7 @@ Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr re
     readHandler = readAvailHandler;
     handlerArg = callArg;
     putBusy = FALSE;
-    incoming = EOF;
+    incoming = NOCHAR;
 
     // start polling for incoming packets
     interrupt->Schedule(ConsoleReadPoll, this, ConsoleTime, ConsoleReadInt);
@@ -112,7 +114,7 @@ Console::CheckCharAvail()
 	readFileNo = -2;
 	n = 0;
 	cont = 0;
-    } else if ((incoming != EOF) || !PollFile(readFileNo)) {
+    } else if ((incoming != NOCHAR) || !PollFile(readFileNo)) {
 	// do nothing if character is already buffered, or none to be read
 	n = 0;
     } else {
@@ -190,7 +192,10 @@ Console::GetChar()
 {
    int ch = incoming;
 
-   incoming = EOF;
+   // We should not be reading anything if no character was received yet
+   ASSERT(incoming != NOCHAR);
+
+   incoming = NOCHAR;
    return ch;
 }
 
