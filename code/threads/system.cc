@@ -235,5 +235,7 @@ Cleanup ()
     delete stats;
     stats = NULL;
 
+    ThreadList.Remove(currentThread);
+
     Exit (0);
 }
