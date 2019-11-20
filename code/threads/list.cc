@@ -156,7 +156,7 @@ void
 List::Remove (void *item)
 {
     ListElement **cur;
-    ListElement *prec = NULL;
+    ListElement *prec = NULL, *next;
 
     for (cur = &first; *cur; prec=*cur, cur = &(*cur)->next)
       {
@@ -164,7 +164,9 @@ List::Remove (void *item)
 	  {
 	    if(*cur==last)
 		last = prec;
-	    *cur = (*cur)->next;
+	    next = (*cur)->next;
+	    delete *cur;
+	    *cur = next;
 	    return;
 	  }
       }
