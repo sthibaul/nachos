@@ -151,7 +151,7 @@ class Thread:dontcopythis
 extern List ThreadList;
 
 #ifdef USER_PROGRAM
-void DumpThreadsState(FILE *output, AddrSpace *space, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
+void DumpThreadsState(FILE *output, AddrSpace *space, unsigned ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
 				// Draw the states for threads
 #endif
 

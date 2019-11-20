@@ -160,7 +160,7 @@ class Machine:dontcopythis {
 		       // Return how much room is needed for a page table
     unsigned DumpPageTable(FILE *output,
 		       TranslationEntry *pageTable, unsigned pageTableSize,
-		       unsigned virtual_x, unsigned virtual_width,
+		       unsigned addr_x, unsigned virtual_x, unsigned virtual_width,
 		       unsigned physical_x, unsigned virtual_y, unsigned y,
 		       unsigned blocksize);
 		       // Dump a pagetable
@@ -232,7 +232,7 @@ unsigned short ShortToMachine(unsigned short shortword);
 
 extern unsigned AddrSpacesRoom(unsigned blocksize);
 extern void DumpAddrSpaces(FILE *output,
-			   unsigned virtual_x, unsigned virtual_width,
+			   unsigned addr_x, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
 			   unsigned physical_x, unsigned y, unsigned blocksize);
 
 #endif // MACHINE_H

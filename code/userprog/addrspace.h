@@ -35,7 +35,7 @@ class AddrSpace:dontcopythis
     void SaveState ();		// Save/restore address space-specific
     void RestoreState ();	// info on a context switch 
 
-    unsigned Dump(FILE *output, unsigned virtual_x, unsigned virtual_width,
+    unsigned Dump(FILE *output, unsigned addr_s, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
 		    unsigned physical_x, unsigned virtual_y, unsigned y,
 		    unsigned blocksize);
 				// Dump program layout as SVG

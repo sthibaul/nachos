@@ -442,10 +442,10 @@ Thread::DumpThreadState(FILE *output, int ptr_x, int ptr_y, unsigned virtual_x, 
 //      Draw the states for threads belonging to a given address space
 //----------------------------------------------------------------------
 void
-DumpThreadsState(FILE *output, AddrSpace *space, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
+DumpThreadsState(FILE *output, AddrSpace *space, unsigned ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
 {
     ListElement *element;
-    unsigned ptr_x = 4*blocksize;
+    ptr_x += 4*blocksize;
     unsigned nthreads = ThreadList.Length();
 
     unsigned y_offset;

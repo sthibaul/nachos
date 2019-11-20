@@ -269,7 +269,7 @@ get_RGB(unsigned char value, unsigned char *r, unsigned char *g, unsigned char *
 unsigned
 Machine::DumpPageTable(FILE *output,
 		       TranslationEntry *_pageTable, unsigned _pageTableSize,
-		       unsigned virtual_x, unsigned virtual_width,
+		       unsigned addr_x, unsigned virtual_x, unsigned virtual_width,
 		       unsigned physical_x, unsigned virtual_y, unsigned y,
 		       unsigned blocksize)
 {
@@ -277,6 +277,9 @@ Machine::DumpPageTable(FILE *output,
 
     for (page = 0; page < _pageTableSize; page++) {
 	TranslationEntry *e = &_pageTable[page];
+
+	fprintf(output, "<text x=\"%u\" y=\"%u\" font-size=\"%u\">0x%04x</text>\n",
+		addr_x, virtual_y - page * blocksize, blocksize, page * PageSize);
 
 	if (e->valid) {
 	    for (offset = 0; offset < PageSize; offset++) {
@@ -350,7 +353,10 @@ Machine::DumpMem(const char *name)
 
     const unsigned blocksize = 32;
 
-    const unsigned ptr_x = 0;
+    const unsigned addr_x = 0;
+    const unsigned addr_width = 4*blocksize;
+
+    const unsigned ptr_x = addr_x + addr_width;
     const unsigned ptr_width = 6*blocksize;
 
     const unsigned virtual_x = ptr_x + ptr_width;
@@ -381,7 +387,7 @@ Machine::DumpMem(const char *name)
 		    virtual_width,
 		    pageTableSize * blocksize);
 
-    DumpAddrSpaces(output, virtual_x, virtual_width, physical_x, height, blocksize);
+    DumpAddrSpaces(output, addr_x, ptr_x, virtual_x, virtual_width, physical_x, height, blocksize);
 
     for (page = 0; page < NumPhysPages; page++) {
 	for (offset = 0; offset < PageSize; offset++) {

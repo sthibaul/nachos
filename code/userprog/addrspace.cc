@@ -185,7 +185,7 @@ AddrSpace::InitRegisters ()
 //----------------------------------------------------------------------
 
 static void
-DrawArea(FILE *output, unsigned x, unsigned virtual_x,
+DrawArea(FILE *output, unsigned sections_x, unsigned virtual_x,
 	 unsigned y, unsigned blocksize,
 	 struct segment *segment, const char *name)
 {
@@ -200,26 +200,26 @@ DrawArea(FILE *output, unsigned x, unsigned virtual_x,
     fprintf(output, "<rect x=\"%u\" y=\"%u\" width=\"%u\" height=\"%u\" "
 		    "fill=\"#ffffff\" "
 		    "stroke=\"#000000\" stroke-width=\"1\"/>\n",
-		    x, y - end * blocksize,
-		    virtual_x - x, (end - page) * blocksize);
+		    sections_x, y - end * blocksize,
+		    virtual_x - sections_x, (end - page) * blocksize);
 
     fprintf(output, "<text x=\"%u\" y=\"%u\" fill=\"#000000\" font-size=\"%u\">%s</text>\n",
-	    x, y - page * blocksize, blocksize, name);
+	    sections_x, y - page * blocksize, blocksize, name);
 }
 
 unsigned
-AddrSpace::Dump(FILE *output, unsigned virtual_x, unsigned virtual_width,
+AddrSpace::Dump(FILE *output, unsigned addr_x, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
 		unsigned physical_x, unsigned virtual_y, unsigned y,
 		unsigned blocksize)
 {
     unsigned ret = machine->DumpPageTable(output, pageTable, numPages,
-	    virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
+	    addr_x, virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
 
-    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.code, "code");
-    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.initData, "data");
-    DrawArea(output, 0, virtual_x, virtual_y, blocksize, &noffH.uninitData, "bss");
+    DrawArea(output, sections_x, virtual_x, virtual_y, blocksize, &noffH.code, "code");
+    DrawArea(output, sections_x, virtual_x, virtual_y, blocksize, &noffH.initData, "data");
+    DrawArea(output, sections_x, virtual_x, virtual_y, blocksize, &noffH.uninitData, "bss");
 
-    DumpThreadsState(output, this, virtual_x, virtual_y, blocksize);
+    DumpThreadsState(output, this, sections_x, virtual_x, virtual_y, blocksize);
 
     return ret;
 }
@@ -252,7 +252,7 @@ AddrSpacesRoom(unsigned blocksize)
 
 void
 DumpAddrSpaces(FILE *output,
-	       unsigned virtual_x, unsigned virtual_width,
+	       unsigned addr_x, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
 	       unsigned physical_x, unsigned y, unsigned blocksize)
 {
     ListElement *element;
@@ -263,7 +263,7 @@ DumpAddrSpaces(FILE *output,
 	 element;
 	 element = element->next) {
 	AddrSpace *space = (AddrSpace*) element->item;
-	virtual_y -= space->Dump(output, virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
+	virtual_y -= space->Dump(output, addr_x, sections_x, virtual_x, virtual_width, physical_x, virtual_y, y, blocksize);
     }
 }
 
