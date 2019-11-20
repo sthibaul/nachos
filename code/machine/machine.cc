@@ -348,7 +348,7 @@ Machine::DumpMem(const char *name)
 {
     FILE *output = fopen(name, "w+");
 
-    const unsigned blocksize = 16;
+    const unsigned blocksize = 32;
 
     const unsigned ptr_x = 0;
     const unsigned ptr_width = 6*blocksize;
