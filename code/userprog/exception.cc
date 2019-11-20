@@ -130,7 +130,8 @@ ExceptionHandler (ExceptionType which)
 	  break;
 
 	default:
-	  printf ("Unexpected user mode exception %d %d at PC %x\n", which, type, machine->registers[PCReg]);
+	  printf ("Unexpected user mode exception %d %d %x at PC %x\n", which, type, address, machine->registers[PCReg]);
 	  ASSERT (FALSE);
+	  break;
       }
 }
