@@ -39,8 +39,9 @@ ifeq ($(NACHOS_SYS),LINUX_SYS)
 HOST += -DLINUX
 CFLAGS += -fsanitize=undefined
 LDFLAGS += -fsanitize=undefined
+
 #CFLAGS += -fsanitize=address
-#CFLAGS += -fsanitize=address
+#LDFLAGS += -fsanitize=address
 endif
 
 ifeq ($(NACHOS_SYS),MAC_OS_SYS)
