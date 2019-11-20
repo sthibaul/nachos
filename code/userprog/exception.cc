@@ -68,6 +68,7 @@ void
 ExceptionHandler (ExceptionType which)
 {
     int type = machine->ReadRegister (2);
+    int address = machine->registers[BadVAddrReg];
 
     switch (which)
       {
@@ -94,13 +95,38 @@ ExceptionHandler (ExceptionType which)
 	  }
 
 	case PageFaultException:
-	  if (!type) {
+	  if (!address) {
 	    printf("NULL dereference at PC %x!\n", machine->registers[PCReg]);
 	    ASSERT (FALSE);
 	  } else {
-	    printf ("Page Fault at address %x at PC %x\n", type, machine->registers[PCReg]);
+	    printf ("Page Fault at address %x at PC %x\n", address, machine->registers[PCReg]);
 	    ASSERT (FALSE);	// For now
 	  }
+	  break;
+
+	case ReadOnlyException:
+	  printf ("Read-Only at address %x at PC %x\n", address, machine->registers[PCReg]);
+	  ASSERT (FALSE);	// For now
+	  break;
+
+	case BusErrorException:
+	  printf ("Invalid physical address at address %x at PC %x\n", address, machine->registers[PCReg]);
+	  ASSERT (FALSE);	// For now
+	  break;
+
+	case AddressErrorException:
+	  printf ("Invalid address %x at PC %x\n", address, machine->registers[PCReg]);
+	  ASSERT (FALSE);	// For now
+	  break;
+
+	case OverflowException:
+	  printf ("Overflow at PC %x\n", machine->registers[PCReg]);
+	  ASSERT (FALSE);	// For now
+	  break;
+
+	case IllegalInstrException:
+	  printf ("Illegal instruction at PC %x\n", machine->registers[PCReg]);
+	  ASSERT (FALSE);	// For now
 	  break;
 
 	default:
