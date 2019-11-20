@@ -208,7 +208,7 @@ Machine::DumpState()
 
 void
 Machine::DumpReg(FILE *output, int val, const char *name, const char *color,
-		 int ptr_x, unsigned virtual_x,
+		 int ptr_x, int ptr_y, unsigned virtual_x,
 		 unsigned y, unsigned blocksize)
 {
     unsigned page = val / PageSize;
@@ -219,9 +219,9 @@ Machine::DumpReg(FILE *output, int val, const char *name, const char *color,
     fprintf(output, "<line x1=\"%d\" y1=\"%u\" x2=\"%u\" y2=\"%u\" "
 		    "stroke=\"#808080\" stroke-width=\"1\"/>\n",
 		    ptr_x + 3*blocksize/2,
-		    y - page * blocksize - blocksize/2,
+		    ptr_y - page * blocksize - blocksize/2,
 		    virtual_x + offset * blocksize + blocksize/2,
-		    y - page * blocksize - blocksize/2);
+		    ptr_y - page * blocksize - blocksize/2);
 }
 
 //----------------------------------------------------------------------
@@ -230,11 +230,11 @@ Machine::DumpReg(FILE *output, int val, const char *name, const char *color,
 //----------------------------------------------------------------------
 
 void
-Machine::DumpRegs(FILE *output, int ptr_x, unsigned virtual_x,
+Machine::DumpRegs(FILE *output, int ptr_x, int ptr_y, unsigned virtual_x,
 		  unsigned y, unsigned blocksize)
 {
-    DumpReg(output, registers[PCReg], "PC", "#FF0000", ptr_x, virtual_x, y, blocksize);
-    DumpReg(output, registers[StackReg], "SP", "#FF0000", ptr_x, virtual_x, y, blocksize);
+    DumpReg(output, registers[PCReg], "PC", "#FF0000", ptr_x, ptr_y, virtual_x, y, blocksize);
+    DumpReg(output, registers[StackReg], "SP", "#FF0000", ptr_x, ptr_y, virtual_x, y, blocksize);
 }
 
 //----------------------------------------------------------------------

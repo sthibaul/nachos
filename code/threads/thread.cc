@@ -60,7 +60,6 @@ Thread::Thread (const char *threadName)
     // DelayedLoad is called !!!
     userRegisters[LoadReg] = 0;
     userRegisters[LoadValueReg] = 0;
-
 #endif
     ThreadList.Append(this);
 }
@@ -427,19 +426,19 @@ Thread::RestoreUserState ()
 //      Draw the states for this thread
 //----------------------------------------------------------------------
 void
-Thread::DumpThreadState(FILE *output, int ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
+Thread::DumpThreadState(FILE *output, int ptr_x, int ptr_y, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
 {
     if (this == currentThread)
-	machine->DumpRegs(output, ptr_x, virtual_x, virtual_y, blocksize);
+	machine->DumpRegs(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
     else
     {
-	machine->DumpReg(output, userRegisters[PCReg], "PC", "#000000", ptr_x, virtual_x, virtual_y, blocksize);
-	machine->DumpReg(output, userRegisters[StackReg], "SP", "#000000", ptr_x, virtual_x, virtual_y, blocksize);
+	machine->DumpReg(output, userRegisters[PCReg], "PC", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
+	machine->DumpReg(output, userRegisters[StackReg], "SP", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
     }
 }
 
 //----------------------------------------------------------------------
-// Thread::DumpThreadsState
+// DumpThreadsState
 //      Draw the states for threads belonging to a given address space
 //----------------------------------------------------------------------
 void
@@ -447,18 +446,37 @@ DumpThreadsState(FILE *output, AddrSpace *space, unsigned virtual_x, unsigned vi
 {
     ListElement *element;
     unsigned ptr_x = 4*blocksize;
+    unsigned nthreads = ThreadList.Length();
+
+    unsigned y_offset;
+    unsigned ptr_y;
+    if (nthreads == 1)
+      {
+	y_offset = 0;
+	ptr_y = virtual_y;
+      }
+    else
+      {
+	y_offset = (blocksize/2) / (nthreads-1);
+	ptr_y = virtual_y - (blocksize/4);
+      }
 
     for (element = ThreadList.FirstElement();
 	 element;
-	 element = element->next) {
+	 element = element->next)
+      {
 	Thread *thread = (Thread *) element->item;
 	if (thread->space != space)
 	    continue;
 
-	thread->DumpThreadState(output, ptr_x, virtual_x, virtual_y, blocksize);
+	thread->DumpThreadState(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
 
+	// Offset names a bit on the left
 	ptr_x -= blocksize;
-    }
+
+	// And offset lines a bit down
+	ptr_y += y_offset;
+      }
 }
 
 #endif

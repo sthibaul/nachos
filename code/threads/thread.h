@@ -115,7 +115,7 @@ class Thread:dontcopythis
     }
 
 #ifdef USER_PROGRAM
-    void DumpThreadState(FILE *output, int ptr_x, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
+    void DumpThreadState(FILE *output, int ptr_x, int ptr_y, unsigned virtual_x, unsigned virtual_y, unsigned blocksize);
 				// Draw the state for thread
 #endif
 
