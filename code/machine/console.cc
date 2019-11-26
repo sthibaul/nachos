@@ -181,14 +181,14 @@ Console::WriteDone()
 }
 
 //----------------------------------------------------------------------
-// Console::GetChar()
+// Console::RX()
 // 	Read a character from the input buffer, if there is any there.
 //	Either return the character, or EOF if none buffered or the end of the
 //	input file was reached.
 //----------------------------------------------------------------------
 
 int
-Console::GetChar()
+Console::RX()
 {
    int ch = incoming;
 
@@ -200,13 +200,13 @@ Console::GetChar()
 }
 
 //----------------------------------------------------------------------
-// Console::PutChar()
+// Console::TX()
 // 	Write a character to the simulated display, schedule an interrupt 
 //	to occur in the future, and return.
 //----------------------------------------------------------------------
 
 void
-Console::PutChar(int ch)
+Console::TX(int ch)
 {
     unsigned char c;
 

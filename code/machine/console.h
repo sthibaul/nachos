@@ -33,9 +33,9 @@
 //
 // Since the device is asynchronous, the interrupt handler "readAvailHandler" 
 // is called when a character has arrived, ready to be read by calling
-// GetChar().
+// RX().
 // The interrupt handler "writeDone" is called when an output character written
-// by calling PutChar() has been "put", so that the next character can be
+// by calling TX() has been "put", so that the next character can be
 // written.
 
 class Console:dontcopythis {
@@ -49,13 +49,13 @@ class Console:dontcopythis {
     ~Console();			// clean up console emulation
 
 // external interface -- Nachos kernel code can call these
-    void PutChar(int ch);	// Write "ch" to the console display, 
+    void TX(int ch);		// Write "ch" to the console display, 
 				// and return immediately.  "writeDone" 
 				// is called when the I/O completes. 
 
-    int GetChar();	   	// Poll the console input.  If a char is 
-				// available, return it.  Otherwise, return EOF.
-				// EOF is also returned if the end of the input
+    int RX();		   	// Poll the console input.  If a char is 
+				// available, return it.  Otherwise, crash.
+				// EOF is returned if the end of the input
 				// file was reached.
     				// "readDone" is called whenever there is 
 				// a char to be gotten
@@ -68,12 +68,12 @@ class Console:dontcopythis {
     int readFileNo;			// UNIX file emulating the keyboard 
     int writeFileNo;			// UNIX file emulating the display
     VoidFunctionPtr writeHandler; 	// Interrupt handler to call when 
-					// the PutChar I/O completes
+					// the TX I/O completes
     VoidFunctionPtr readHandler; 	// Interrupt handler to call when 
 					// a character arrives from the keyboard
     void *handlerArg;			// argument to be passed to the 
 					// interrupt handlers
-    bool putBusy;    			// Is a PutChar operation in progress?
+    bool putBusy;    			// Is a TX operation in progress?
 					// If so, you can't do another one!
     int incoming;    			// Contains the character to be read,
 					// if there is one available. 

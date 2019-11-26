@@ -92,8 +92,8 @@ ConsoleTest (const char *in, const char *out)
     for (;;)
       {
 	  readAvail->P ();	// wait for character to arrive
-	  ch = console->GetChar ();
-	  console->PutChar (ch);	// echo it!
+	  ch = console->RX ();
+	  console->TX (ch);	// echo it!
 	  writeDone->P ();	// wait for write to finish
 	  if (ch == 'q') {
 	      printf ("Nothing more, bye!\n");
