@@ -27,13 +27,8 @@
 
 // Miscellaneous useful routines
 
-#include <bool.h>
-						// Boolean values.  
-						// This is the same definition 
-						// as in the g++ library.
-
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
+#include <bool.h>	// Boolean values
+#include <algorithm>	// min
 
 // Divide and either round up or down 
 #define divRoundDown(n,s)  ((n) / (s))
