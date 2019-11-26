@@ -390,6 +390,7 @@ SWITCH
         .globl  ThreadRoot
 ThreadRoot:
 
+        xorl    %ebp,%ebp
         pushl   %ebp
         movl    %esp,%ebp
         pushl   InitialArg
@@ -470,6 +471,7 @@ SWITCH:
         .globl  ThreadRoot
 ThreadRoot:
 
+        xorq    %rbp,%rbp
         pushq   %rbp
         movq    %rsp,%rbp
         pushq   WhenDonePC
