@@ -50,6 +50,7 @@ Semaphore::~Semaphore ()
 {
     delete queue;
     queue = NULL;
+    value = -1;
 }
 
 //----------------------------------------------------------------------
@@ -66,6 +67,8 @@ void
 Semaphore::P ()
 {
     IntStatus oldLevel = interrupt->SetLevel (IntOff);	// disable interrupts
+
+    ASSERT(value >= 0);
 
     while (value == 0)
       {				// semaphore not available
@@ -91,6 +94,8 @@ Semaphore::V ()
 {
     Thread *thread;
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
+
+    ASSERT(value >= 0);
 
     thread = (Thread *) queue->Remove ();
     if (thread != NULL)		// make thread ready, consuming the V immediately
