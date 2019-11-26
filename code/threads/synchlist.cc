@@ -37,8 +37,11 @@ SynchList::SynchList ()
 SynchList::~SynchList ()
 {
     delete list;
+    list = NULL;
     delete lock;
+    lock = NULL;
     delete listEmpty;
+    listEmpty = NULL;
 }
 
 //----------------------------------------------------------------------

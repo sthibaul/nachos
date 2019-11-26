@@ -51,6 +51,7 @@ Directory::Directory(int size)
 Directory::~Directory()
 { 
     delete [] table;
+    table = NULL;
 } 
 
 //----------------------------------------------------------------------

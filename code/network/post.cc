@@ -65,6 +65,7 @@ MailBox::MailBox()
 MailBox::~MailBox()
 { 
     delete messages; 
+    messages = NULL;
 }
 
 //----------------------------------------------------------------------

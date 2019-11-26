@@ -76,6 +76,7 @@ Disk::Disk(const char* name, VoidFunctionPtr callWhenDone, void *callArg)
 Disk::~Disk()
 {
     Close(fileno);
+    fileno = -1;
 }
 
 //----------------------------------------------------------------------

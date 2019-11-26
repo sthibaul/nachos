@@ -41,6 +41,7 @@ OpenFile::OpenFile(int sector)
 OpenFile::~OpenFile()
 {
     delete hdr;
+    hdr = NULL;
 }
 
 //----------------------------------------------------------------------

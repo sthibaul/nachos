@@ -50,6 +50,7 @@ Network::Network(NetworkAddress addr, double reliability,
 Network::~Network()
 {
     CloseSocket(sock);
+    sock = -1;
     DeAssignNameToSocket(sockName);
 }
 

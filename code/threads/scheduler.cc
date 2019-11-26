@@ -52,6 +52,7 @@ Scheduler::Halt ()
 Scheduler::~Scheduler ()
 {
     delete readyList;
+    readyList = NULL;
 }
 
 //----------------------------------------------------------------------

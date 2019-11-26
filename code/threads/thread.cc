@@ -84,6 +84,7 @@ Thread::~Thread ()
     if (stack != NULL) {
 	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
 	VALGRIND_STACK_DEREGISTER (valgrind_id);
+	stack = NULL;
     }
     ThreadList.Remove(this);
 }

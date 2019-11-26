@@ -56,8 +56,11 @@ SynchDisk::SynchDisk(const char* name)
 SynchDisk::~SynchDisk()
 {
     delete disk;
+    disk = NULL;
     delete lock;
+    lock = NULL;
     delete semaphore;
+    semaphore = NULL;
 }
 
 //----------------------------------------------------------------------

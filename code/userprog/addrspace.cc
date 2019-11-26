@@ -138,10 +138,8 @@ AddrSpace::AddrSpace (OpenFile * executable)
 
 AddrSpace::~AddrSpace ()
 {
-  // LB: Missing [] for delete
-  // delete pageTable;
   delete [] pageTable;
-  // End of modification
+  pageTable = NULL;
 
   AddrSpaceList.Remove(this);
 }

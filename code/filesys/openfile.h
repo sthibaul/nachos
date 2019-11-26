@@ -29,7 +29,7 @@
 class OpenFile:dontcopythis {
   public:
     OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
-    ~OpenFile() { Close(file); }			// close the file
+    ~OpenFile() { Close(file); file = -1; }			// close the file
 
     int ReadAt(void *into, int numBytes, int position) { 
     		Lseek(file, position, SEEK_SET); 

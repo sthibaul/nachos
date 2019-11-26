@@ -49,6 +49,7 @@ Semaphore::Semaphore (const char *debugName, int initialValue)
 Semaphore::~Semaphore ()
 {
     delete queue;
+    queue = NULL;
 }
 
 //----------------------------------------------------------------------
