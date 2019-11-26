@@ -52,11 +52,6 @@ main (int argc, char **argv)
     int argCount;		// the number of arguments 
     // for a particular command
 
-#ifdef LINUX
-    // Try to catch access to uninitialized values
-    mallopt(M_PERTURB, 0xff);
-#endif
-
     if (argc > 1 && !strcmp (argv[1], "-h")) // print help
       {
 //  NOTE -- flags are ignored until the relevant assignment.
