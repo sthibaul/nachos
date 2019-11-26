@@ -198,8 +198,8 @@ class Machine:dontcopythis {
     TranslationEntry *tlb;		// this pointer should be considered 
 					// "read-only" to Nachos kernel code
 
-    TranslationEntry *pageTable;
-    unsigned int pageTableSize;
+    TranslationEntry *currentPageTable;
+    unsigned int currentPageTableSize;
 
   private:
     bool singleStep;		// drop back into the debugger after each

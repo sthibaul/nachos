@@ -289,6 +289,6 @@ AddrSpace::SaveState ()
 void
 AddrSpace::RestoreState ()
 {
-    machine->pageTable = pageTable;
-    machine->pageTableSize = numPages;
+    machine->currentPageTable = pageTable;
+    machine->currentPageTableSize = numPages;
 }

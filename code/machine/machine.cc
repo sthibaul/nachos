@@ -65,10 +65,10 @@ Machine::Machine(bool debug)
     tlb = new TranslationEntry[TLBSize];
     for (i = 0; i < TLBSize; i++)
 	tlb[i].valid = FALSE;
-    pageTable = NULL;
+    currentPageTable = NULL;
 #else	// use linear page table
     tlb = NULL;
-    pageTable = NULL;
+    currentPageTable = NULL;
 #endif
 
     singleStep = debug;
@@ -292,11 +292,11 @@ Machine::DumpPageTable(FILE *output,
 		int virt = page * PageSize + offset;
 		int phys;
 
-		TranslationEntry *save_pageTable = pageTable;
-		unsigned save_pageTableSize = pageTableSize;
+		TranslationEntry *save_pageTable = currentPageTable;
+		unsigned save_pageTableSize = currentPageTableSize;
 
-		pageTable = _pageTable;
-		pageTableSize = _pageTableSize;
+		currentPageTable = _pageTable;
+		currentPageTableSize = _pageTableSize;
 
 		ExceptionType res = Translate(virt, &phys, 1, 0);
 		if (res == NoException)
@@ -304,8 +304,8 @@ Machine::DumpPageTable(FILE *output,
 		else
 			value = -1;
 
-		pageTable = save_pageTable;
-		pageTableSize = save_pageTableSize;
+		currentPageTable = save_pageTable;
+		currentPageTableSize = save_pageTableSize;
 
 		get_RGB(value, &r, &g, &b);
 
@@ -331,7 +331,7 @@ Machine::DumpPageTable(FILE *output,
 	}
     }
 
-    if (_pageTable == pageTable) {
+    if (_pageTable == currentPageTable) {
 	fprintf(output, "<rect x=\"%u\" y=\"%u\" "
 			"width=\"%u\" height=\"%u\" "
 			"fill-opacity=\"0.0\" "
@@ -387,9 +387,9 @@ Machine::DumpMem(const char *name)
 		    "stroke=\"#000000\" "
 		    "stroke-width=\"1\"/>\n",
 		    virtual_x,
-		    height - pageTableSize * blocksize,
+		    height - currentPageTableSize * blocksize,
 		    virtual_width,
-		    pageTableSize * blocksize);
+		    currentPageTableSize * blocksize);
 
     DumpAddrSpaces(output, addr_x, ptr_x, virtual_x, virtual_width, physical_x, height, blocksize);
 

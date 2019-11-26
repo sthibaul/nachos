@@ -200,8 +200,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     }
     
     // we must have either a TLB or a page table, but not both!
-    ASSERT(tlb == NULL || pageTable == NULL);	
-    ASSERT(tlb != NULL || pageTable != NULL);	
+    ASSERT(tlb == NULL || currentPageTable == NULL);	
+    ASSERT(tlb != NULL || currentPageTable != NULL);	
 
 // calculate the virtual page number, and offset within the page,
 // from the virtual address
@@ -209,16 +209,16 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     offset = (unsigned) virtAddr % PageSize;
     
     if (tlb == NULL) {		// => page table => vpn is index into table
-	if (vpn >= pageTableSize) {
+	if (vpn >= currentPageTableSize) {
 	    DEBUG('a', "virtual page # %d too large for page table size %d!\n", 
-			virtAddr, pageTableSize);
+			virtAddr, currentPageTableSize);
 	    return AddressErrorException;
-	} else if (!pageTable[vpn].valid) {
+	} else if (!currentPageTable[vpn].valid) {
             DEBUG('a', "virtual page # %d : page %d is invalid !\n", 
                         virtAddr, vpn);
             return PageFaultException;
 	}
-	entry = &pageTable[vpn];
+	entry = &currentPageTable[vpn];
     } else {
         for (entry = NULL, i = 0; i < TLBSize; i++)
     	    if (tlb[i].valid && (tlb[i].virtualPage == vpn)) {
