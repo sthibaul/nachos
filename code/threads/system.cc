@@ -102,7 +102,7 @@ Initialize (int argc, char **argv)
 #ifdef __GLIBC__
 #if (__GLIBC__ > 2) || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 4)
     /* Make free() fill freed memory, to trap bad code */
-    mallopt(M_PERTURB, 0xfe);
+    mallopt(M_PERTURB, 0xfefefefe);
 #endif
 #endif
 
