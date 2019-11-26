@@ -478,13 +478,16 @@ ThreadRoot:
         pushq   InitialPC
         pushq   InitialArg
         call    *StartupPC
-        popq    %rdi
-        popq    InitialPC
+        movq    (%rsp),%rdi
+        movq    8(%rsp),InitialPC
         call    *InitialPC
-        popq    WhenDonePC
+        movq    16(%rsp),WhenDonePC
         call    *WhenDonePC
 
         /* NOT REACHED*/
+        popq    InitialArg
+        popq    InitialPC
+        popq    WhenDonePC
         movq    %rbp,%rsp
         popq    %rbp
         ret

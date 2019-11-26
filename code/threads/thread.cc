@@ -363,7 +363,7 @@ Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 #elif defined(HOST_i386)
     stackTop = stack + StackSize - 4;	// -4 for the return address
 #elif defined(HOST_x86_64)
-    stackTop = stack + StackSize - 8;	// -8 for the return address
+    stackTop = stack + StackSize - 16;	// room for the return address, and align for SSE*
 #elif defined(HOST_MIPS)
     stackTop = stack + StackSize;	// no special need
 #else
