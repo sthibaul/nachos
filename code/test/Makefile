@@ -26,6 +26,11 @@ GCCDIR = /opt/xgcc/decstation-ultrix/bin
 GCC	:=	xgcc
 endif
 
+# We don't support native builds
+ifeq ($(GCCDIR),)
+$(error When not running at CREMI, I need the cross compiler installed in /opt/xgcc)
+endif
+
 LDFLAGS = -T script -N
 ASFLAGS = 
 CPPFLAGS = $(INCDIR) -DCHANGED
