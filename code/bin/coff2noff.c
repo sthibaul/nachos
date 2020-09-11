@@ -217,6 +217,11 @@ int main (int argc, char **argv)
 	        noffH.uninitData.size = sections[i].s_size;
 	    }
 	    /* we don't need to copy the uninitialized data! */
+	} else if (!strcmp(sections[i].s_name, ".reginfo") ||
+			!strcmp(sections[i].s_name, ".pdr") ||
+			!strcmp(sections[i].s_name, ".gnu.att") ||
+			!strcmp(sections[i].s_name, ".comment")) {
+		/* Ignore */
 	} else {
 	    fprintf(stderr, "Unknown segment type: %s\n", sections[i].s_name);
             unlink(noffFileName);
