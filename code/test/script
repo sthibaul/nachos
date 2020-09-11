@@ -7,6 +7,7 @@ SECTIONS
     *(.init)
      eprol  =  .;
     *(.text)
+    *(.text.startup)
     *(.fini)
     . = ALIGN(128);
   }
@@ -15,6 +16,7 @@ SECTIONS
    _fdata = .;
   .data  . : {
     *(.rdata)
+    *(.sdata)
     *(.data)
     CONSTRUCTORS
     . = ALIGN(128);
