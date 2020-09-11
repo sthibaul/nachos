@@ -46,11 +46,12 @@ CPPFLAGS = $(INCDIR) -DCHANGED
 CC	:=	$(GCCDIR)/$(GCC)
 AS	:=	$(GCCDIR)/as
 LD	:=	$(GCCDIR)/ld
+STRIP	:=	$(GCCDIR)/strip
 OBJDUMP	:=	$(GCCDIR)/objdump
 
 CPP	:=	$(GCCDIR)/$(GCC) -E -P
 INCDIR	:=	-I../userprog -I../threads
-CFLAGS 	:=	-DIN_USER_MODE -c $(INCDIR) -G 0 -Wall -O2 -DCHANGED
+CFLAGS 	:=	-DIN_USER_MODE -c $(INCDIR) -Wall -O2 -DCHANGED
 
 SOURCES	:=	$(wildcard *.c)
 PROGS	:=	$(patsubst %.c,%,$(SOURCES))
