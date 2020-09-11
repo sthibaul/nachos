@@ -6,8 +6,7 @@ SECTIONS
      _ftext = . ;
     *(.init)
      eprol  =  .;
-    *(.text)
-    *(.text.startup)
+    *(.text*)
     *(.fini)
     . = ALIGN(128);
   }
@@ -33,6 +32,13 @@ SECTIONS
     *(.bss)
     *(COMMON)
     . = ALIGN(128);
+  }
+  .drop . : {
+    *(.reginfo)
+    *(.pdr)
+    *(.MIPS.ab*)
+    *(.comment*)
+    *(.gnu.att*)
   }
    end = .;
    _end = .;
