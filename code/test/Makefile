@@ -15,15 +15,27 @@ NACHOS_SYS := $(shell $(NACHOS_ROOT)/bin/nachos_sys)
 NACHOS_ARCH := $(shell $(NACHOS_ROOT)/bin/nachos_arch)
 
 ifneq ($(wildcard /net/cremi/aguermou/xgcc/decstation-ultrix/bin),)
-# Cremi
+# Cremi 32bit
 GCCDIR	= /net/cremi/aguermou/xgcc/decstation-ultrix/bin
 GCC	:=	gcc
 endif
 
+ifneq ($(wildcard /net/ens/nachos/mipsel/bin),)
+# Cremi 64bit
+GCCDIR	= /net/ens/nachos/mipsel/bin
+GCC	:=	gcc
+endif
+
 ifneq ($(wildcard /opt/xgcc/decstation-ultrix/bin),)
-# Maison
+# Maison 32bit
 GCCDIR = /opt/xgcc/decstation-ultrix/bin
 GCC	:=	xgcc
+endif
+
+ifneq ($(wildcard /opt/xgcc/mipsel/bin),)
+# Maison 64bit
+GCCDIR = /opt/xgcc/mipsel/bin
+GCC	:=	gcc
 endif
 
 # We don't support native builds
@@ -43,7 +55,7 @@ CPPFLAGS = $(INCDIR) -DCHANGED
 # CPPFLAGS = -P $(INCDIR)
 
 
-CC	:=	$(GCCDIR)/$(GCC)
+CC	:=	$(GCCDIR)/$(GCC) -std=c99
 AS	:=	$(GCCDIR)/as
 LD	:=	$(GCCDIR)/ld
 STRIP	:=	$(GCCDIR)/strip
