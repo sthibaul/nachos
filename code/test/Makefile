@@ -55,7 +55,7 @@ CPPFLAGS = $(INCDIR) -DCHANGED
 # CPPFLAGS = -P $(INCDIR)
 
 
-CC	:=	$(GCCDIR)/$(GCC) -std=c99
+CC	:=	$(GCCDIR)/$(GCC)
 AS	:=	$(GCCDIR)/as
 LD	:=	$(GCCDIR)/ld
 STRIP	:=	$(GCCDIR)/strip
