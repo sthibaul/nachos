@@ -298,9 +298,9 @@ Machine::DumpPageTable(FILE *output,
 		currentPageTable = _pageTable;
 		currentPageTableSize = _pageTableSize;
 
-		ExceptionType res = Translate(virt, &phys, 1, 0);
+		ExceptionType res = Translate(virt, &phys, 1, FALSE, FALSE);
 		if (res == NoException)
-			ReadMem(virt, 1, &value);
+			ReadMem(virt, 1, &value, FALSE);
 		else
 			value = -1;
 
