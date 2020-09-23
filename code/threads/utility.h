@@ -88,8 +88,8 @@ extern void ClearColor(FILE *output);
     if (!(condition)) {                                                       \
         SetColor(stderr, ColorRed);                                           \
         SetBold(stderr);                                                      \
-        fprintf(stderr, "Assertion failed: line %d, file \"%s\"\n",           \
-                __LINE__, __FILE__);                                          \
+        fprintf(stderr, "Assertion failed: line %d, file \"%s:%d\"\n",           \
+                __LINE__, __FILE__, __LINE__);                                          \
         ClearColor(stderr);                                                   \
         fflush(stderr);                                                       \
         Abort();                                                              \
