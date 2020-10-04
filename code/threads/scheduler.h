@@ -21,7 +21,7 @@ class Scheduler:dontcopythis
 {
   public:
     Scheduler ();		// Initialize list of ready threads 
-    void Halt ();		// Prevent further context switches
+    void Stop ();		// Prevent further context switches
     ~Scheduler ();		// De-allocate ready list
 
     void ReadyToRun (Thread * thread);	// Thread can be dispatched.

@@ -236,17 +236,17 @@ Interrupt::Idle()
     DEBUG('i', "Machine idle.  No interrupts to do.\n");
     printf("No threads ready or runnable, and no pending interrupts.\n");
     printf("Assuming the program completed.\n");
-    Halt();
+    Powerdown();
 }
 
 //----------------------------------------------------------------------
-// Interrupt::Halt
+// Interrupt::Powerdown
 // 	Shut down Nachos cleanly, printing out performance statistics.
 //----------------------------------------------------------------------
 void
-Interrupt::Halt()
+Interrupt::Powerdown()
 {
-    printf("Machine halting!\n\n");
+    printf("Machine going down!\n\n");
     stats->Print();
     Cleanup();     // Never returns.
 }

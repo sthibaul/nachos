@@ -91,7 +91,7 @@ class Interrupt:dontcopythis {
 					// simulated time forward until the 
 					// next interrupt
 
-    void Halt(); 			// quit and print out stats
+    void Powerdown(); 			// quit and print out stats
     
     void YieldOnReturn();		// cause a context switch on return 
 					// from an interrupt handler

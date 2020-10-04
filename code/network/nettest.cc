@@ -68,5 +68,5 @@ MailTest(int farAddr)
     fflush(stdout);
 
     // Then we're done!
-    interrupt->Halt();
+    interrupt->Powerdown();
 }

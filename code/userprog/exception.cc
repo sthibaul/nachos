@@ -79,7 +79,7 @@ ExceptionHandler (ExceptionType which)
 		case SC_Halt:
 		  {
 		    DEBUG ('s', "Shutdown, initiated by user program.\n");
-		    interrupt->Halt ();
+		    interrupt->Powerdown ();
 		    break;
 		  }
 		default:

@@ -203,7 +203,7 @@ Cleanup ()
     printf ("\nCleaning up...\n");
     /* Allow more interrupts but prevent other threads from continuing to use
      * the system while we are waiting for the last interrupts */
-    scheduler->Halt();
+    scheduler->Stop();
     interrupt->Enable();
 
 #ifdef NETWORK

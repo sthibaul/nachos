@@ -34,12 +34,12 @@ Scheduler::Scheduler ()
 }
 
 //----------------------------------------------------------------------
-// Scheduler::Halt
+// Scheduler::Stop
 //      Prevent further context switches, used when halting the system
 //----------------------------------------------------------------------
 
 void
-Scheduler::Halt ()
+Scheduler::Stop ()
 {
     halted = TRUE;
 }
