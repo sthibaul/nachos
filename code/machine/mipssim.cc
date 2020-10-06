@@ -131,7 +131,6 @@ Machine::OneInstruction(Instruction *instr)
     int sum, diff, tmp, value;
     unsigned int rs, rt, imm;
 
-    // LB: Added to handle the >> operator correctly in the SRL* instructions
     unsigned tmp_unsigned;
 
     // Execute the instruction (cf. Kane's book)
@@ -387,10 +386,7 @@ Machine::OneInstruction(Instruction *instr)
 	break;
 	
       case OP_OR:
-	// LB: Stupid bug corrected here! 
-	// registers[instr->rd] = registers[instr->rs] | registers[instr->rs];
 	registers[instr->rd] = registers[instr->rs] | registers[instr->rt];
-	// End of correction 
 	break;
 	
       case OP_ORI:
@@ -410,12 +406,12 @@ Machine::OneInstruction(Instruction *instr)
 	break;
 	
       case OP_SLL:
-	registers[instr->rd] = registers[instr->rt] << instr->extra;
+	registers[instr->rd] = (int) (((unsigned) registers[instr->rt]) << instr->extra);
 	break;
 	
       case OP_SLLV:
-	registers[instr->rd] = registers[instr->rt] <<
-	    (registers[instr->rs] & 0x1f);
+	registers[instr->rd] = (int) (((unsigned) registers[instr->rt]) <<
+	    (registers[instr->rs] & 0x1f));
 	break;
 	
       case OP_SLT:
@@ -460,47 +456,12 @@ Machine::OneInstruction(Instruction *instr)
 	break;
 	
       case OP_SRL:
-	//------------------------------------------------------------
-	// LB: The following code is wrong!
-	//
-	// http://www.mrc.uidaho.edu/mrc/people/jff/digital/MIPSir.html
-	//
-	// The above reference says:
-	// "Shifts a register value right by the shift amount 
-	// (shamt) and places the value in the destination register. 
-	// Zeroes are shifted in."
-	// The C reference manual says that the result of >> is 
-	// implementation-dependent if the argument is a negative
-	// integer (Section A7.8). It is specified only is the
-	// argument is unsigned, or a positive or null int.
-
-	// Beginning of original code
-	// tmp = registers[instr->rt];
-	// tmp >>= instr->extra;
-	// registers[instr->rd] = tmp;
-	// End of original code
-
-	// A simple turnaround is to use the unsigned tmp_unsigned local
-	// variable.
-	
 	tmp_unsigned = registers[instr->rt];
 	tmp_unsigned >>= instr->extra;
 	registers[instr->rd] = tmp_unsigned;
-	
-	// End of correction
-	//------------------------------------------------------------
 	break;
 	
       case OP_SRLV:
-	//------------------------------------------------------------
-	// LB: Same problem here. Same turnaround.
-
-	// Beginning of original code
-	// tmp = registers[instr->rt];
-	// tmp >>= (registers[instr->rs] & 0x1f);
-	// registers[instr->rd] = tmp;
-	// End of original code
-
 	tmp_unsigned = registers[instr->rt];
 	tmp_unsigned >>= (registers[instr->rs] & 0x1f);
 	registers[instr->rd] = tmp_unsigned;
