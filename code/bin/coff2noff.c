@@ -150,6 +150,7 @@ int main (int argc, char **argv)
      sections[i].s_paddr =  WordToHost(sections[i].s_paddr);
      sections[i].s_size = WordToHost(sections[i].s_size);
      sections[i].s_scnptr = WordToHost(sections[i].s_scnptr);
+     sections[i].s_name[7] = 0;
    }
 
  /* initialize the NOFF header, in case not all the segments are defined
