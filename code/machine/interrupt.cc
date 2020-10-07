@@ -328,7 +328,7 @@ Interrupt::CheckIfDue(bool advanceClock)
 	 return FALSE;
     }
 
-    DEBUG('i', "Invoking interrupt handler for the %s at time %d\n", 
+    DEBUG('i', "Invoking interrupt handler for the %s at time %lld\n", 
 			intTypeNames[toOccur->type], toOccur->when);
 #ifdef USER_PROGRAM
     if (machine != NULL && status == UserMode)
