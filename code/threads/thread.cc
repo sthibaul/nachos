@@ -112,7 +112,7 @@ Thread::~Thread ()
 void
 Thread::Start (VoidFunctionPtr func, void *arg)
 {
-    DEBUG ('t', "Starting thread %p \"%s\" with func = %p, arg = %d\n",
+    DEBUG ('t', "Starting thread %p \"%s\" with func = %p, arg = %p\n",
 	   this, name, func, arg);
 
     ASSERT(status == JUST_CREATED);
