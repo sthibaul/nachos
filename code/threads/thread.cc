@@ -48,6 +48,7 @@ Thread::Thread (const char *threadName)
     name = threadName;
     stackTop = NULL;
     stack = NULL;
+    valgrind_id = 0;
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
     if (currentThread)
