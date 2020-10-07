@@ -166,7 +166,7 @@ Interrupt::OneTick()
 	stats->totalTicks += UserTick;
 	stats->userTicks += UserTick;
     }
-    DEBUG('i', "\n== Tick %d ==\n", stats->totalTicks);
+    DEBUG('i', "\n== Tick %lld ==\n", stats->totalTicks);
 
 // check any pending interrupts are now ready to fire
     ChangeLevel(IntOn, IntOff);		// first, turn off interrupts
