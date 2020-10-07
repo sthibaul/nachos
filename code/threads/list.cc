@@ -206,7 +206,7 @@ List::Mapcar (VoidFunctionPtr func)
 {
     for (ListElement * ptr = first; ptr != NULL; ptr = ptr->next)
       {
-	  DEBUG ('l', "In mapcar, about to invoke %x(%x)\n", func, ptr->item);
+	  DEBUG ('l', "In mapcar, about to invoke %p(%x)\n", func, ptr->item);
 	  (*func) (ptr->item);
       }
 }
