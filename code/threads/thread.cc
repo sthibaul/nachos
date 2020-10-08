@@ -91,6 +91,17 @@ Thread::~Thread ()
 }
 
 //----------------------------------------------------------------------
+// ThrashStack
+//      Fill the stack with bogus values, to avoid getting 0 values only by luck
+//----------------------------------------------------------------------
+void
+ThrashStack(void)
+{
+    char c[StackSize];
+    memset(c, 0x01, sizeof(c));
+}
+
+//----------------------------------------------------------------------
 // Thread::Start
 //      Invoke (*func)(arg), allowing caller and callee to execute 
 //      concurrently.

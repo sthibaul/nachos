@@ -148,6 +148,8 @@ class Thread:dontcopythis
 #endif
 };
 
+void ThrashStack(void);
+
 extern List ThreadList;
 
 #ifdef USER_PROGRAM

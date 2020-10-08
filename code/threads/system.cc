@@ -105,6 +105,7 @@ Initialize (int argc, char **argv)
     mallopt(M_PERTURB, 0xfefefefe);
 #endif
 #endif
+    ThrashStack();
 
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount)
       {
