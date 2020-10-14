@@ -9,6 +9,8 @@
 #include "copyright.h"
 #include "utility.h"
 
+#include <unistd.h>
+
 // this seems to be dependent on how the compiler is configured.
 // if you have problems with va_start, try both of these alternatives
 #if defined(HOST_SNAKE) || defined(HOST_SPARC) || defined(HOST_i386) || defined(HOST_PPC) || defined(HOST_x86_64)
@@ -28,7 +30,8 @@ static const char *enableFlags = NULL;	// controls which DEBUG messages are prin
 void
 SetColor (FILE *output, enum AnsiColor color)
 {
-    fprintf(output, "\e[%dm", 30 + color);
+    if (isatty(fileno(output)))
+	fprintf(output, "\e[%dm", 30 + color);
 }
 
 //----------------------------------------------------------------------
@@ -40,7 +43,8 @@ SetColor (FILE *output, enum AnsiColor color)
 void
 SetBold (FILE *output)
 {
-    fprintf(output, "\e[1m");
+    if (isatty(fileno(output)))
+	fprintf(output, "\e[1m");
 }
 
 //----------------------------------------------------------------------
@@ -52,7 +56,8 @@ SetBold (FILE *output)
 void
 ClearColor (FILE *output)
 {
-    fprintf(output, "\e[0m");
+    if (isatty(fileno(output)))
+	fprintf(output, "\e[0m");
 }
 
 //----------------------------------------------------------------------
