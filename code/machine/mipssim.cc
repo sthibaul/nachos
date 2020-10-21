@@ -43,8 +43,11 @@ Machine::Run()
     // from int to long long
     //    printf("Starting thread \"%s\" at time %d\n",
     //       currentThread->getName(), stats->totalTicks);
-      printf("Starting thread \"%s\" at time %lld\n",
-	     currentThread->getName(), stats->totalTicks);
+      printf("Starting thread \"%s\" at %d and %d at time %lld\n",
+	     currentThread->getName(),
+	     machine->ReadRegister(PCReg),
+	     machine->ReadRegister(NextPCReg),
+	     stats->totalTicks);
     // End of correction
 
     interrupt->setStatus(UserMode);
