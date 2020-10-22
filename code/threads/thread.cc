@@ -345,7 +345,7 @@ ThreadPrint (void *arg)
 
 //----------------------------------------------------------------------
 // Thread::StackAllocate
-//      Allocate and initialize an execution stack.  The stack is
+//      Allocate and initialize a kernel execution stack.  The stack is
 //      initialized with an initial stack frame for ThreadRoot, which:
 //              enables interrupts
 //              calls (*func)(arg)
