@@ -17,7 +17,7 @@
 // the data structures and operations needed to keep track of which 
 // thread is running, and which threads are ready but not running.
 
-class Scheduler:dontcopythis
+class Scheduler:public dontcopythis
 {
   public:
     Scheduler ();		// Initialize list of ready threads 

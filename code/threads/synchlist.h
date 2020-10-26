@@ -21,7 +21,7 @@
 //      wait until the list has an element on it.
 //      2. One thread at a time can access list data structures
 
-class SynchList:dontcopythis
+class SynchList:public dontcopythis
 {
   public:
     SynchList ();		// initialize a synchronized list

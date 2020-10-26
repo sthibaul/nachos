@@ -26,7 +26,7 @@
 #ifdef FILESYS_STUB			// Temporarily implement calls to 
 					// Nachos file system as calls to UNIX!
 					// See definitions listed under #else
-class OpenFile:dontcopythis {
+class OpenFile:public dontcopythis {
   public:
     OpenFile(int f) { file = f; currentOffset = 0; }	// open the file
     ~OpenFile() { Close(file); file = -1; }			// close the file
@@ -61,7 +61,7 @@ class OpenFile:dontcopythis {
 #else // FILESYS
 class FileHeader;
 
-class OpenFile:dontcopythis {
+class OpenFile:public dontcopythis {
   public:
     OpenFile(int sector);		// Open a file whose header is located
 					// at "sector" on the disk

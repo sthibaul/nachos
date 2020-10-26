@@ -27,7 +27,7 @@
 // Each bit represents whether the corresponding sector or page is
 // in use or free.
 
-class BitMap:dontcopythis
+class BitMap:public dontcopythis
 {
   public:
     BitMap (int nitems);	// Initialize a bitmap, with "nitems" bits

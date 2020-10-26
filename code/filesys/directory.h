@@ -48,7 +48,7 @@ class DirectoryEntry {
 // FetchFrom/WriteBack operations shuffle the directory information
 // from/to disk. 
 
-class Directory:dontcopythis {
+class Directory:public dontcopythis {
   public:
     Directory(int size); 		// Initialize an empty directory
 					// with space for "size" files

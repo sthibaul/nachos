@@ -38,7 +38,7 @@
 // by calling TX() has been "put", so that the next character can be
 // written.
 
-class Console:dontcopythis {
+class Console:public dontcopythis {
   public:
     Console(const char *readFile, const char *writeFile, VoidFunctionPtr readAvailHandler, 
 	VoidFunctionPtr writeDoneHandler, void *callArg);

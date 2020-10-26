@@ -107,7 +107,7 @@ class Instruction {
 // The procedures in this class are defined in machine.cc, mipssim.cc, and
 // translate.cc.
 
-class Machine:dontcopythis {
+class Machine:public dontcopythis {
   public:
     Machine(bool debug);	// Initialize the simulation of the hardware
 				// for running user programs

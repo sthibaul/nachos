@@ -24,7 +24,7 @@
 // Internal data structures kept public so that List operations can
 // access them directly.
 
-class ListElement:dontcopythis
+class ListElement:public dontcopythis
 {
   public:
     ListElement (void *itemPtr, long long sortKey);	// initialize a list element
@@ -41,7 +41,7 @@ class ListElement:dontcopythis
 // By using the "Sorted" functions, the list can be kept in sorted
 // in increasing order by "key" in ListElement.
 
-class List:dontcopythis
+class List:public dontcopythis
 {
   public:
     List ();			// initialize the list

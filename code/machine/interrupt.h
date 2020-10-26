@@ -75,7 +75,7 @@ class PendingInterrupt {
 // or disabled, and any hardware interrupts that are scheduled to occur
 // in the future.
 
-class Interrupt:dontcopythis {
+class Interrupt:public dontcopythis {
   public:
     Interrupt();			// initialize the interrupt simulation
     ~Interrupt();			// de-allocate data structures

@@ -24,7 +24,7 @@
 // This class provides the abstraction that for any individual thread
 // making a request, it waits around until the operation finishes before
 // returning.
-class SynchDisk:dontcopythis {
+class SynchDisk:public dontcopythis {
   public:
     SynchDisk(const char* name);    	// Initialize a synchronous disk,
 					// by initializing the raw Disk.

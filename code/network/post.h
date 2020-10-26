@@ -75,7 +75,7 @@ class Mail {
 // appropriate mailbox, and these messages can then be retrieved by
 // threads on this machine.
 
-class MailBox:dontcopythis {
+class MailBox:public dontcopythis {
   public: 
     MailBox();			// Allocate and initialize mail box
     ~MailBox();			// De-allocate mail box
@@ -99,7 +99,7 @@ class MailBox:dontcopythis {
 // Incoming messages are put by the PostOffice into the 
 // appropriate mailbox, waking up any threads waiting on Receive.
 
-class PostOffice:dontcopythis {
+class PostOffice:public dontcopythis {
   public:
     PostOffice(NetworkAddress addr, double reliability, int nBoxes);
 				// Allocate and initialize Post Office

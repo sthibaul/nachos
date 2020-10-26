@@ -75,7 +75,7 @@ extern void ThreadPrint (void *arg);
 //  Some threads also belong to a user address space; threads
 //  that only run in the kernel have a NULL address space.
 
-class Thread:dontcopythis
+class Thread:public dontcopythis
 {
   private:
     // NOTE: DO NOT CHANGE the order of these first two members.

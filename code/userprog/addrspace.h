@@ -21,7 +21,7 @@
 
 #define UserStacksAreaSize		1024	// increase this as necessary!
 
-class AddrSpace:dontcopythis
+class AddrSpace:public dontcopythis
 {
   public:
     AddrSpace (OpenFile * executable);	// Create an address space,

@@ -36,7 +36,7 @@
 // and some other thread might have called P or V, so the true value might
 // now be different.
 
-class Semaphore:dontcopythis
+class Semaphore:public dontcopythis
 {
   public:
     Semaphore (const char *debugName, int initialValue);	// set initial value
@@ -67,7 +67,7 @@ class Semaphore:dontcopythis
 // may release it.  As with semaphores, you can't read the lock value
 // (because the value might change immediately after you read it).  
 
-class Lock:dontcopythis
+class Lock:public dontcopythis
 {
   public:
     Lock (const char *debugName);	// initialize lock to be FREE
@@ -122,7 +122,7 @@ class Lock:dontcopythis
 // can acquire the lock, and change data structures, before the woken
 // thread gets a chance to run.
 
-class Condition:dontcopythis
+class Condition:public dontcopythis
 {
   public:
     Condition (const char *debugName);	// initialize condition to 

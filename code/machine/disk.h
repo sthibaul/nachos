@@ -52,7 +52,7 @@
 #define NumSectors 		(SectorsPerTrack * NumTracks)
 					// total # of sectors per disk
 
-class Disk:dontcopythis {
+class Disk:public dontcopythis {
   public:
     Disk(const char* name, VoidFunctionPtr callWhenDone, void *callArg);
     					// Create a simulated disk.  

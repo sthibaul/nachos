@@ -41,7 +41,7 @@
 #ifdef FILESYS_STUB 		// Temporarily implement file system calls as 
 				// calls to UNIX, until the real file system
 				// implementation is available
-class FileSystem:dontcopythis {
+class FileSystem:public dontcopythis {
   public:
     FileSystem(bool format) { (void) format; }
 
@@ -66,7 +66,7 @@ class FileSystem:dontcopythis {
 };
 
 #else // FILESYS
-class FileSystem:dontcopythis {
+class FileSystem:public dontcopythis {
   public:
     FileSystem(bool format);		// Initialize the file system.
 					// Must be called *after* "synchDisk" 
