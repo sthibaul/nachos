@@ -389,7 +389,8 @@ SWITCH
 
         .globl  ThreadRoot
 ThreadRoot:
-
+	.cfi_startproc
+	.cfi_undefined rip
         xorl    %ebp,%ebp
         pushl   %ebp
         movl    %esp,%ebp
@@ -402,6 +403,7 @@ ThreadRoot:
         movl    %ebp,%esp
         popl    %ebp
         ret
+	.cfi_endproc
 
 
 
@@ -470,7 +472,8 @@ SWITCH:
 
         .globl  ThreadRoot
 ThreadRoot:
-
+	.cfi_startproc
+	.cfi_undefined rip
         xorq    %rbp,%rbp
         pushq   %rbp
         movq    %rsp,%rbp
@@ -491,6 +494,7 @@ ThreadRoot:
         movq    %rbp,%rsp
         popq    %rbp
         ret
+	.cfi_endproc
 
 
 
