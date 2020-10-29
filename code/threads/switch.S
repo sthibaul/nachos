@@ -392,8 +392,6 @@ ThreadRoot:
 	.cfi_startproc
 	.cfi_undefined rip
         xorl    %ebp,%ebp
-        pushl   %ebp
-        movl    %esp,%ebp
         pushl   InitialArg
         call    *StartupPC
         call    *InitialPC
@@ -475,8 +473,6 @@ ThreadRoot:
 	.cfi_startproc
 	.cfi_undefined rip
         xorq    %rbp,%rbp
-        pushq   %rbp
-        movq    %rsp,%rbp
         pushq   WhenDonePC
         pushq   InitialPC
         pushq   InitialArg
