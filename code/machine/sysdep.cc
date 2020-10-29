@@ -455,7 +455,8 @@ void
 Abort()
 {
 #ifdef USER_PROGRAM
-    machine->DumpMem("abort.svg");
+    if (machine)
+	machine->DumpMem("abort.svg");
 #endif
     abort();
 }
