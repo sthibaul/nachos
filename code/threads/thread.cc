@@ -23,6 +23,10 @@
 #ifdef USER_PROGRAM
 #include "machine.h"
 #endif
+#ifdef __SANITIZE_ADDRESS__
+#include <pthread.h>
+#include <sanitizer/asan_interface.h>
+#endif
 
 
 #define STACK_FENCEPOST 0xdeadbeef	// this is put at the top of the
@@ -48,7 +52,15 @@ Thread::Thread (const char *threadName)
     name = threadName;
     stackTop = NULL;
     stack = NULL;
+
     valgrind_id = 0;
+
+#ifdef __SANITIZE_ADDRESS__
+    fake_stack = NULL;
+#endif
+    stack_size = 0;
+    main_stack = 0;
+
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
     if (currentThread)
@@ -63,6 +75,30 @@ Thread::Thread (const char *threadName)
     userRegisters[LoadValueReg] = 0;
 #endif
     ThreadList.Append(this);
+}
+
+//----------------------------------------------------------------------
+// Thread::SetMain
+//      Configures the thread as representing the main thread, i.e. the thread
+//      initially created by the OS, with an OS-provided stack.
+//----------------------------------------------------------------------
+
+void
+Thread::SetMain (void)
+{
+#ifdef __SANITIZE_ADDRESS__
+    pthread_attr_t attr;
+    void *addr;
+
+    pthread_getattr_np (pthread_self (), &attr);
+    pthread_attr_getstack (&attr, &addr, &stack_size);
+    pthread_attr_destroy (&attr);
+    stack = (unsigned long *) addr;
+#endif
+
+    main_stack = 1;
+
+    setStatus (RUNNING);
 }
 
 //----------------------------------------------------------------------
@@ -82,7 +118,7 @@ Thread::~Thread ()
     DEBUG ('t', "Deleting thread %p \"%s\"\n", this, name);
 
     ASSERT (this != currentThread);
-    if (stack != NULL) {
+    if (!main_stack && stack != NULL) {
 	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
 	VALGRIND_STACK_DEREGISTER (valgrind_id);
 	stack = NULL;
@@ -154,7 +190,7 @@ Thread::Start (VoidFunctionPtr func, void *arg)
 void
 Thread::CheckOverflow ()
 {
-    if (stack != NULL)
+    if (!main_stack && stack != NULL)
 #ifdef HOST_SNAKE		// Stacks grow upward on the Snakes
 	ASSERT (stack[StackSize - 1] == STACK_FENCEPOST);
 #else
@@ -295,6 +331,9 @@ InterruptEnable ()
 void 
 SetupThreadState ()
 {
+#ifdef __SANITIZE_ADDRESS__
+  __sanitizer_finish_switch_fiber (currentThread->fake_stack, NULL, NULL);
+#endif
 
   // LB: Similar to the second part of Scheduler::Run. This has to be
   // done each time a thread is scheduled, either by SWITCH, or by
@@ -359,6 +398,7 @@ void
 Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 {
     stack = (unsigned long *) AllocBoundedArray (StackSize * sizeof (unsigned long));
+    stack_size = StackSize * sizeof (unsigned long);
     valgrind_id = VALGRIND_STACK_REGISTER(stack, stack + StackSize);
 
 #ifdef HOST_SNAKE

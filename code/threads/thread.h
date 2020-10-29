@@ -85,6 +85,7 @@ class Thread:public dontcopythis
 
   public:
       Thread (const char *debugName);	// initialize a Thread 
+      void SetMain (void);		// initialize Thread as main thread
      ~Thread ();		// deallocate a Thread
     // NOTE -- thread being deleted
     // must not be running when delete 
@@ -119,13 +120,18 @@ class Thread:public dontcopythis
 				// Draw the state for thread
 #endif
 
-  private:
     // some of the private data for this class is listed above
 
-    unsigned long *stack;	// Bottom of the stack 
+    unsigned long *stack;	// Bottom of the stack
+    size_t stack_size;		// Stack size
     // NULL if this is the main thread
     // (If NULL, don't deallocate stack)
     unsigned int valgrind_id;	// valgrind ID for the stack
+#ifdef __SANITIZE_ADDRESS__
+    void *fake_stack;		// Fake stack of libasan
+#endif
+  private:
+    int main_stack;		// Whether this is the main stack provided by OS
     ThreadStatus status;	// ready, running or blocked
     const char *name;
 

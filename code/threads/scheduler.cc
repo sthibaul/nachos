@@ -21,6 +21,9 @@
 #include "copyright.h"
 #include "scheduler.h"
 #include "system.h"
+#ifdef __SANITIZE_ADDRESS__
+#include <sanitizer/asan_interface.h>
+#endif
 
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
@@ -133,7 +136,16 @@ Scheduler::Run (Thread * nextThread)
     // a bit to figure out what happens after this, both from the point
     // of view of the thread and from the perspective of the "outside world".
 
+#ifdef __SANITIZE_ADDRESS__
+    if (threadToBeDestroyed == oldThread)
+	__sanitizer_start_switch_fiber (NULL, nextThread->stack, nextThread->stack_size);
+    else
+	__sanitizer_start_switch_fiber (&oldThread->fake_stack, nextThread->stack, nextThread->stack_size);
+#endif
     SWITCH (oldThread, nextThread);
+#ifdef __SANITIZE_ADDRESS__
+    __sanitizer_finish_switch_fiber (currentThread->fake_stack, NULL, NULL);
+#endif
 
     DEBUG ('t', "Now in thread %p \"%s\"\n", currentThread, currentThread->getName ());
 

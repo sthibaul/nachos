@@ -172,7 +172,7 @@ Initialize (int argc, char **argv)
     // But if it ever tries to give up the CPU, we better have a Thread
     // object to save its state. 
     currentThread = new Thread ("main");
-    currentThread->setStatus (RUNNING);
+    currentThread->SetMain ();
 
     interrupt->Enable ();
     CallOnUserAbort (Cleanup);	// if user hits ctl-C
