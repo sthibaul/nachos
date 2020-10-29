@@ -15,6 +15,7 @@ SECTIONS
    _fdata = .;
   .data  . : {
     *(.rdata)
+    *(.rodata)
     *(.sdata)
     *(.data)
     CONSTRUCTORS
