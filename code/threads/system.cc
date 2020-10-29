@@ -204,37 +204,55 @@ Cleanup ()
     printf ("\nCleaning up...\n");
     /* Allow more interrupts but prevent other threads from continuing to use
      * the system while we are waiting for the last interrupts */
-    scheduler->Stop();
-    interrupt->Enable();
+    if (scheduler)
+	scheduler->Stop();
+    if (interrupt)
+	interrupt->Enable();
 
 #ifdef NETWORK
-    delete postOffice;
-    postOffice = NULL;
+    if (postOffice) {
+	delete postOffice;
+	postOffice = NULL;
+    }
 #endif
 
 #ifdef USER_PROGRAM
-    delete machine;
-    machine = NULL;
+    if (machine) {
+	delete machine;
+	machine = NULL;
+    }
 #endif
 
 #ifdef FILESYS_NEEDED
-    delete fileSystem;
-    fileSystem = NULL;
+    if (fileSystem) {
+	delete fileSystem;
+	fileSystem = NULL;
+    }
 #endif
 
 #ifdef FILESYS
-    delete synchDisk;
-    synchDisk = NULL;
+    if (synchDisk) {
+	delete synchDisk;
+	synchDisk = NULL;
+    }
 #endif
 
-    delete timer;
-    timer = NULL;
-    delete scheduler;
-    scheduler = NULL;
-    delete interrupt;
-    interrupt = NULL;
-    delete stats;
-    stats = NULL;
+    if (timer) {
+	delete timer;
+	timer = NULL;
+    }
+    if (scheduler) {
+	delete scheduler;
+	scheduler = NULL;
+    }
+    if (interrupt) {
+	delete interrupt;
+	interrupt = NULL;
+    }
+    if (stats) {
+	delete stats;
+	stats = NULL;
+    }
 
     ThreadList.Remove(currentThread);
 
