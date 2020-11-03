@@ -80,8 +80,8 @@ class Thread:public dontcopythis
   private:
     // NOTE: DO NOT CHANGE the order of these first two members.
     // THEY MUST be in this position for SWITCH to work.
-    unsigned long *stackTop;		// the current stack pointer
-    unsigned long machineState[MachineStateSize];	// all registers except for stackTop
+    unsigned long *stackTop;		// the current kernel stack pointer
+    unsigned long machineState[MachineStateSize];	// all kernel registers except for stackTop
 
   public:
       Thread (const char *debugName);	// initialize a Thread 
