@@ -221,7 +221,7 @@ Machine::DumpReg(FILE *output, int val, const char *name, const char *color,
     fprintf(output, "<text x=\"%d\" y=\"%u\" stroke=\"%s\" fill=\"%s\" font-size=\"%u\">%s</text>\n",
 	    ptr_x, y - page * blocksize, color, color, blocksize, name);
     fprintf(output, "<line x1=\"%d\" y1=\"%u\" x2=\"%u\" y2=\"%u\" "
-		    "stroke=\"#808080\" stroke-width=\"1\"/>\n",
+		    "stroke=\"#808080\" stroke-width=\"5\"/>\n",
 		    ptr_x + 3*blocksize/2,
 		    ptr_y - page * blocksize - blocksize/2,
 		    virtual_x + offset * blocksize + blocksize/2,
