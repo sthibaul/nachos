@@ -213,6 +213,10 @@ Console::TX(int ch)
     // Make sure that we are not already transferring a character
     ASSERT(putBusy == FALSE);
 
+    // Compensate when given a non-ascii latin1 character passed as signed char
+    if (ch < 0 && ch >= -128)
+	ch += 256;
+
     if (ch < 0x80 || strcmp(nl_langinfo(CODESET),"UTF-8")) {
 	/* Not UTF-8 or ASCII, assume 8bit locale */
 	c = ch;
