@@ -201,7 +201,16 @@ Initialize (int argc, char **argv)
 void
 Cleanup ()
 {
+    static int cleaning;
+
+    if (cleaning) {
+	printf ("\nCtrl-C while cleaning, stopping here hard.\n");
+	Exit (0);
+    }
+    cleaning = 1;
+
     printf ("\nCleaning up...\n");
+
     /* Allow more interrupts but prevent other threads from continuing to use
      * the system while we are waiting for the last interrupts */
     if (scheduler)
