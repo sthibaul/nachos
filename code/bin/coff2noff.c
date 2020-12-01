@@ -220,6 +220,8 @@ int main (int argc, char **argv)
 	    /* we don't need to copy the uninitialized data! */
 	} else if (!strcmp(sections[i].s_name, ".drop")) {
 	    /* Drop */
+	} else if (!strncmp(sections[i].s_name, ".debug", 6)) {
+	    /* Drop debug */
 	} else {
 	    fprintf(stderr, "Unknown segment type: %s\n", sections[i].s_name);
             unlink(noffFileName);
