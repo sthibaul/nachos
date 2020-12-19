@@ -204,8 +204,10 @@ List::Length (void)
 void
 List::Mapcar (VoidFunctionPtr func)
 {
-    for (ListElement * ptr = first; ptr != NULL; ptr = ptr->next)
+    ListElement *next;
+    for (ListElement * ptr = first; ptr != NULL; ptr = next)
       {
+	  next = ptr->next;
 	  DEBUG ('l', "In mapcar, about to invoke %p(%p)\n", func, ptr->item);
 	  (*func) (ptr->item);
       }
@@ -220,8 +222,10 @@ List::Mapcar (VoidFunctionPtr func)
 void
 List::Mapcar (VoidFunctionPtr2 func, void *arg)
 {
-    for (ListElement * ptr = first; ptr != NULL; ptr = ptr->next)
+    ListElement *next;
+    for (ListElement * ptr = first; ptr != NULL; ptr = next)
       {
+	  next = ptr->next;
 	  DEBUG ('l', "In mapcar, about to invoke %p(%p)\n", func, ptr->item);
 	  (*func) (ptr->item, arg);
       }
