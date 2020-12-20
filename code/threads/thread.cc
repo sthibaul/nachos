@@ -134,7 +134,7 @@ void
 ThrashStack(void)
 {
     char c[StackSize];
-    memset(c, 0x01, sizeof(c));
+    memset(c, 0x02, sizeof(c));
 }
 
 //----------------------------------------------------------------------
