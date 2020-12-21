@@ -63,11 +63,7 @@ Thread::Thread (const char *threadName)
 
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
-    if (currentThread)
-	// Inherit space from father
-	space = currentThread->space;
-    else
-	space = NULL;
+    space = NULL;
 
     // must be explicitly set to 0 since when Enabling interrupts,
     // DelayedLoad is called !!!
