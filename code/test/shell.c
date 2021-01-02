@@ -9,8 +9,8 @@ main ()
     char prompt[2], buffer[60];
     int i;
 
-    prompt[0] = '-';
-    prompt[1] = '-';
+    prompt[0] = '$';
+    prompt[1] = ' ';
 
     while (1)
       {
