@@ -1,0 +1,7 @@
+*.coff
+*.s
+matmult
+sort
+shell
+halt
+*.svg
