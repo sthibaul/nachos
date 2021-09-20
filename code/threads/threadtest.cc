@@ -46,7 +46,7 @@ ThreadTest ()
     DEBUG ('t', "Entering SimpleTest\n");
 
     Thread *t = new Thread ("forked thread");
-
     t->Start (SimpleThread, (void*) 1);
+
     SimpleThread (0);
 }
