@@ -63,7 +63,7 @@ OBJDUMP	:=	$(GCCDIR)/objdump
 
 CPP	:=	$(GCCDIR)/$(GCC) -E -P
 INCDIR	:=	-I../userprog -I../threads
-CFLAGS 	:=	-DIN_USER_MODE $(INCDIR) -Wall -O2 -DCHANGED
+CFLAGS 	:=	-G 0 -DIN_USER_MODE $(INCDIR) -Wall -O2 -DCHANGED -mno-gpopt -fno-pic -fno-PIC 
 
 SOURCES	:=	$(wildcard *.c)
 PROGS	:=	$(patsubst %.c,%,$(SOURCES))
