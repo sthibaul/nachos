@@ -174,6 +174,9 @@ OpenForReadWrite(const char *name, bool crashOnError)
 {
     int fd = open(name, O_RDWR, 0);
 
+    if (fd < 0 && errno == ENOENT)
+	fprintf(stderr, "No such file: %s\n", name);
+
     ASSERT(!crashOnError || fd >= 0);
     return fd;
 }
