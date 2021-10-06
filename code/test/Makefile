@@ -60,10 +60,11 @@ AS	:=	$(GCCDIR)/as
 LD	:=	$(GCCDIR)/ld
 STRIP	:=	$(GCCDIR)/strip
 OBJDUMP	:=	$(GCCDIR)/objdump
+NM	:=	$(GCCDIR)/nm
 
 CPP	:=	$(GCCDIR)/$(GCC) -E -P
 INCDIR	:=	-I../userprog -I../threads
-CFLAGS 	:=	-G 0 -DIN_USER_MODE $(INCDIR) -Wall -O2 -DCHANGED -mno-gpopt -fno-pic -fno-PIC 
+CFLAGS 	:=	-G 0 -DIN_USER_MODE $(INCDIR) -Wall -O2 -DCHANGED
 
 SOURCES	:=	$(wildcard *.c)
 PROGS	:=	$(patsubst %.c,%,$(SOURCES))
