@@ -473,7 +473,6 @@ ThreadRoot:
 	.cfi_startproc
 	.cfi_undefined rip
         xorq    %rbp,%rbp
-        subq    $8,%rsp                 /* Alignment for SSE */
         pushq   WhenDonePC
         pushq   InitialPC
         pushq   InitialArg
