@@ -116,16 +116,6 @@ Machine::RaiseException(ExceptionType which, int badVAddr)
 }
 
 //----------------------------------------------------------------------
-// Machine::CheckPointer
-//	Check that the pointer makes sense at all, otherwise hard-abort
-//	This allows to get a nice backtrace instead of failing later on.
-//----------------------------------------------------------------------
-void Machine::CheckPointer(int addr)
-{
-    ASSERT(addr >= PageSize && addr <= (int) machine->currentPageTableSize * PageSize);
-}
-
-//----------------------------------------------------------------------
 // Machine::Debugger
 // 	Primitive debugger for user programs.  Note that we can't use
 //	gdb to debug user programs, since gdb doesn't run on top of Nachos.

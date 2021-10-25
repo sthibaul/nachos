@@ -147,7 +147,6 @@ class Machine:public dontcopythis {
 				// Trap to the Nachos kernel, because of a
 				// system call or other exception.  
 
-    void CheckPointer(int addr); // check that the pointer makes sense, abort otherwise
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
     void DumpMem(const char *name);	// Draw the memory state
@@ -236,5 +235,8 @@ extern unsigned AddrSpacesRoom(unsigned blocksize);
 extern void DumpAddrSpaces(FILE *output,
 			   unsigned addr_x, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
 			   unsigned physical_x, unsigned y, unsigned blocksize);
+
+#define CheckPointer(addr) \
+    ASSERT_MSG(addr >= PageSize && addr <= (int) machine->currentPageTableSize * PageSize, "\naddress %d does not make sense!\n", addr)
 
 #endif // MACHINE_H

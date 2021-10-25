@@ -77,25 +77,27 @@ extern void SetBold(FILE *output);
 extern void ClearColor(FILE *output);
 
 //----------------------------------------------------------------------
-// ASSERT
+// ASSERT_MSG
 //      If condition is false,  print a message and dump core.
 //      Useful for documenting assumptions in the code.
 //
 //      NOTE: needs to be a #define, to be able to print the location 
 //      where the error occurred.
 //----------------------------------------------------------------------
-#define ASSERT(condition) do {                                                \
+#define ASSERT_MSG(condition, msg, ...) do {                                  \
     if (!(condition)) {                                                       \
         SetColor(stderr, ColorRed);                                           \
         SetBold(stderr);                                                      \
-        fprintf(stderr, "Assertion %s failed: line %d, file \"%s:%d\"\n",     \
+        fprintf(stderr, "Assertion %s failed: line %d, file \"%s:%d\"\n" msg, \
                 #condition,                                                   \
-                __LINE__, __FILE__, __LINE__);                                \
+                __LINE__, __FILE__, __LINE__, ## __VA_ARGS__);                \
         ClearColor(stderr);                                                   \
         fflush(stderr);                                                       \
         Abort();                                                              \
     }                                                                         \
   } while(0)
+
+#define ASSERT(condition) ASSERT_MSG(condition, "")
 
 /* A lot of classes should not be allowed to be copied, e.g. it doesn't make
  * sense to copy a Semaphore. To enforce this, inherit from this class. */
