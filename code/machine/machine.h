@@ -147,6 +147,7 @@ class Machine:public dontcopythis {
 				// Trap to the Nachos kernel, because of a
 				// system call or other exception.  
 
+    void CheckPointer(int addr); // check that the pointer makes sense, abort otherwise
     void Debugger();		// invoke the user program debugger
     void DumpState();		// print the user CPU and memory state 
     void DumpMem(const char *name);	// Draw the memory state

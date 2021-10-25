@@ -39,16 +39,15 @@ Machine::Run()
 
     if(DebugIsEnabled('m'))
 
-    // LB: Update the print format after the promotion of tick types
-    // from int to long long
-    //    printf("Starting thread \"%s\" at time %d\n",
-    //       currentThread->getName(), stats->totalTicks);
-      printf("Starting thread \"%s\" at %d and %d at time %lld\n",
+      printf("Starting thread \"%s\" at %d and %d with stack %d at time %lld\n",
 	     currentThread->getName(),
 	     machine->ReadRegister(PCReg),
 	     machine->ReadRegister(NextPCReg),
+	     machine->ReadRegister(StackReg),
 	     stats->totalTicks);
-    // End of correction
+    CheckPointer(machine->ReadRegister(PCReg));
+    CheckPointer(machine->ReadRegister(NextPCReg));
+    CheckPointer(machine->ReadRegister(StackReg));
 
     interrupt->setStatus(UserMode);
     for (;;) {
