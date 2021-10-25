@@ -420,7 +420,12 @@ CallOnUserAbort(VoidNoArgFunctionPtr func)
 void 
 BlockUserAbort(void)
 {
-    sighold(SIGINT);
+    sigset_t set;
+
+    sigemptyset(&set);
+    sigaddset(&set, SIGINT);
+
+    sigprocmask(SIG_BLOCK, &set, NULL);
 }
 
 
@@ -432,7 +437,12 @@ BlockUserAbort(void)
 void 
 UnBlockUserAbort(void)
 {
-    sigrelse(SIGINT);
+    sigset_t set;
+
+    sigemptyset(&set);
+    sigaddset(&set, SIGINT);
+
+    sigprocmask(SIG_UNBLOCK, &set, NULL);
 }
 
 
