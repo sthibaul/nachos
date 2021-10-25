@@ -487,7 +487,6 @@ ThreadRoot:
         popq    InitialArg
         popq    InitialPC
         popq    WhenDonePC
-        addq    $8, %rsp
         movq    %rbp,%rsp
         popq    %rbp
         ret
