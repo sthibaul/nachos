@@ -56,7 +56,7 @@ Copy(char *from, char *to)
     }
     
     openFile = fileSystem->Open(to);
-    ASSERT(openFile != NULL);
+    ASSERT_MSG(openFile != NULL, "couldn't open file %s", to);
     
 // Copy the data in TransferSize chunks
     buffer = new char[TransferSize];

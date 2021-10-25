@@ -117,7 +117,7 @@ main (int argc, char **argv)
 #ifdef USER_PROGRAM
 	  if (!strcmp (*argv, "-x"))
 	    {			// run a user program
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-x needs a program name\n");
 		StartProcess (*(argv + 1));
 		argCount = 2;
 	    }
@@ -127,7 +127,7 @@ main (int argc, char **argv)
 		    ConsoleTest (NULL, NULL);
 		else
 		  {
-		      ASSERT (argc > 2);
+		      ASSERT_MSG (argc > 2, "-c needs two file names\n");
 		      ConsoleTest (*(argv + 1), *(argv + 2));
 		      argCount = 3;
 		  }
@@ -136,19 +136,19 @@ main (int argc, char **argv)
 #ifdef FILESYS
 	  if (!strcmp (*argv, "-cp"))
 	    {			// copy from UNIX to Nachos
-		ASSERT (argc > 2);
+		ASSERT_MSG (argc > 2, "cp needs two file names\n");
 		Copy (*(argv + 1), *(argv + 2));
 		argCount = 3;
 	    }
 	  else if (!strcmp (*argv, "-p"))
 	    {			// print a Nachos file
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-p needs a file name\n");
 		Print (*(argv + 1));
 		argCount = 2;
 	    }
 	  else if (!strcmp (*argv, "-r"))
 	    {			// remove Nachos file
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-r needs a file name\n");
 		fileSystem->Remove (*(argv + 1));
 		argCount = 2;
 	    }
@@ -168,7 +168,7 @@ main (int argc, char **argv)
 #ifdef NETWORK
 	  if (!strcmp (*argv, "-o"))
 	    {
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-o needs a parameter");
 		Delay (2);	// delay for 2 seconds
 		// to give the user time to 
 		// start up another nachos

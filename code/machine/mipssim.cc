@@ -121,7 +121,7 @@ Machine::OneInstruction(Instruction *instr)
     if (DebugIsEnabled('m')) {
        struct OpString *str = &opStrings[instr->opCode];
 
-       ASSERT(instr->opCode <= MaxOpcode);
+       ASSERT_MSG(instr->opCode <= MaxOpcode, "Invalide opcode %d\n", instr->opCode);
        printf("At PC = 0x%x: ", registers[PCReg]);
        printf(str->string, TypeToReg(str->args[0], instr), 
 		TypeToReg(str->args[1], instr), TypeToReg(str->args[2], instr));
@@ -559,7 +559,7 @@ Machine::OneInstruction(Instruction *instr)
 	return;
 	
       default:
-	ASSERT(FALSE);
+	ASSERT_MSG(FALSE, "unknown opcode %d\n", instr->opCode);
     }
     
     // Now we have successfully executed the instruction.

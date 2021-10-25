@@ -75,7 +75,7 @@ AddrSpace::AddrSpace (OpenFile * executable)
 	(WordToHost (noffH.noffMagic) == NOFFMAGIC))
 	SwapHeader (&noffH);
     /* Check that this is really a MIPS program */
-    ASSERT (noffH.noffMagic == NOFFMAGIC);
+    ASSERT_MSG (noffH.noffMagic == NOFFMAGIC, "This is not a nachos binary!\n");
 
 // how big is address space?
     size = noffH.code.size + noffH.initData.size + noffH.uninitData.size + UserStacksAreaSize;	// we need to increase the size

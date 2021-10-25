@@ -123,7 +123,7 @@ Initialize (int argc, char **argv)
 	  else if (!strcmp (*argv, "-rs"))
 	    {
 		int seed;
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-rs needs a seed value\n");
 		seed = atoi (*(argv + 1));
 		if (seed == 0)
 		  {
@@ -146,13 +146,13 @@ Initialize (int argc, char **argv)
 #ifdef NETWORK
 	  if (!strcmp (*argv, "-l"))
 	    {
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-l needs a parameter\n");
 		rely = atof (*(argv + 1));
 		argCount = 2;
 	    }
 	  else if (!strcmp (*argv, "-m"))
 	    {
-		ASSERT (argc > 1);
+		ASSERT_MSG (argc > 1, "-m needs a parameter\n");
 		netname = atoi (*(argv + 1));
 		argCount = 2;
 	    }

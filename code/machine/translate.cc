@@ -115,7 +115,7 @@ Machine::ReadMem(int addr, int size, int *value, bool debug)
 	*value = WordToHost(data);
 	break;
 
-      default: ASSERT(FALSE);
+      default: ASSERT_MSG(FALSE, "Invalid size %d\n", size);
     }
     
     if (debug)
@@ -170,7 +170,7 @@ Machine::WriteMem(int addr, int size, int value)
 		= WordToMachine((unsigned int) value);
 	break;
 	
-      default: ASSERT(FALSE);
+      default: ASSERT_MSG(FALSE, "Invalid size %d\n", size);
     }
     
     return TRUE;
@@ -208,8 +208,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing, bool deb
     }
     
     // we must have either a TLB or a page table, but not both!
-    ASSERT(tlb == NULL || currentPageTable == NULL);	
-    ASSERT(tlb != NULL || currentPageTable != NULL);	
+    ASSERT_MSG(tlb == NULL || currentPageTable == NULL, "We don't have a TLB nor a page table!\n");	
+    ASSERT_MSG(tlb != NULL || currentPageTable != NULL, "We have both a TLB and a page table!\n");	
 
 // calculate the virtual page number, and offset within the page,
 // from the virtual address
@@ -261,7 +261,7 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing, bool deb
     if (writing)
 	entry->dirty = TRUE;
     *physAddr = pageFrame * PageSize + offset;
-    ASSERT((*physAddr >= 0) && ((*physAddr + size) <= MemorySize));
+    ASSERT_MSG((*physAddr >= 0) && ((*physAddr + size) <= MemorySize), "Invalid physical address %d (memory size is %d)\n", *physAddr, MemorySize);
     if (debug) DEBUG('a', "phys addr = 0x%x\n", *physAddr);
     return NoException;
 }

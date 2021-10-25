@@ -68,7 +68,7 @@ Semaphore::P ()
 {
     IntStatus oldLevel = interrupt->SetLevel (IntOff);	// disable interrupts
 
-    ASSERT(value >= 0);
+    ASSERT_MSG(value >= 0, "Semaphore became negative!?\n");
 
     while (value == 0)
       {				// semaphore not available
@@ -95,7 +95,7 @@ Semaphore::V ()
     Thread *thread;
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
 
-    ASSERT(value >= 0);
+    ASSERT_MSG(value >= 0, "Semaphore became negative!?\n");
 
     thread = (Thread *) queue->Remove ();
     if (thread != NULL)		// make thread ready, consuming the V immediately
@@ -110,8 +110,7 @@ Semaphore::V ()
 Lock::Lock (const char *debugName)
 {
     (void) debugName;
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 
 Lock::~Lock ()
@@ -120,21 +119,18 @@ Lock::~Lock ()
 void
 Lock::Acquire ()
 {
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 void
 Lock::Release ()
 {
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 
 Condition::Condition (const char *debugName)
 {
     (void) debugName;
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 
 Condition::~Condition ()
@@ -144,21 +140,18 @@ void
 Condition::Wait (Lock * conditionLock)
 {
     (void) conditionLock;
-    /* TODO */
-    ASSERT (FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 
 void
 Condition::Signal (Lock * conditionLock)
 {
     (void) conditionLock;
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }
 void
 Condition::Broadcast (Lock * conditionLock)
 {
     (void) conditionLock;
-    /* TODO */
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "TODO\n");
 }

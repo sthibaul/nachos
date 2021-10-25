@@ -424,13 +424,13 @@ Machine::DumpMem(const char *name)
 
 int Machine::ReadRegister(int num)
     {
-	ASSERT((num >= 0) && (num < NumTotalRegs));
+	ASSERT_MSG((num >= 0) && (num < NumTotalRegs), "Invalid register number %d\n", num);
 	return registers[num];
     }
 
 void Machine::WriteRegister(int num, int value)
     {
-	ASSERT((num >= 0) && (num < NumTotalRegs));
+	ASSERT_MSG((num >= 0) && (num < NumTotalRegs), "Invalid register number %d\n", num);
 	// DEBUG('m', "WriteRegister %d, value %d\n", num, value);
 	registers[num] = value;
     }

@@ -113,7 +113,7 @@ Thread::~Thread ()
 {
     DEBUG ('t', "Deleting thread %p \"%s\"\n", this, name);
 
-    ASSERT (this != currentThread);
+    ASSERT_MSG (this != currentThread, "Cannot destroy ourself!\n");
     if (!main_stack && stack != NULL) {
 	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
 	VALGRIND_STACK_DEREGISTER (valgrind_id);
@@ -159,7 +159,7 @@ Thread::Start (VoidFunctionPtr func, void *arg)
     DEBUG ('t', "Starting thread %p \"%s\" with func = %p, arg = %p\n",
 	   this, name, func, arg);
 
-    ASSERT(status == JUST_CREATED);
+    ASSERT_MSG(status == JUST_CREATED, "Cannot be started several times!\n");
     StackAllocate (func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
@@ -188,9 +188,9 @@ Thread::CheckOverflow ()
 {
     if (!main_stack && stack != NULL)
 #ifdef HOST_SNAKE		// Stacks grow upward on the Snakes
-	ASSERT (stack[StackSize - 1] == STACK_FENCEPOST);
+	ASSERT_MSG (stack[StackSize - 1] == STACK_FENCEPOST, "Stack overflow!\n");
 #else
-	ASSERT (*stack == (unsigned long) STACK_FENCEPOST);
+	ASSERT_MSG (*stack == (unsigned long) STACK_FENCEPOST, "Stack overflow!\n");
 #endif
 }
 
@@ -214,13 +214,13 @@ void
 Thread::Finish ()
 {
     (void) interrupt->SetLevel (IntOff);
-    ASSERT (this == currentThread);
+    ASSERT_MSG (this == currentThread, "Cannot finish another thread!\n");
 
     DEBUG ('t', "Finishing thread %p \"%s\"\n", this, getName ());
 
     // LB: Be careful to guarantee that no thread to be destroyed 
     // is ever lost 
-    ASSERT (threadToBeDestroyed == NULL);
+    ASSERT_MSG (threadToBeDestroyed == NULL, "A thread is already getting destroyed!?\n");
     // End of addition 
 
     threadToBeDestroyed = currentThread;
@@ -252,7 +252,7 @@ Thread::Yield ()
     Thread *nextThread;
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
 
-    ASSERT (this == currentThread);
+    ASSERT_MSG (this == currentThread, "Cannot yield from another thread\n");
 
     DEBUG ('t', "Yielding thread %p \"%s\"\n", this, getName ());
 
@@ -289,8 +289,8 @@ Thread::Sleep ()
 {
     Thread *nextThread;
 
-    ASSERT (this == currentThread);
-    ASSERT (interrupt->getLevel () == IntOff);
+    ASSERT_MSG (this == currentThread, "Cannot sleep for another thread\n");
+    ASSERT_MSG (interrupt->getLevel () == IntOff, "Cannot sleep while interrupts are off\n");
 
     DEBUG ('t', "Sleeping thread %p \"%s\"\n", this, getName ());
 

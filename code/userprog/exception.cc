@@ -84,8 +84,7 @@ ExceptionHandler (ExceptionType which)
 		  }
 		default:
 		  {
-		    printf("Unimplemented system call %d\n", type);
-		    ASSERT(FALSE);
+		    ASSERT_MSG(FALSE, "Unimplemented system call %d\n", type);
 		  }
 	      }
 
@@ -96,42 +95,40 @@ ExceptionHandler (ExceptionType which)
 
 	case PageFaultException:
 	  if (!address) {
-	    printf("NULL dereference at PC %x!\n", machine->registers[PCReg]);
-	    ASSERT (FALSE);
+	    ASSERT_MSG (FALSE, "NULL dereference at PC %x!\n", machine->registers[PCReg]);
 	  } else {
-	    printf ("Page Fault at address %x at PC %x\n", address, machine->registers[PCReg]);
-	    ASSERT (FALSE);	// For now
+	    // For now
+	    ASSERT_MSG (FALSE, "Page Fault at address %x at PC %x\n", address, machine->registers[PCReg]);
 	  }
 	  break;
 
 	case ReadOnlyException:
-	  printf ("Read-Only at address %x at PC %x\n", address, machine->registers[PCReg]);
-	  ASSERT (FALSE);	// For now
+	  // For now
+	  ASSERT_MSG (FALSE, "Read-Only at address %x at PC %x\n", address, machine->registers[PCReg]);
 	  break;
 
 	case BusErrorException:
-	  printf ("Invalid physical address at address %x at PC %x\n", address, machine->registers[PCReg]);
-	  ASSERT (FALSE);	// For now
+	  // For now
+	  ASSERT_MSG (FALSE, "Invalid physical address at address %x at PC %x\n", address, machine->registers[PCReg]);
 	  break;
 
 	case AddressErrorException:
-	  printf ("Invalid address %x at PC %x\n", address, machine->registers[PCReg]);
-	  ASSERT (FALSE);	// For now
+	  // For now
+	  ASSERT_MSG (FALSE, "Invalid address %x at PC %x\n", address, machine->registers[PCReg]);
 	  break;
 
 	case OverflowException:
-	  printf ("Overflow at PC %x\n", machine->registers[PCReg]);
-	  ASSERT (FALSE);	// For now
+	  // For now
+	  ASSERT_MSG (FALSE, "Overflow at PC %x\n", machine->registers[PCReg]);
 	  break;
 
 	case IllegalInstrException:
-	  printf ("Illegal instruction at PC %x\n", machine->registers[PCReg]);
-	  ASSERT (FALSE);	// For now
+	  // For now
+	  ASSERT_MSG (FALSE, "Illegal instruction at PC %x\n", machine->registers[PCReg]);
 	  break;
 
 	default:
-	  printf ("Unexpected user mode exception %d %d %x at PC %x\n", which, type, address, machine->registers[PCReg]);
-	  ASSERT (FALSE);
+	  ASSERT_MSG (FALSE, "Unexpected user mode exception %d %d %x at PC %x\n", which, type, address, machine->registers[PCReg]);
 	  break;
       }
 }

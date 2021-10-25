@@ -46,7 +46,7 @@ Console::Console(const char *readFile, const char *writeFile, VoidFunctionPtr re
 {
     if (readFile == NULL)
     {
-	ASSERT(!stdin_busy);
+	ASSERT_MSG(!stdin_busy, "stdin already used for a console\n");
 	stdin_busy = 1;
 	readFileNo = 0;					// keyboard = stdin
     }
@@ -192,8 +192,7 @@ Console::RX()
 {
    int ch = incoming;
 
-   // We should not be reading anything if no character was received yet
-   ASSERT(incoming != NOCHAR);
+   ASSERT_MSG(incoming != NOCHAR, "We should not be reading anything if no character was received yet\n");
 
    incoming = NOCHAR;
    return ch;
@@ -210,8 +209,7 @@ Console::TX(int ch)
 {
     unsigned char c;
 
-    // Make sure that we are not already transferring a character
-    ASSERT(putBusy == FALSE);
+    ASSERT_MSG(putBusy == FALSE, "We are already sending a character\n");
 
     // Compensate when given a non-ascii latin1 character passed as signed char
     if (ch < 0 && ch >= -128)

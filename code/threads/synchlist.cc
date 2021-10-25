@@ -79,7 +79,7 @@ SynchList::Remove ()
     while (list->IsEmpty ())
 	listEmpty->Wait (lock);	// wait until list isn't empty
     item = list->Remove ();
-    ASSERT (item != NULL);
+    ASSERT_MSG (item != NULL, "Could not find the item in the list!?\n");
     lock->Release ();
     return item;
 }

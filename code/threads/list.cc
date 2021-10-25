@@ -171,7 +171,7 @@ List::Remove (void *item)
 	  }
       }
 
-    ASSERT(FALSE);
+    ASSERT_MSG(FALSE, "Trying to remove %p from list which doesn't contain it\n", item);
 }
 
 //----------------------------------------------------------------------

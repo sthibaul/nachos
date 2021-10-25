@@ -157,7 +157,7 @@ OpenForWrite(const char *name)
 {
     int fd = open(name, O_RDWR|O_CREAT|O_TRUNC, 0666);
 
-    ASSERT(fd >= 0); 
+    ASSERT_MSG(fd >= 0, "Failed to open '%s' for write\n", name); 
     return fd;
 }
 
@@ -177,7 +177,7 @@ OpenForReadWrite(const char *name, bool crashOnError)
     if (fd < 0 && errno == ENOENT)
 	fprintf(stderr, "No such file: %s\n", name);
 
-    ASSERT(!crashOnError || fd >= 0);
+    ASSERT_MSG(!crashOnError || fd >= 0, "Failed to open '%s'\n", name);
     return fd;
 }
 
@@ -190,7 +190,7 @@ void
 Read(int fd, void *buffer, int nBytes)
 {
     int retVal = read(fd, buffer, nBytes);
-    ASSERT(retVal == nBytes);
+    ASSERT_MSG(retVal == nBytes, "Short read %d vs %d\n", retVal, nBytes);
 }
 
 //----------------------------------------------------------------------
@@ -215,7 +215,7 @@ void
 WriteFile(int fd, const void *buffer, int nBytes)
 {
     int retVal = write(fd, buffer, nBytes);
-    ASSERT(retVal == nBytes);
+    ASSERT_MSG(retVal == nBytes, "Short write %d vs %d\n", retVal, nBytes);
 }
 
 //----------------------------------------------------------------------
@@ -227,7 +227,7 @@ void
 Lseek(int fd, int offset, int whence)
 {
     int retVal = lseek(fd, offset, whence);
-    ASSERT(retVal >= 0);
+    ASSERT_MSG(retVal >= 0, "Couln't lseek to %d\n", retVal);
 }
 
 //----------------------------------------------------------------------
@@ -255,7 +255,7 @@ void
 Close(int fd)
 {
     int retVal = close(fd);
-    ASSERT(retVal >= 0); 
+    ASSERT_MSG(retVal >= 0, "Couldn't close file %d\n", fd); 
 }
 
 //----------------------------------------------------------------------
@@ -282,7 +282,7 @@ OpenSocket()
     int sockID;
     
     sockID = socket(AF_UNIX, SOCK_DGRAM, 0);
-    ASSERT(sockID >= 0);
+    ASSERT_MSG(sockID >= 0, "Couldn't open socket\n");
 
     return sockID;
 }
@@ -326,7 +326,7 @@ AssignNameToSocket(const char *socketName, int sockID)
 
     InitSocketName(&uName, socketName);
     retVal = bind(sockID, (struct sockaddr *) &uName, sizeof(uName));
-    ASSERT(retVal >= 0);
+    ASSERT_MSG(retVal >= 0, "Couldn't bind socket %d\n", sockID);
     DEBUG('n', "Created socket %s\n", socketName);
 }
 
@@ -379,7 +379,7 @@ ReadFromSocket(int sockID, void *buffer, int packetSize)
     if (retVal != packetSize) {
         perror("in recvfrom");
     }
-    ASSERT(retVal == packetSize);
+    ASSERT_MSG(retVal == packetSize, "Short receive %d vs %d\n", retVal, packetSize);
 }
 
 //----------------------------------------------------------------------
@@ -396,7 +396,7 @@ SendToSocket(int sockID, const void *buffer, int packetSize, const char *toName)
     InitSocketName(&uName, toName);
     retVal = sendto(sockID, buffer, packetSize, 0,
 			  (sockaddr *) &uName, sizeof(uName));
-    ASSERT(retVal == packetSize);
+    ASSERT_MSG(retVal == packetSize, "Short send %d vs %d\n", retVal, packetSize);
 }
 
 

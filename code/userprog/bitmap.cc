@@ -51,7 +51,7 @@ BitMap::~BitMap ()
 void
 BitMap::Mark (int which)
 {
-    ASSERT (which >= 0 && which < numBits);
+    ASSERT_MSG (which >= 0 && which < numBits, "Trying to mark %d outside bitmap (size %d)\n", which, numBits);
     map[which / BitsInWord] |= 1 << (which % BitsInWord);
 }
 
@@ -65,7 +65,7 @@ BitMap::Mark (int which)
 void
 BitMap::Clear (int which)
 {
-    ASSERT (which >= 0 && which < numBits);
+    ASSERT_MSG (which >= 0 && which < numBits, "Trying to clear %d outside bitmap (size %d)\n", which, numBits);
     map[which / BitsInWord] &= ~(1 << (which % BitsInWord));
 }
 
@@ -79,7 +79,7 @@ BitMap::Clear (int which)
 bool
 BitMap::Test (int which)
 {
-    ASSERT (which >= 0 && which < numBits);
+    ASSERT_MSG (which >= 0 && which < numBits, "Trying to test %d outside bitmap (size %d)\n", which, numBits);
 
     if (map[which / BitsInWord] & (1 << (which % BitsInWord)))
 	return TRUE;

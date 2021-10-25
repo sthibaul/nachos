@@ -44,7 +44,7 @@ StartProcess (char *filename)
 
     machine->DumpMem ("memory.svg");
     machine->Run ();		// jump to the user progam
-    ASSERT (FALSE);		// machine->Run never returns;
+    ASSERT_MSG (FALSE, "Machine->Run returned???\n");	// machine->Run never returns;
     // the address space exits
     // by doing the syscall "exit"
 }
