@@ -1,4 +1,4 @@
-// thread.cc 
+// thread.cc
 //      Routines to manage threads.  There are four main operations:
 //
 //      Start -- create a thread to run a procedure concurrently
@@ -7,11 +7,11 @@
 //      Finish -- called when the forked procedure finishes, to clean up
 //      Yield -- relinquish control over the CPU to another ready thread
 //      Sleep -- relinquish control over the CPU, but thread is now blocked.
-//              In other words, it will not run again, until explicitly 
+//              In other words, it will not run again, until explicitly
 //              put back on the ready queue.
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
@@ -29,9 +29,9 @@
 #endif
 
 
-#define STACK_FENCEPOST 0xdeadbeef	// this is put at the top of the
-					// execution stack, for detecting 
-					// stack overflows
+#define STACK_FENCEPOST 0xdeadbeef      // this is put at the top of the
+                                        // execution stack, for detecting
+                                        // stack overflows
 
 //----------------------------------------------------------------------
 // ThreadList
@@ -115,9 +115,9 @@ Thread::~Thread ()
 
     ASSERT_MSG (this != currentThread, "Cannot destroy ourself!\n");
     if (!main_stack && stack != NULL) {
-	DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
-	VALGRIND_STACK_DEREGISTER (valgrind_id);
-	stack = NULL;
+        DeallocBoundedArray ((char *) stack, StackSize * sizeof (unsigned long));
+        VALGRIND_STACK_DEREGISTER (valgrind_id);
+        stack = NULL;
     }
     ThreadList.Remove(this);
 }
@@ -135,7 +135,7 @@ ThrashStack(void)
 
 //----------------------------------------------------------------------
 // Thread::Start
-//      Invoke (*func)(arg), allowing caller and callee to execute 
+//      Invoke (*func)(arg), allowing caller and callee to execute
 //      concurrently.
 //
 //      NOTE: although our definition allows only a single integer argument
@@ -148,7 +148,7 @@ ThrashStack(void)
 //              2. Initialize the stack so that a call to SWITCH will
 //              cause it to run the procedure
 //              3. Put the thread on the ready queue
-//      
+//
 //      "func" is the procedure to run concurrently.
 //      "arg" is a single argument to be passed to the procedure.
 //----------------------------------------------------------------------
@@ -157,13 +157,13 @@ void
 Thread::Start (VoidFunctionPtr func, void *arg)
 {
     DEBUG ('t', "Starting thread %p \"%s\" with func = %p, arg = %p\n",
-	   this, name, func, arg);
+           this, name, func, arg);
 
     ASSERT_MSG(status == JUST_CREATED, "Cannot be started several times!\n");
     StackAllocate (func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel (IntOff);
-    scheduler->ReadyToRun (this);	// ReadyToRun assumes that interrupts 
+    scheduler->ReadyToRun (this);	// ReadyToRun assumes that interrupts
     // are disabled!
     (void) interrupt->SetLevel (oldLevel);
 }
@@ -188,24 +188,24 @@ Thread::CheckOverflow ()
 {
     if (!main_stack && stack != NULL)
 #ifdef HOST_SNAKE		// Stacks grow upward on the Snakes
-	ASSERT_MSG (stack[StackSize - 1] == STACK_FENCEPOST, "Stack overflow!\n");
+        ASSERT_MSG (stack[StackSize - 1] == STACK_FENCEPOST, "Stack overflow!\n");
 #else
-	ASSERT_MSG (*stack == (unsigned long) STACK_FENCEPOST, "Stack overflow!\n");
+        ASSERT_MSG (*stack == (unsigned long) STACK_FENCEPOST, "Stack overflow!\n");
 #endif
 }
 
 //----------------------------------------------------------------------
 // Thread::Finish
-//      Called by ThreadRoot when a thread is done executing the 
+//      Called by ThreadRoot when a thread is done executing the
 //      forked procedure.
 //
-//      NOTE: we don't immediately de-allocate the thread data structure 
-//      or the execution stack, because we're still running in the thread 
-//      and we're still on the stack!  Instead, we set "threadToBeDestroyed", 
+//      NOTE: we don't immediately de-allocate the thread data structure
+//      or the execution stack, because we're still running in the thread
+//      and we're still on the stack!  Instead, we set "threadToBeDestroyed",
 //      so that Scheduler::Run() will call the destructor, once we're
 //      running in the context of a different thread.
 //
-//      NOTE: we disable interrupts, so that we don't get a time slice 
+//      NOTE: we disable interrupts, so that we don't get a time slice
 //      between setting threadToBeDestroyed, and going to sleep.
 //----------------------------------------------------------------------
 
@@ -218,10 +218,10 @@ Thread::Finish ()
 
     DEBUG ('t', "Finishing thread %p \"%s\"\n", this, getName ());
 
-    // LB: Be careful to guarantee that no thread to be destroyed 
-    // is ever lost 
+    // LB: Be careful to guarantee that no thread to be destroyed
+    // is ever lost
     ASSERT_MSG (threadToBeDestroyed == NULL, "A thread is already getting destroyed!?\n");
-    // End of addition 
+    // End of addition
 
     threadToBeDestroyed = currentThread;
     Sleep ();			// invokes SWITCH
@@ -241,7 +241,7 @@ Thread::Finish ()
 //      NOTE: we disable interrupts, so that looking at the thread
 //      on the front of the ready list, and switching to it, can be done
 //      atomically.  On return, we re-set the interrupt level to its
-//      original state, in case we are called with interrupts disabled. 
+//      original state, in case we are called with interrupts disabled.
 //
 //      Similar to Thread::Sleep(), but a little different.
 //----------------------------------------------------------------------
@@ -259,8 +259,8 @@ Thread::Yield ()
     nextThread = scheduler->FindNextToRun ();
     if (nextThread != NULL)
       {
-	  scheduler->ReadyToRun (this);
-	  scheduler->Run (nextThread);
+          scheduler->ReadyToRun (this);
+          scheduler->Run (nextThread);
       }
     (void) interrupt->SetLevel (oldLevel);
 }
@@ -280,7 +280,7 @@ Thread::Yield ()
 //
 //      NOTE: we assume interrupts are already disabled, because it
 //      is called from the synchronization routines which must
-//      disable interrupts for atomicity.   We need interrupts off 
+//      disable interrupts for atomicity.   We need interrupts off
 //      so that there can't be a time slice between pulling the first thread
 //      off the ready list, and switching to it.
 //----------------------------------------------------------------------
@@ -296,7 +296,7 @@ Thread::Sleep ()
 
     status = BLOCKED;
     while ((nextThread = scheduler->FindNextToRun ()) == NULL)
-	interrupt->Idle ();	// no one to run, wait for an interrupt
+        interrupt->Idle ();        // no one to run, wait for an interrupt
 
     scheduler->Run (nextThread);	// returns when we've been signalled
 }
@@ -305,7 +305,7 @@ Thread::Sleep ()
 // ThreadFinish, InterruptEnable, ThreadPrint
 //      Dummy functions because C++ does not allow a pointer to a member
 //      function.  So in order to do this, we create a dummy C function
-//      (which we can pass a pointer to), that then simply calls the 
+//      (which we can pass a pointer to), that then simply calls the
 //      member function.
 //----------------------------------------------------------------------
 
@@ -324,7 +324,7 @@ InterruptEnable ()
 // up the pagetable correctly. This was missing from the original
 // version. Credits to Clement Menier for finding this bug!
 
-void 
+void
 SetupThreadState ()
 {
 #ifdef __SANITIZE_ADDRESS__
@@ -334,13 +334,13 @@ SetupThreadState ()
   // LB: Similar to the second part of Scheduler::Run. This has to be
   // done each time a thread is scheduled, either by SWITCH, or by
   // getting created.
-  
+
   if (threadToBeDestroyed != NULL)
     {
       delete threadToBeDestroyed;
       threadToBeDestroyed = NULL;
     }
-  
+
 #ifdef USER_PROGRAM
 
   // LB: Now, we have to simulate the RestoreUserState/RestoreState
@@ -365,7 +365,7 @@ SetupThreadState ()
 #endif // USER_PROGRAM
 
   // LB: The default level for interrupts is IntOn.
-  InterruptEnable (); 
+  InterruptEnable ();
 
 }
 
@@ -429,7 +429,7 @@ Thread::StackAllocate (VoidFunctionPtr func, void *arg)
     // machineState[StartupPCState] = (int) InterruptEnable;
     machineState[StartupPCState] = (unsigned long) SetupThreadState;
     // End of modification
-    
+
     machineState[InitialPCState] = (unsigned long) func;
     machineState[InitialArgState] = (unsigned long) arg;
     machineState[WhenDonePCState] = (unsigned long) ThreadFinish;
@@ -442,8 +442,8 @@ Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 // Thread::SaveUserState
 //      Save the CPU state of a user program on a context switch.
 //
-//      Note that a user program thread has *two* sets of CPU registers -- 
-//      one for its state while executing user code, one for its state 
+//      Note that a user program thread has *two* sets of CPU registers --
+//      one for its state while executing user code, one for its state
 //      while executing kernel code.  This routine saves the former.
 //----------------------------------------------------------------------
 
@@ -451,15 +451,15 @@ void
 Thread::SaveUserState ()
 {
     for (int i = 0; i < NumTotalRegs; i++)
-	userRegisters[i] = machine->ReadRegister (i);
+        userRegisters[i] = machine->ReadRegister (i);
 }
 
 //----------------------------------------------------------------------
 // Thread::RestoreUserState
 //      Restore the CPU state of a user program on a context switch.
 //
-//      Note that a user program thread has *two* sets of CPU registers -- 
-//      one for its state while executing user code, one for its state 
+//      Note that a user program thread has *two* sets of CPU registers --
+//      one for its state while executing user code, one for its state
 //      while executing kernel code.  This routine restores the former.
 //----------------------------------------------------------------------
 
@@ -467,7 +467,7 @@ void
 Thread::RestoreUserState ()
 {
     for (int i = 0; i < NumTotalRegs; i++)
-	machine->WriteRegister (i, userRegisters[i]);
+        machine->WriteRegister (i, userRegisters[i]);
 }
 
 //----------------------------------------------------------------------
@@ -478,11 +478,11 @@ void
 Thread::DumpThreadState(FILE *output, int ptr_x, int ptr_y, unsigned virtual_x, unsigned virtual_y, unsigned blocksize)
 {
     if (this == currentThread)
-	machine->DumpRegs(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
+        machine->DumpRegs(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
     else
     {
-	machine->DumpReg(output, userRegisters[PCReg], "PC", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
-	machine->DumpReg(output, userRegisters[StackReg], "SP", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
+        machine->DumpReg(output, userRegisters[PCReg], "PC", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
+        machine->DumpReg(output, userRegisters[StackReg], "SP", "#000000", ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
     }
 }
 
@@ -501,30 +501,30 @@ DumpThreadsState(FILE *output, AddrSpace *space, unsigned ptr_x, unsigned virtua
     unsigned ptr_y;
     if (nthreads == 1)
       {
-	y_offset = 0;
-	ptr_y = virtual_y;
+        y_offset = 0;
+        ptr_y = virtual_y;
       }
     else
       {
-	y_offset = (blocksize/2) / (nthreads-1);
-	ptr_y = virtual_y - (blocksize/4);
+        y_offset = (blocksize/2) / (nthreads-1);
+        ptr_y = virtual_y - (blocksize/4);
       }
 
     for (element = ThreadList.FirstElement();
-	 element;
-	 element = element->next)
+         element;
+         element = element->next)
       {
-	Thread *thread = (Thread *) element->item;
-	if (thread->space != space)
-	    continue;
+        Thread *thread = (Thread *) element->item;
+        if (thread->space != space)
+            continue;
 
-	thread->DumpThreadState(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
+        thread->DumpThreadState(output, ptr_x, ptr_y, virtual_x, virtual_y, blocksize);
 
-	// Offset names a bit on the left
-	ptr_x -= blocksize;
+        // Offset names a bit on the left
+        ptr_x -= blocksize;
 
-	// And offset lines a bit down
-	ptr_y += y_offset;
+        // And offset lines a bit down
+        ptr_y += y_offset;
       }
 }
 

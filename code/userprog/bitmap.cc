@@ -1,17 +1,17 @@
-// bitmap.c 
+// bitmap.c
 //      Routines to manage a bitmap -- an array of bits each of which
 //      can be either on or off.  Represented as an array of integers.
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
 #include "bitmap.h"
 
 // Definitions helpful for representing a bitmap as an array of integers
-#define BitsInByte 	8
-#define BitsInWord 	32
+#define BitsInByte	8
+#define BitsInWord	32
 
 //----------------------------------------------------------------------
 // BitMap::BitMap
@@ -27,7 +27,7 @@ BitMap::BitMap (int nitems)
     numWords = divRoundUp (numBits, BitsInWord);
     map = new unsigned int[numWords];
     for (int i = 0; i < numBits; i++)
-	Clear (i);
+        Clear (i);
 }
 
 //----------------------------------------------------------------------
@@ -82,9 +82,9 @@ BitMap::Test (int which)
     ASSERT_MSG (which >= 0 && which < numBits, "Trying to test %d outside bitmap (size %d)\n", which, numBits);
 
     if (map[which / BitsInWord] & (1 << (which % BitsInWord)))
-	return TRUE;
+        return TRUE;
     else
-	return FALSE;
+        return FALSE;
 }
 
 //----------------------------------------------------------------------
@@ -100,11 +100,11 @@ int
 BitMap::Find ()
 {
     for (int i = 0; i < numBits; i++)
-	if (!Test (i))
-	  {
-	      Mark (i);
-	      return i;
-	  }
+        if (!Test (i))
+          {
+              Mark (i);
+              return i;
+          }
     return -1;
 }
 
@@ -120,8 +120,8 @@ BitMap::NumClear ()
     int count = 0;
 
     for (int i = 0; i < numBits; i++)
-	if (!Test (i))
-	    count++;
+        if (!Test (i))
+            count++;
     return count;
 }
 
@@ -138,8 +138,8 @@ BitMap::Print ()
 {
     printf ("Bitmap set:\n");
     for (int i = 0; i < numBits; i++)
-	if (Test (i))
-	    printf ("%d, ", i);
+        if (Test (i))
+            printf ("%d, ", i);
     printf ("\n");
 }
 

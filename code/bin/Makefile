@@ -2,10 +2,10 @@
 #
 # Makefile for:
 #	coff2noff -- converts a normal MIPS executable into a Nachos executable
-#	disassemble -- disassembles a normal MIPS executable 
+#	disassemble -- disassembles a normal MIPS executable
 #
 # Copyright (c) 1992 The Regents of the University of California.
-# All rights reserved.  See copyright.h for copyright notice and limitation 
+# All rights reserved.  See copyright.h for copyright notice and limitation
 # of liability and disclaimer of warranty provisions.
 
 NACHOS_ROOT = ../../

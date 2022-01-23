@@ -1,4 +1,4 @@
-// utility.h 
+// utility.h
 //      Miscellaneous useful definitions, including debugging routines.
 //
 //      The debugging routines allow the user to turn on selected
@@ -17,7 +17,7 @@
 //      'n' -- network emulation (NETWORK)
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #ifndef UTILITY_H
@@ -30,19 +30,19 @@
 #include <bool.h>	// Boolean values
 #include <algorithm>	// min
 
-// Divide and either round up or down 
+// Divide and either round up or down
 #define divRoundDown(n,s)  ((n) / (s))
 #define divRoundUp(n,s)    (((n) / (s)) + ((((n) % (s)) > 0) ? 1 : 0))
 
 enum AnsiColor {
-	ColorBlack,
-	ColorRed,
-	ColorGreen,
-	ColorYellow,
-	ColorBlue,
-	ColorMagenta,
-	ColorCyan,
-	ColorWhite,
+        ColorBlack,
+        ColorRed,
+        ColorGreen,
+        ColorYellow,
+        ColorBlue,
+        ColorMagenta,
+        ColorCyan,
+        ColorWhite,
 };
 
 // This declares the type "VoidFunctionPtr" to be a "pointer to a
@@ -69,8 +69,8 @@ extern void DebugInit (const char *flags);	// enable printing debug messages
 
 extern bool DebugIsEnabled (char flag);	// Is this debug flag enabled?
 
-extern void DEBUG (char flag, const char *format, ...);	// Print debug message 
-							// if flag is enabled
+extern void DEBUG (char flag, const char *format, ...); // Print debug message
+                                                        // if flag is enabled
 
 extern void SetColor(FILE *output, enum AnsiColor color);
 extern void SetBold(FILE *output);
@@ -81,7 +81,7 @@ extern void ClearColor(FILE *output);
 //      If condition is false,  print a message and dump core.
 //      Useful for documenting assumptions in the code.
 //
-//      NOTE: needs to be a #define, to be able to print the location 
+//      NOTE: needs to be a #define, to be able to print the location
 //      where the error occurred.
 //----------------------------------------------------------------------
 #define ASSERT_MSG(condition, msg, ...) do {                                  \
@@ -103,11 +103,11 @@ extern void ClearColor(FILE *output);
  * sense to copy a Semaphore. To enforce this, inherit from this class. */
 
 class dontcopythis {
-	private:
-		dontcopythis (const dontcopythis &);
-		dontcopythis& operator= (const dontcopythis&);
-	public:
-		dontcopythis() {};
+        private:
+                dontcopythis (const dontcopythis &);
+                dontcopythis& operator= (const dontcopythis&);
+        public:
+                dontcopythis() {};
 };
 
 #endif /* UTILITY_H */

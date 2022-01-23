@@ -32,7 +32,7 @@ typedef struct aouthdr {
         int     gp_value;       /* the gp value used for this object    */
       } AOUTHDR;
 #define AOUTHSZ sizeof(AOUTHDR)
- 
+
 
 struct scnhdr {
         char            s_name[8];      /* section name */
@@ -46,4 +46,4 @@ struct scnhdr {
         unsigned short  s_nlnno;        /* number of gp histogram entries */
         int             s_flags;        /* flags */
       };
- 
+

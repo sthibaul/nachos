@@ -5,12 +5,12 @@
  *	the registers to be saved, how to set up an initial
  *	call frame, etc, are all specific to a processor architecture.
  *
- * 	This file currently supports the DEC MIPS and SUN SPARC architectures.
+ *	This file currently supports the DEC MIPS and SUN SPARC architectures.
  */
 
 /*
  Copyright (c) 1992-1993 The Regents of the University of California.
- All rights reserved.  See copyright.h for copyright notice and limitation 
+ All rights reserved.  See copyright.h for copyright notice and limitation
  of liability and disclaimer of warranty provisions.
  */
 
@@ -21,8 +21,8 @@
 
 #ifdef HOST_MIPS
 
-/* Registers that must be saved during a context switch. 
- * These are the offsets from the beginning of the Thread object, 
+/* Registers that must be saved during a context switch.
+ * These are the offsets from the beginning of the Thread object,
  * in bytes, used in switch.s
  */
 #define SP 0

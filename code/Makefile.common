@@ -1,15 +1,15 @@
 # This is part of a GNU Makefile, included by the Makefiles in
-# each of the subdirectories.  
+# each of the subdirectories.
 #
 # This file includes all of the baseline code provided by Nachos.
-# Whenever you add a .h or .cc file, put it in the appropriate 
+# Whenever you add a .h or .cc file, put it in the appropriate
 # _H,_C, or _O list.
 #
 # The dependency graph between assignments is:
 #   1. THREADS before everything else
 #   2. USERPROG must come before VM
-#   3. USERPROG can come before or after FILESYS, but if USERPROG comes 
-#	before (as in this distribution), then it must define FILESYS_STUB
+#   3. USERPROG can come before or after FILESYS, but if USERPROG comes
+#      before (as in this distribution), then it must define FILESYS_STUB
 #
 #   Other than that, you have complete flexibility.
 #
@@ -19,32 +19,32 @@
 # you need to call some inline functions from the debugger.
 
 # Copyright (c) 1992 The Regents of the University of California.
-# All rights reserved.  See copyright.h for copyright notice and limitation 
+# All rights reserved.  See copyright.h for copyright notice and limitation
 # of liability and disclaimer of warranty provisions.
 
 ###########################################################################
 # RN: Sets of objects file to be linked for each nachos flavor. This
 # is the only section you may need to modify when adding files in nachos.
 #
-THREAD_O	:=	main.o list.o scheduler.o synch.o synchlist.o \
-			system.o thread.o utility.o threadtest.o interrupt.o \
-			stats.o sysdep.o timer.o
+THREAD_O        :=      main.o list.o scheduler.o synch.o synchlist.o \
+                        system.o thread.o utility.o threadtest.o interrupt.o \
+                        stats.o sysdep.o timer.o
 
-USERPROG_O	:=	addrspace.o bitmap.o exception.o progtest.o console.o \
-			machine.o mipssim.o translate.o
+USERPROG_O      :=      addrspace.o bitmap.o exception.o progtest.o console.o \
+                        machine.o mipssim.o translate.o
 
-VM_O		:=
+VM_O            :=
 
-FILESYS_O	:=	directory.o filehdr.o filesys.o fstest.o openfile.o \
-			synchdisk.o disk.o
+FILESYS_O       :=      directory.o filehdr.o filesys.o fstest.o openfile.o \
+                        synchdisk.o disk.o
 
-NETWORK_O	:=	nettest.o post.o network.o
+NETWORK_O       :=      nettest.o post.o network.o
 #
 ###########################################################################
 
-S_OFILES	:=	switch.o
+S_OFILES        :=      switch.o
 
-CFLAGS = -g -Wall -Wextra -Wshadow $(INCPATH) $(DEFINES) $(HOST) -DCHANGED 
+CFLAGS = -g -Wall -Wextra -Wshadow $(INCPATH) $(DEFINES) $(HOST) -DCHANGED
 LDFLAGS = -g
 ASFLAGS = -g
 
@@ -55,20 +55,20 @@ CC = g++
 LD = g++
 AS = gcc -c
 
-PROGRAM		:=	nachos
+PROGRAM         :=      nachos
 
-MAKEFILES	:=	Makefile \
-			../Makefile.common \
-			../Makefile.dep
+MAKEFILES       :=      Makefile \
+                        ../Makefile.common \
+                        ../Makefile.dep
 
-OFILES		:=	$(strip $(C_OFILES) $(S_OFILES))
+OFILES          :=      $(strip $(C_OFILES) $(S_OFILES))
 
 # RN: Dependency files start with a '.' to avoid annoying completion
 # confusion under shell, emacs, etc.
 
-C_DFILES	:=	$(patsubst %.o,.%.d,$(C_OFILES))
-S_DFILES	:=	$(patsubst %.o,.%.d,$(S_OFILES))
-DFILES		:=	$(strip $(C_DFILES) $(S_DFILES))
+C_DFILES        :=      $(patsubst %.o,.%.d,$(C_OFILES))
+S_DFILES        :=      $(patsubst %.o,.%.d,$(S_OFILES))
+DFILES          :=      $(strip $(C_DFILES) $(S_DFILES))
 
 # RN: Hummm... There's a lot to tell about the story of the two
 # following lines. Essentially, it allows 'make' to implicitely search
@@ -76,16 +76,16 @@ DFILES		:=	$(strip $(C_DFILES) $(S_DFILES))
 # Makefile was not using this 'vpath' feature, although it was using
 # the aforementioned implicit search policy! The problem came from
 # the rule:
-#	$(C_OFILES): %.o:
-# 		$(CC) blabla...
+#   $(C_OFILES): %.o:
+#   	$(CC) blabla...
 # which is correct if .o files have no extra dependency rules. In this
 # case, 'make' finds the associated .cc file in the directories it
 # knows of (because they were listed in some macros!). However, if we add
 # a rule such as
-# 	$(C_OFILES): toto
+#   $(C_OFILES): toto
 # then 'make' tries to compile 'toto' each time it rebuilds a ".o"
 # file. As a result, the former rule was modified as follows
-# 	$(C_OFILES): %.o: %.cc
+#   $(C_OFILES): %.o: %.cc
 # As you may guess, it did'nt work because 'make' was no longer using
 # its @#!^# implicit policy in this case. Crazy, isn't it? Fortunately,
 # there's a GNU extension that requires 'make' to use a "search path" for

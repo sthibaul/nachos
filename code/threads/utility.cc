@@ -1,9 +1,9 @@
-// utility.cc 
-//      Debugging routines.  Allows users to control whether to 
+// utility.cc
+//      Debugging routines.  Allows users to control whether to
 //      print DEBUG statements, based on a command line argument.
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
@@ -19,7 +19,7 @@
 #include "/usr/include/stdarg.h"
 #endif
 
-static const char *enableFlags = NULL;	// controls which DEBUG messages are printed 
+static const char *enableFlags = NULL;	// controls which DEBUG messages are printed
 
 //----------------------------------------------------------------------
 // SetColor
@@ -31,7 +31,7 @@ void
 SetColor (FILE *output, enum AnsiColor color)
 {
     if (isatty(fileno(output)))
-	fprintf(output, "\e[%dm", 30 + color);
+        fprintf(output, "\e[%dm", 30 + color);
 }
 
 //----------------------------------------------------------------------
@@ -44,7 +44,7 @@ void
 SetBold (FILE *output)
 {
     if (isatty(fileno(output)))
-	fprintf(output, "\e[1m");
+        fprintf(output, "\e[1m");
 }
 
 //----------------------------------------------------------------------
@@ -57,17 +57,17 @@ void
 ClearColor (FILE *output)
 {
     if (isatty(fileno(output)))
-	fprintf(output, "\e[0m");
+        fprintf(output, "\e[0m");
 }
 
 //----------------------------------------------------------------------
 // DebugInit
-//      Initialize so that only DEBUG messages with a flag in flagList 
+//      Initialize so that only DEBUG messages with a flag in flagList
 //      will be printed.
 //
 //      If the flag is "+", we enable all DEBUG messages.
 //
-//      "flagList" is a string of characters for whose DEBUG messages are 
+//      "flagList" is a string of characters for whose DEBUG messages are
 //              to be enabled.
 //----------------------------------------------------------------------
 
@@ -86,10 +86,10 @@ bool
 DebugIsEnabled (char flag)
 {
     if (enableFlags != NULL)
-	return (strchr (enableFlags, flag) != 0)
-	    || (strchr (enableFlags, '+') != 0);
+        return (strchr (enableFlags, flag) != 0)
+            || (strchr (enableFlags, '+') != 0);
     else
-	return FALSE;
+        return FALSE;
 }
 
 //----------------------------------------------------------------------
@@ -103,13 +103,13 @@ DEBUG (char flag, const char *format, ...)
 {
     if (DebugIsEnabled (flag))
       {
-	  va_list ap;
-	  // You will get an unused variable message here -- ignore it.
-	  va_start (ap, format);
-	  SetColor(stdout, ColorMagenta);
-	  vfprintf (stdout, format, ap);
-	  ClearColor(stdout);
-	  va_end (ap);
-	  fflush (stdout);
+          va_list ap;
+          // You will get an unused variable message here -- ignore it.
+          va_start (ap, format);
+          SetColor(stdout, ColorMagenta);
+          vfprintf (stdout, format, ap);
+          ClearColor(stdout);
+          va_end (ap);
+          fflush (stdout);
       }
 }

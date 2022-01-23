@@ -1,6 +1,6 @@
 /*
  Copyright (c) 1992-1993 The Regents of the University of California.
- All rights reserved.  See copyright.h for copyright notice and limitation 
+ All rights reserved.  See copyright.h for copyright notice and limitation
  of liability and disclaimer of warranty provisions.
  */
 
@@ -62,7 +62,7 @@ char *storage_class[] = {
   "Bits", "CdbSystem", "RegImage", "Info", "UserStruct", "SData", "SBss",
   "RData", "Var", "Common", "SCommon", "VarRegister", "Variant", "SUndefined",
   "Init" };
-	  
+
 main(argc,argv)
 int argc;
 char *argv[];
@@ -93,8 +93,8 @@ char *argv[];
   for (i=0; i < filehdr.f_nscns; ++i) {
     read_struct(f,scnhdr[i]);
     if (scnhdr[i].s_size > MAXDATA*sizeof(long) &&
-	scnhdr[i].s_scnptr != 0 ||
-	scnhdr[i].s_nreloc > MAXRELOCS) {
+        scnhdr[i].s_scnptr != 0 ||
+        scnhdr[i].s_nreloc > MAXRELOCS) {
       printf("section %s is too big.\n",scnhdr[i].s_name);
       exit(1);
     }
@@ -179,7 +179,7 @@ int n;
     ++column;
   }
   return column == n;
-}  
+}
 
 mysetfile(f)
 FILE *f;
@@ -200,7 +200,7 @@ int i;
   char *s;
 
   printf("Section: %s\t%d/%d\n",scnhdr[i].s_name,
-	 scnhdr[i].s_size,section[i].relocs);
+         scnhdr[i].s_size,section[i].relocs);
   is_text =  (strncmp(scnhdr[i].s_name,".text",5) == 0);
 
   for (j=0; j < section[i].length; ++j) {
@@ -212,8 +212,8 @@ int i;
       printf("%08x: %08x  ", pc,word);
       s = (char *)&word;
       for (k=0;k<4;++k) {
-	if (s[k] >= ' ' && s[k] < 127) printf("%c",s[k]);
-	else printf(".");
+        if (s[k] >= ' ' && s[k] < 127) printf("%c",s[k]);
+        else printf(".");
       }
       printf("\t%d",word);
     }
@@ -240,13 +240,13 @@ int i,j;
     if (vaddr == rp->r_vaddr) {
       mytab(57);
       if (rp->r_extern) {
-	if (rp->r_symndx >= MAXSYMS) {
-	  printf("sym $%d",rp->r_symndx);
-	} else {
-	  printf("\"%s\"",&sspace[symbols[rp->r_symndx].asym.iss]);
-	}
+        if (rp->r_symndx >= MAXSYMS) {
+          printf("sym $%d",rp->r_symndx);
+        } else {
+          printf("\"%s\"",&sspace[symbols[rp->r_symndx].asym.iss]);
+        }
       } else {
-	printf("%s",section_name[rp->r_symndx]);
+        printf("%s",section_name[rp->r_symndx]);
       }
       printf(" %s",reloc_type[rp->r_type]);
       break;

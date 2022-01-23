@@ -1,8 +1,8 @@
-// system.cc 
+// system.cc
 //      Nachos initialization and cleanup routines.
 //
 // Copyright (c) 1992-1993 The Regents of the University of California.
-// All rights reserved.  See copyright.h for copyright notice and limitation 
+// All rights reserved.  See copyright.h for copyright notice and limitation
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
@@ -21,7 +21,7 @@ Scheduler *scheduler;		// the ready list
 Interrupt *interrupt;		// interrupt status
 Statistics *stats;		// performance metrics
 Timer *timer;			// the hardware timer device,
-					// for invoking context switches
+                                        // for invoking context switches
 
 #ifdef FILESYS_NEEDED
 FileSystem *fileSystem;
@@ -54,8 +54,8 @@ extern void Cleanup ();
 //      Note that instead of calling Yield() directly (which would
 //      suspend the interrupt handler, not the interrupted thread
 //      which is what we wanted to context switch), we set a flag
-//      so that once the interrupt handler is done, it will appear as 
-//      if the interrupted thread called Yield at the point it is 
+//      so that once the interrupt handler is done, it will appear as
+//      if the interrupted thread called Yield at the point it is
 //      was interrupted.
 //
 //      "dummy" is because every interrupt handler takes one argument,
@@ -66,16 +66,16 @@ TimerInterruptHandler (void *dummy)
 {
     (void) dummy;
     if (interrupt->getStatus () != IdleMode)
-	interrupt->YieldOnReturn ();
+        interrupt->YieldOnReturn ();
 }
 
 //----------------------------------------------------------------------
 // Initialize
 //      Initialize Nachos global data structures.  Interpret command
-//      line arguments in order to determine flags for the initialization.  
-// 
+//      line arguments in order to determine flags for the initialization.
+//
 //      "argc" is the number of command line arguments (including the name
-//              of the command) -- ex: "nachos -d +" -> argc = 3 
+//              of the command) -- ex: "nachos -d +" -> argc = 3
 //      "argv" is an array of strings, one for each command line argument
 //              ex: "nachos -d +" -> argv = {"nachos", "-d", "+"}
 //----------------------------------------------------------------------
@@ -109,53 +109,53 @@ Initialize (int argc, char **argv)
 
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount)
       {
-	  argCount = 1;
-	  if (!strcmp (*argv, "-d"))
-	    {
-		if (argc == 1)
-		    debugArgs = "+";	// turn on all debug flags
-		else
-		  {
-		      debugArgs = *(argv + 1);
-		      argCount = 2;
-		  }
-	    }
-	  else if (!strcmp (*argv, "-rs"))
-	    {
-		int seed;
-		ASSERT_MSG (argc > 1, "-rs needs a seed value\n");
-		seed = atoi (*(argv + 1));
-		if (seed == 0)
-		  {
-		    fprintf(stderr,"-rs option needs a seed value\n");
-		    exit(EXIT_FAILURE);
-		  }
-		RandomInit (seed);	// initialize pseudo-random
-		// number generator
-		randomYield = TRUE;
-		argCount = 2;
-	    }
+          argCount = 1;
+          if (!strcmp (*argv, "-d"))
+            {
+                if (argc == 1)
+                    debugArgs = "+";        // turn on all debug flags
+                else
+                  {
+                      debugArgs = *(argv + 1);
+                      argCount = 2;
+                  }
+            }
+          else if (!strcmp (*argv, "-rs"))
+            {
+                int seed;
+                ASSERT_MSG (argc > 1, "-rs needs a seed value\n");
+                seed = atoi (*(argv + 1));
+                if (seed == 0)
+                  {
+                    fprintf(stderr,"-rs option needs a seed value\n");
+                    exit(EXIT_FAILURE);
+                  }
+                RandomInit (seed);        // initialize pseudo-random
+                // number generator
+                randomYield = TRUE;
+                argCount = 2;
+            }
 #ifdef USER_PROGRAM
-	  if (!strcmp (*argv, "-s"))
-	      debugUserProg = TRUE;
+          if (!strcmp (*argv, "-s"))
+              debugUserProg = TRUE;
 #endif
 #ifdef FILESYS_NEEDED
-	  if (!strcmp (*argv, "-f"))
-	      format = TRUE;
+          if (!strcmp (*argv, "-f"))
+              format = TRUE;
 #endif
 #ifdef NETWORK
-	  if (!strcmp (*argv, "-l"))
-	    {
-		ASSERT_MSG (argc > 1, "-l needs a parameter\n");
-		rely = atof (*(argv + 1));
-		argCount = 2;
-	    }
-	  else if (!strcmp (*argv, "-m"))
-	    {
-		ASSERT_MSG (argc > 1, "-m needs a parameter\n");
-		netname = atoi (*(argv + 1));
-		argCount = 2;
-	    }
+          if (!strcmp (*argv, "-l"))
+            {
+                ASSERT_MSG (argc > 1, "-l needs a parameter\n");
+                rely = atof (*(argv + 1));
+                argCount = 2;
+            }
+          else if (!strcmp (*argv, "-m"))
+            {
+                ASSERT_MSG (argc > 1, "-m needs a parameter\n");
+                netname = atoi (*(argv + 1));
+                argCount = 2;
+            }
 #endif
       }
 
@@ -164,13 +164,13 @@ Initialize (int argc, char **argv)
     interrupt = new Interrupt;	// start up interrupt handling
     scheduler = new Scheduler ();	// initialize the ready queue
     if (randomYield)		// start the timer (if needed)
-	timer = new Timer (TimerInterruptHandler, 0, randomYield);
+        timer = new Timer (TimerInterruptHandler, 0, randomYield);
 
     threadToBeDestroyed = NULL;
 
     // We didn't explicitly allocate the current thread we are running in.
     // But if it ever tries to give up the CPU, we better have a Thread
-    // object to save its state. 
+    // object to save its state.
     currentThread = new Thread ("main");
     currentThread->SetMain ();
 
@@ -204,8 +204,8 @@ Cleanup ()
     static int cleaning;
 
     if (cleaning) {
-	printf ("\nCtrl-C while cleaning, stopping here hard.\n");
-	Exit (0);
+        printf ("\nCtrl-C while cleaning, stopping here hard.\n");
+        Exit (0);
     }
     cleaning = 1;
 
@@ -214,53 +214,53 @@ Cleanup ()
     /* Allow more interrupts but prevent other threads from continuing to use
      * the system while we are waiting for the last interrupts */
     if (scheduler)
-	scheduler->Stop();
+        scheduler->Stop();
     if (interrupt)
-	interrupt->Enable();
+        interrupt->Enable();
 
 #ifdef NETWORK
     if (postOffice) {
-	delete postOffice;
-	postOffice = NULL;
+        delete postOffice;
+        postOffice = NULL;
     }
 #endif
 
 #ifdef USER_PROGRAM
     if (machine) {
-	delete machine;
-	machine = NULL;
+        delete machine;
+        machine = NULL;
     }
 #endif
 
 #ifdef FILESYS_NEEDED
     if (fileSystem) {
-	delete fileSystem;
-	fileSystem = NULL;
+        delete fileSystem;
+        fileSystem = NULL;
     }
 #endif
 
 #ifdef FILESYS
     if (synchDisk) {
-	delete synchDisk;
-	synchDisk = NULL;
+        delete synchDisk;
+        synchDisk = NULL;
     }
 #endif
 
     if (timer) {
-	delete timer;
-	timer = NULL;
+        delete timer;
+        timer = NULL;
     }
     if (scheduler) {
-	delete scheduler;
-	scheduler = NULL;
+        delete scheduler;
+        scheduler = NULL;
     }
     if (interrupt) {
-	delete interrupt;
-	interrupt = NULL;
+        delete interrupt;
+        interrupt = NULL;
     }
     if (stats) {
-	delete stats;
-	stats = NULL;
+        delete stats;
+        stats = NULL;
     }
 
     ThreadList.Remove(currentThread);
