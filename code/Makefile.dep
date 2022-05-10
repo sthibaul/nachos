@@ -40,6 +40,10 @@ HOST += -DLINUX
 CFLAGS += -fsanitize=undefined
 LDFLAGS += -fsanitize=undefined
 
+ifeq ($(shell [ `$(CC) -dumpversion` -ge 12 ] && echo ok),ok)
+CFLAGS += -ftrivial-auto-var-init=pattern
+endif
+
 #CFLAGS += -fsanitize=address
 #LDFLAGS += -fsanitize=address -lpthread
 endif
