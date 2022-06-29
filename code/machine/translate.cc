@@ -73,30 +73,30 @@ ShortToMachine(unsigned short shortword) { return ShortToHost(shortword); }
 
 //----------------------------------------------------------------------
 // Machine::ReadMem
-//	Read "size" (1, 2, or 4) bytes of virtual memory at "addr" into
+//	Read "size" (1, 2, or 4) bytes of virtual memory at "virtAddr" into
 //	the location pointed to by "value".
 //
 //	Returns FALSE if the translation step from virtual to physical memory
 //	failed.
 //
-//	"addr" -- the virtual address to read from
+//	"virtAddr" -- the virtual address to read from
 //	"size" -- the number of bytes to read (1, 2, or 4)
 //	"value" -- the place to write the result
 //----------------------------------------------------------------------
 
 bool
-Machine::ReadMem(int addr, int size, int *value, bool debug)
+Machine::ReadMem(int virtAddr, int size, int *value, bool debug)
 {
     int data;
     ExceptionType exception;
     int physicalAddress;
 
     if (debug)
-        DEBUG('a', "Reading VA 0x%x, size %d\n", addr, size);
+	DEBUG('a', "Reading VA 0x%x, size %d\n", virtAddr, size);
 
-    exception = Translate(addr, &physicalAddress, size, FALSE, debug);
+    exception = Translate(virtAddr, &physicalAddress, size, FALSE, debug);
     if (exception != NoException) {
-        machine->RaiseException(exception, addr);
+	machine->RaiseException(exception, virtAddr);
         return FALSE;
     }
     switch (size) {
@@ -124,35 +124,35 @@ Machine::ReadMem(int addr, int size, int *value, bool debug)
 }
 
 bool
-Machine::ReadMem(int addr, int size, int *value)
+Machine::ReadMem(int virtAddr, int size, int *value)
 {
-    return ReadMem(addr, size, value, TRUE);
+    return ReadMem(virtAddr, size, value, TRUE);
 }
 
 //----------------------------------------------------------------------
 // Machine::WriteMem
 //	Write "size" (1, 2, or 4) bytes of the contents of "value" into
-//	virtual memory at location "addr".
+//	virtual memory at location "virtAddr".
 //
 //	Returns FALSE if the translation step from virtual to physical memory
 //	failed.
 //
-//	"addr" -- the virtual address to write to
+//	"virtAddr" -- the virtual address to write to
 //	"size" -- the number of bytes to be written (1, 2, or 4)
 //	"value" -- the data to be written
 //----------------------------------------------------------------------
 
 bool
-Machine::WriteMem(int addr, int size, int value)
+Machine::WriteMem(int virtAddr, int size, int value)
 {
     ExceptionType exception;
     int physicalAddress;
 
-    DEBUG('a', "Writing VA 0x%x, size %d, value 0x%x\n", addr, size, value);
+    DEBUG('a', "Writing VA 0x%x, size %d, value 0x%x\n", virtAddr, size, value);
 
-    exception = Translate(addr, &physicalAddress, size, TRUE, TRUE);
+    exception = Translate(virtAddr, &physicalAddress, size, TRUE, TRUE);
     if (exception != NoException) {
-        machine->RaiseException(exception, addr);
+	machine->RaiseException(exception, virtAddr);
         return FALSE;
     }
     switch (size) {

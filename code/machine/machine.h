@@ -129,9 +129,9 @@ class Machine:public dontcopythis {
     void DelayedLoad(int nextReg, int nextVal);
                                 // Do a pending delayed load (modifying a reg)
 
-    bool ReadMem(int addr, int size, int* value);
-    bool ReadMem(int addr, int size, int* value, bool debug);
-    bool WriteMem(int addr, int size, int value);
+    bool ReadMem(int virtAddr, int size, int* value);
+    bool ReadMem(int virtAddr, int size, int* value, bool debug);
+    bool WriteMem(int virtAddr, int size, int value);
                                 // Read or write 1, 2, or 4 bytes of virtual
                                 // memory (at addr).  Return FALSE if a
                                 // correct translation couldn't be found.
