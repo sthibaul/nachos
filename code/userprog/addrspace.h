@@ -29,17 +29,17 @@ class AddrSpace:public dontcopythis
     // stored in the file "executable"
     ~AddrSpace ();              // De-allocate an address space
 
-    void InitRegisters ();      // Initialize user-level CPU registers,
+    void InitRegisters (void);  // Initialize user-level CPU registers,
     // before jumping to user code
 
-    void SaveState ();          // Save/restore address space-specific
-    void RestoreState ();       // info on a context switch
+    void SaveState (void);      // Save/restore address space-specific
+    void RestoreState (void);   // info on a context switch
 
     unsigned Dump(FILE *output, unsigned addr_s, unsigned sections_x, unsigned virtual_x, unsigned virtual_width,
                     unsigned physical_x, unsigned virtual_y, unsigned y,
                     unsigned blocksize);
                                 // Dump program layout as SVG
-    unsigned NumPages() { return numPages; }
+    unsigned NumPages(void) { return numPages; }
 
   private:
     NoffHeader noffH;           // Program layout

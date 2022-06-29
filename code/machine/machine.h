@@ -80,7 +80,7 @@ enum ExceptionType { NoException,           // Everything ok!
 
 class Instruction {
   public:
-    void Decode();      // decode the binary representation of the instruction
+    void Decode(void);  // decode the binary representation of the instruction
 
     unsigned int value; // binary representation of the instruction
 
@@ -114,7 +114,7 @@ class Machine:public dontcopythis {
     ~Machine();                 // De-allocate the data structures
 
 // Routines callable by the Nachos kernel
-    void Run();                 // Run a user program
+    void Run(void);             // Run a user program
 
     int ReadRegister(int num);  // read the contents of a CPU register
 
@@ -147,8 +147,8 @@ class Machine:public dontcopythis {
                                 // Trap to the Nachos kernel, because of a
                                 // system call or other exception.
 
-    void Debugger();            // invoke the user program debugger
-    void DumpState();           // print the user CPU and memory state
+    void Debugger(void);        // invoke the user program debugger
+    void DumpState(void);       // print the user CPU and memory state
     void DumpMem(const char *name); // Draw the memory state
     void DumpReg(FILE *output, int val, const char *name, const char *color,
                  int ptr_x, int ptr_y, unsigned virtual_x,

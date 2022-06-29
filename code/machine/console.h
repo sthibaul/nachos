@@ -53,7 +53,7 @@ class Console:public dontcopythis {
                                 // and return immediately.  "writeDone"
                                 // is called when the I/O completes.
 
-    int RX();                   // Poll the console input.  If a char is
+    int RX(void);               // Poll the console input.  If a char is
                                 // available, return it.  Otherwise, crash.
                                 // EOF is returned if the end of the input
                                 // file was reached.
@@ -61,8 +61,8 @@ class Console:public dontcopythis {
                                 // a char to be gotten
 
 // internal emulation routines -- DO NOT call these.
-    void WriteDone();		// internal routines to signal I/O completion
-    void CheckCharAvail();
+    void WriteDone(void);	// internal routines to signal I/O completion
+    void CheckCharAvail(void);
 
   private:
     int readFileNo;                     // UNIX file emulating the keyboard

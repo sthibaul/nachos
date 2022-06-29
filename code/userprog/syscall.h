@@ -49,7 +49,7 @@
  */
 
 /* Stop Nachos, and print out performance stats */
-void Halt () __attribute__ ((__noreturn__));
+void Halt (void) __attribute__ ((__noreturn__));
 
 
 /* Address space control operations: Exit, Exec, and Join */
@@ -123,12 +123,12 @@ void Close (OpenFileId id);
 /* Fork a thread to run a procedure ("func") in the *same* address space
  * as the current thread.
  */
-void Fork (void (*func) ());
+void Fork (void (*func) (void));
 
 /* Yield the CPU to another runnable thread, whether in this address space
  * or not.
  */
-void Yield ();
+void Yield (void);
 
 #endif // IN_USER_MODE
 

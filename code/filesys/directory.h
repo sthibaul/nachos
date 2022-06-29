@@ -65,9 +65,9 @@ class Directory:public dontcopythis {
 
     bool Remove(const char *name);      // Remove a file from the directory
 
-    void List();                        // Print the names of all the files
+    void List(void);                    // Print the names of all the files
                                         //  in the directory
-    void Print();                       // Verbose print of the contents
+    void Print(void);                   // Verbose print of the contents
                                         //  of the directory -- all the file
                                         //  names and their contents.
 

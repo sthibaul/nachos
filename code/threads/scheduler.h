@@ -21,14 +21,14 @@ class Scheduler:public dontcopythis
 {
   public:
     Scheduler ();               // Initialize list of ready threads
-    void Stop ();               // Prevent further context switches
+    void Stop (void);           // Prevent further context switches
     ~Scheduler ();              // De-allocate ready list
 
     void ReadyToRun (Thread * thread); // Thread can be dispatched.
-    Thread *FindNextToRun (); // Dequeue first thread on the ready
+    Thread *FindNextToRun (void); // Dequeue first thread on the ready
     // list, if any, and return thread.
     void Run (Thread * nextThread); // Cause nextThread to start running
-    void Print ();              // Print contents of ready list
+    void Print (void);              // Print contents of ready list
 
   private:
     List * readyList;           // queue of threads that are ready to run,

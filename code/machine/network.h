@@ -76,9 +76,9 @@ class Network {
                                 // If no packet is waiting, return a header
                                 // with length 0.
 
-    void SendDone();            // Interrupt handler, called when message is
+    void SendDone(void);        // Interrupt handler, called when message is
                                 // sent
-    void CheckPktAvail();       // Check if there is an incoming packet
+    void CheckPktAvail(void);   // Check if there is an incoming packet
 
   private:
     NetworkAddress ident;       // This machine's network address

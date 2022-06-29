@@ -33,10 +33,10 @@ class Timer {
 
 // Internal routines to the timer emulation -- DO NOT call these
 
-    void TimerExpired();        // called internally when the hardware
+    void TimerExpired(void);    // called internally when the hardware
                                 // timer generates an interrupt
 
-    int TimeOfNextInterrupt();  // figure out when the timer will generate
+    int TimeOfNextInterrupt(void); // figure out when the timer will generate
                                 // its next interrupt
 
   private:

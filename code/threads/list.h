@@ -49,17 +49,17 @@ class List:public dontcopythis
 
     void Prepend (void *item);  // Put item at the beginning of the list
     void Append (void *item);   // Put item at the end of the list
-    ListElement *FirstElement (); // Read item off the front of the list
-    void *Remove ();            // Take item off the front of the list
+    ListElement *FirstElement (void); // Read item off the front of the list
+    void *Remove (void);        // Take item off the front of the list
     void Remove (void *item);   // Remove item off the list
-    int  Length ();             // Return length
+    int  Length (void);         // Return length
 
     void Mapcar (VoidFunctionPtr func); // Apply "func" to every element
                                         // on the list
     void Mapcar (VoidFunctionPtr2 func, void *arg); // Apply "func" to every
                                         // element on the list with the
                                         // additional arg
-    bool IsEmpty ();            // is the list empty?
+    bool IsEmpty (void);         // is the list empty?
 
 
     // Routines to put/get items on/off list in order (sorted by key)

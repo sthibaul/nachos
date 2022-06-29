@@ -117,13 +117,13 @@ class PostOffice:public dontcopythis {
                                 // Retrieve a message from "box".  Wait if
                                 // there is no message in the box.
 
-    void PostalDelivery();      // Wait for incoming messages,
+    void PostalDelivery(void);  // Wait for incoming messages,
                                 // and then put them in the correct mailbox
 
-    void PacketSent();          // Interrupt handler, called when outgoing
+    void PacketSent(void);      // Interrupt handler, called when outgoing
                                 // packet has been put on network; next
                                 // packet can now be sent
-    void IncomingPacket();      // Interrupt handler, called when incoming
+    void IncomingPacket(void);  // Interrupt handler, called when incoming
                                 // packet has arrived and can be pulled
                                 // off of network (i.e., time to call
                                 // PostalDelivery)

@@ -51,7 +51,7 @@ class OpenFile:public dontcopythis {
                 return numWritten;
                 }
 
-    int Length() { Lseek(file, 0, SEEK_END); return Tell(file); }
+    int Length(void) { Lseek(file, 0, SEEK_END); return Tell(file); }
 
   private:
     int file;
@@ -82,7 +82,7 @@ class OpenFile:public dontcopythis {
                                         // Return the # actually read/written.
     int WriteAt(const void *from, int numBytes, int position);
 
-    int Length();                       // Return the number of bytes in the
+    int Length(void)                    // Return the number of bytes in the
                                         // file (this interface is simpler
                                         // than the UNIX idiom -- lseek to
                                         // end of file, tell, lseek back

@@ -94,23 +94,23 @@ class Thread:public dontcopythis
     // basic thread operations
 
     void Start (VoidFunctionPtr func, void *arg); // Make thread run (*func)(arg)
-    void Yield ();                      // Relinquish the CPU if any
+    void Yield (void);                  // Relinquish the CPU if any
     // other thread is runnable
-    void Sleep ();                      // Put the thread to sleep and
+    void Sleep (void);                  // Put the thread to sleep and
     // relinquish the processor
-    void Finish ();                     // The thread is done executing
+    void Finish (void);                 // The thread is done executing
 
-    void CheckOverflow ();              // Check if thread has
+    void CheckOverflow (void);          // Check if thread has
     // overflowed its stack
     void setStatus (ThreadStatus st)
     {
         status = st;
     }
-    const char *getName ()
+    const char *getName (void)
     {
         return (name);
     }
-    void Print ()
+    void Print (void)
     {
         printf ("%s, ", name);
     }
@@ -147,8 +147,8 @@ class Thread:public dontcopythis
     int userRegisters[NumTotalRegs]; // user-level CPU register state
 
   public:
-    void SaveUserState ();      // save user-level register state
-    void RestoreUserState ();   // restore user-level register state
+    void SaveUserState (void);  // save user-level register state
+    void RestoreUserState (void); // restore user-level register state
 
     AddrSpace *space;           // Address space this thread is running in.
 #endif
@@ -171,7 +171,7 @@ extern "C"
 //      enable interrupts
 //      call "func"
 //      (when func returns, if ever) call ThreadFinish()
-    void ThreadRoot ();
+    void ThreadRoot (void);
 
 // Stop running oldThread and start running newThread
     void SWITCH (Thread * oldThread, Thread * newThread);

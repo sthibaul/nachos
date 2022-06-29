@@ -82,9 +82,9 @@ class FileSystem:public dontcopythis {
 
     bool Remove(const char *name);      // Delete a file (UNIX unlink)
 
-    void List();                        // List all the files in the file system
+    void List(void);                    // List all the files in the file system
 
-    void Print();                       // List all the files and their contents
+    void Print(void);                   // List all the files and their contents
 
   private:
    OpenFile* freeMapFile;               // Bit map of free disk blocks,

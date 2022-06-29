@@ -38,7 +38,7 @@ class SynchDisk:public dontcopythis {
                                         // then wait until the request is done.
     void WriteSector(int sectorNumber, const void* data);
 
-    void RequestDone();                 // Called by the disk device interrupt
+    void RequestDone(void);             // Called by the disk device interrupt
                                         // handler, to signal that the
                                         // current disk operation is complete.
 

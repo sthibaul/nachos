@@ -46,9 +46,9 @@ class Statistics {
     int numPacketsSent;         // number of packets sent over the network
     int numPacketsRecvd;        // number of packets received over the network
 
-    Statistics();               // initialize everything to zero
+    Statistics(void);           // initialize everything to zero
 
-    void Print();               // print collected statistics
+    void Print(void);           // print collected statistics
 };
 
 // Constants used to reflect the relative time an operation would

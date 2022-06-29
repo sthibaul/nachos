@@ -83,23 +83,23 @@ class Interrupt:public dontcopythis {
     IntStatus SetLevel(IntStatus level);// Disable or enable interrupts
                                         // and return previous setting.
 
-    void Enable();                      // Enable interrupts.
-    IntStatus getLevel() {return level;}// Return whether interrupts
+    void Enable(void);                  // Enable interrupts.
+    IntStatus getLevel(void) {return level;}// Return whether interrupts
                                         // are enabled or disabled
 
-    void Idle();                        // The ready queue is empty, roll
+    void Idle(void);                    // The ready queue is empty, roll
                                         // simulated time forward until the
                                         // next interrupt
 
-    void Powerdown();                   // quit and print out stats
+    void Powerdown(void);               // quit and print out stats
 
-    void YieldOnReturn();               // cause a context switch on return
+    void YieldOnReturn(void);           // cause a context switch on return
                                         // from an interrupt handler
 
-    MachineStatus getStatus() { return status; } // idle, kernel, user
+    MachineStatus getStatus(void) { return status; } // idle, kernel, user
     void setStatus(MachineStatus st) { status = st; }
 
-    void DumpState();                   // Print interrupt state
+    void DumpState(void);               // Print interrupt state
 
 
     // NOTE: the following are internal to the hardware simulation code.
@@ -111,7 +111,7 @@ class Interrupt:public dontcopythis {
         void *arg, long long when, IntType type);// at time ``when''.  This is called
                                         // by the hardware device simulators.
 
-    void OneTick();                     // Advance simulated time
+    void OneTick(void);                 // Advance simulated time
 
   private:
     IntStatus level;                    // are interrupts enabled or disabled?

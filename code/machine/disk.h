@@ -67,7 +67,7 @@ class Disk:public dontcopythis {
                                         // Only one request allowed at a time!
     void WriteRequest(int sectorNumber, const void* data);
 
-    void HandleInterrupt();             // Interrupt handler, invoked when
+    void HandleInterrupt(void);         // Interrupt handler, invoked when
                                         // disk request finishes.
 
     int ComputeLatency(int newSector, bool writing);

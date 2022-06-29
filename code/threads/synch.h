@@ -41,13 +41,13 @@ class Semaphore:public dontcopythis
   public:
     Semaphore (const char *debugName, int initialValue); // set initial value
      ~Semaphore ();             // de-allocate semaphore
-    const char *getName ()
+    const char *getName (void)
     {
         return name;
     }                           // debugging assist
 
-    void P ();                  // these are the only operations on a semaphore
-    void V ();                  // they are both *atomic*
+    void P (void);              // these are the only operations on a semaphore
+    void V (void);              // they are both *atomic*
 
   private:
     const char *name;           // useful for debugging
@@ -72,15 +72,15 @@ class Lock:public dontcopythis
   public:
     Lock (const char *debugName); // initialize lock to be FREE
      ~Lock ();                  // deallocate lock
-    const char *getName ()
+    const char *getName (void)
     {
         return name;
     }                           // debugging assist
 
-    void Acquire ();            // these are the only operations on a lock
-    void Release ();            // they are both *atomic*
+    void Acquire (void);        // these are the only operations on a lock
+    void Release (void);        // they are both *atomic*
 
-    bool isHeldByCurrentThread (); // true if the current thread
+    bool isHeldByCurrentThread (void); // true if the current thread
     // holds this lock.  Useful for
     // checking in Release, and in
     // Condition variable ops below.
@@ -128,7 +128,7 @@ class Condition:public dontcopythis
     Condition (const char *debugName);  // initialize condition to
     // "no one waiting"
      ~Condition ();                     // deallocate the condition
-    const char *getName ()
+    const char *getName (void)
     {
         return (name);
     }

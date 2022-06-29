@@ -51,10 +51,10 @@ class FileHeader {
                                         // to the disk sector containing
                                         // the byte
 
-    int FileLength();                   // Return the length of the file
+    int FileLength(void);               // Return the length of the file
                                         // in bytes
 
-    void Print();                       // Print the contents of the file.
+    void Print(void);                   // Print the contents of the file.
 
   private:
     int numBytes;                       // Number of bytes in the file

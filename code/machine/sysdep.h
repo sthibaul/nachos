@@ -30,7 +30,7 @@ extern void Close(int fd);
 extern bool Unlink(const char *name);
 
 // Interprocess communication operations, for simulating the network
-extern int OpenSocket();
+extern int OpenSocket(void);
 extern void CloseSocket(int sockID);
 extern void AssignNameToSocket(const char *socketName, int sockID);
 extern void DeAssignNameToSocket(const char *socketName);
@@ -39,7 +39,7 @@ extern void ReadFromSocket(int sockID, void *buffer, int packetSize);
 extern void SendToSocket(int sockID, const void *buffer, int packetSize,const char *toName);
 
 // Process control: abort, exit, and sleep
-extern void Abort();
+extern void Abort(void);
 extern void Exit(int exitCode);
 extern void Delay(int seconds);
 
@@ -50,7 +50,7 @@ extern void UnBlockUserAbort(void);
 
 // Initialize the pseudo random number generator
 extern void RandomInit(unsigned seed);
-extern int Random();
+extern int Random(void);
 
 // Allocate, de-allocate an array, such that de-referencing
 // just beyond either end of the array will cause an error
