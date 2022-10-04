@@ -68,7 +68,7 @@ void
 ExceptionHandler (ExceptionType which)
 {
     int type = machine->ReadRegister (2);
-    int address = machine->registers[BadVAddrReg];
+    int address = machine->ReadRegister (BadVAddrReg);
 
     switch (which)
       {
