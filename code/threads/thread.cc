@@ -50,14 +50,10 @@ List ThreadList;
 Thread::Thread (const char *threadName)
 {
     name = threadName;
+
     stackTop = NULL;
     stack = NULL;
 
-    valgrind_id = 0;
-
-#ifdef __SANITIZE_ADDRESS__
-    fake_stack = NULL;
-#endif
     stack_size = 0;
     main_stack = 0;
 
@@ -71,6 +67,14 @@ Thread::Thread (const char *threadName)
     userRegisters[LoadValueReg] = 0;
 #endif
     ThreadList.Append(this);
+
+    // This is just for valgrind
+    valgrind_id = 0;
+
+#ifdef __SANITIZE_ADDRESS__
+    // This is just for the address sanitizer
+    fake_stack = NULL;
+#endif
 }
 
 //----------------------------------------------------------------------
