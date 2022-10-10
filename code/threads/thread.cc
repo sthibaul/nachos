@@ -83,6 +83,8 @@ void
 Thread::SetMain (void)
 {
 #ifdef __SANITIZE_ADDRESS__
+    // We don't allocate the stack ourselves, so get the information
+    // from the OS
     pthread_attr_t attr;
     void *addr;
 
