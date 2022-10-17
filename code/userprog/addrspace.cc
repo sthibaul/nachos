@@ -162,7 +162,7 @@ AddrSpace::InitRegisters ()
     for (i = 0; i < NumTotalRegs; i++)
         machine->WriteRegister (i, 0);
 
-    // Initial program counter -- must be location of "Start"
+    // Initial program counter -- must be location of the __start function
     machine->WriteRegister (PCReg, USER_START_ADDRESS);
 
     // Need to also tell MIPS where next instruction is, because
