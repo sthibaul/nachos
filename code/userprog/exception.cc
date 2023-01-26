@@ -89,6 +89,8 @@ ExceptionHandler (ExceptionType which)
               }
 
             // Do not forget to increment the pc before returning!
+            // This skips over the syscall instruction, to continue execution
+            // with the rest of the program
             UpdatePC ();
             break;
           }
