@@ -45,17 +45,20 @@ if [ -f /bin/uname -o -f /usr/bin/uname ]; then
                 os="`/usr/bin/uname -s`"
                 ht="`/usr/bin/uname -m`"
         fi
-
-        case "$os,$ht" in
-        SunOS,*)           PM2_SYS=SOLARIS_SYS ;;
-        AIX*,*)            PM2_SYS=AIX_SYS ;;
-        IRIX*,*)           PM2_SYS=IRIX_SYS ;;
-        OSF*,*)            PM2_SYS=OSF_SYS ;;
-        Linux,*)           PM2_SYS=LINUX_SYS ;;
-        FreeBSD,*)         PM2_SYS=FREEBSD_SYS ;;
-        Darwin,*)          PM2_SYS=MAC_OS_SYS ;;
-        esac
+else
+  os="`uname -s`"
+	ht="`uname -m`"
 fi
+
+case "$os,$ht" in
+	  SunOS,*)           PM2_SYS=SOLARIS_SYS ;;
+	  AIX*,*)            PM2_SYS=AIX_SYS ;;
+	  IRIX*,*)           PM2_SYS=IRIX_SYS ;;
+	  OSF*,*)            PM2_SYS=OSF_SYS ;;
+	  Linux,*)           PM2_SYS=LINUX_SYS ;;
+	  FreeBSD,*)         PM2_SYS=FREEBSD_SYS ;;
+	  Darwin,*)          PM2_SYS=MAC_OS_SYS ;;
+esac
 
 echo $PM2_SYS
 exit
