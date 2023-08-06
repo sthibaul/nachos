@@ -1,5 +1,4 @@
-SUBDIRS := code/bin code/userprog code/threads
-#SUBDIRS := code/test
+SUBDIRS := code
 
 all: $(SUBDIRS)
 $(SUBDIRS):

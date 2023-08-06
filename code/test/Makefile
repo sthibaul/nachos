@@ -38,10 +38,7 @@ GCCDIR = /opt/xgcc/mipsel/bin
 GCC	:=	gcc
 endif
 
-# We don't support native builds
-ifeq ($(GCCDIR),)
-$(error When not running at CREMI, I need the cross compiler installed in /opt/xgcc)
-endif
+.PHONY: all
 
 LDFLAGS = -T script -N
 ASFLAGS =
@@ -69,9 +66,13 @@ CFLAGS	:=	-G 0 -DIN_USER_MODE $(INCDIR) -Wall -O2 -DCHANGED
 SOURCES	:=	$(wildcard *.c)
 PROGS	:=	$(patsubst %.c,%,$(SOURCES))
 
-.PHONY: all
-
+# We don't support native builds
+ifeq ($(GCCDIR),)
+$(warning When not running at CREMI, I need the cross compiler installed in /opt/xgcc)
+all:
+else
 all: $(PROGS)
+endif
 
 start.o: start.S ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.S > strt.s
